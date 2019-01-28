@@ -14,5 +14,5 @@ public interface DataFinder<K, D> {
      * @param criteria
      * @return
      */
-    List<DataResource<K, D>> find(DataFinderCriteria<K> criteria);
+    List<DataFinderResult<K, D>> find(DataFinderCriteria<K> criteria);
 }
