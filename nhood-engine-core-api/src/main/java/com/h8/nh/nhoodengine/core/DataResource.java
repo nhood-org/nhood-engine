@@ -51,7 +51,7 @@ public class DataResource<K, D> {
      * @return
      */
     public static DataResourceBuilder builder() {
-        return new DataResourceBuilder();
+        return new DataResourceBuilder<>();
     }
 
     @Override

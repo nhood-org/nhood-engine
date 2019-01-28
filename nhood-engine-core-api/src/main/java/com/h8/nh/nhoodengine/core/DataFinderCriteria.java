@@ -50,7 +50,7 @@ public class DataFinderCriteria<K> {
      * @return
      */
     public static DataFinderCriteriaBuilder builder() {
-        return new DataFinderCriteriaBuilder();
+        return new DataFinderCriteriaBuilder<>();
     }
 
     @Override
