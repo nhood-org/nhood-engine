@@ -3,26 +3,55 @@ package com.h8.nh.nhoodengine.core;
 import java.util.Objects;
 import java.util.Vector;
 
+/**
+ *
+ * @param <K>
+ * @param <D>
+ */
 public class DataResource<K, D> {
 
+    /**
+     *
+     */
     private final Vector<K> key;
+
+    /**
+     *
+     * @return
+     */
+    public Vector<K> getKey() {
+        return key;
+    }
+
+    /**
+     *
+     */
     private final D data;
 
+    /**
+     *
+     * @return
+     */
+    public D getData() {
+        return data;
+    }
+
+    /**
+     *
+     * @param key
+     * @param data
+     */
     public DataResource(Vector<K> key, D data) {
         this.key = key;
         this.data = data;
     }
 
+    /**
+     *
+     * @return
+     */
     public static DataResourceBuilder builder() {
         return new DataResourceBuilder();
-    }
-
-    public Vector<K> getKey() {
-        return key;
-    }
-
-    public D getData() {
-        return data;
     }
 
     @Override
@@ -47,6 +76,11 @@ public class DataResource<K, D> {
                 '}';
     }
 
+    /**
+     *
+     * @param <K>
+     * @param <D>
+     */
     public static final class DataResourceBuilder<K, D> {
         private Vector<K> key;
         private D data;

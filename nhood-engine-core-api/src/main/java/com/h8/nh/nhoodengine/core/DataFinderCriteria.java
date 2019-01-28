@@ -3,25 +3,52 @@ package com.h8.nh.nhoodengine.core;
 import java.util.Objects;
 import java.util.Vector;
 
+/**
+ *
+ * @param <K>
+ */
 public class DataFinderCriteria<K> {
 
+    /**
+     *
+     */
     private final Vector<K> metadata;
 
+    /**
+     *
+     * @return
+     */
+    public Vector<K> getMetadata() {
+        return metadata;
+    }
+
+    /**
+     *
+     */
     private final int limit;
 
+    /**
+     *
+     * @return
+     */
+    public int getLimit() {
+        return limit;
+    }
+
+    /**
+     *
+     * @param metadata
+     * @param limit
+     */
     public DataFinderCriteria(Vector<K> metadata, int limit) {
         this.metadata = metadata;
         this.limit = limit;
     }
 
-    public Vector<K> getMetadata() {
-        return metadata;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
+    /**
+     *
+     * @return
+     */
     public static DataFinderCriteriaBuilder builder() {
         return new DataFinderCriteriaBuilder();
     }
@@ -48,6 +75,10 @@ public class DataFinderCriteria<K> {
                 '}';
     }
 
+    /**
+     *
+     * @param <K>
+     */
     public static final class DataFinderCriteriaBuilder<K> {
         private Vector<K> metadata;
         private int limit;
