@@ -24,6 +24,17 @@
  		<developerConnection>scm:git:https://github.com/nhood-org/nhood-engine</developerConnection>
  	</scm>
 
+	<repositories>
+		<repository>
+			<id>nhood-mvn-repo</id>
+			<url>https://raw.github.com/nhood-org/nhood-repository/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
