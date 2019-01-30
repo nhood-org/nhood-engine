@@ -4,63 +4,73 @@ import java.util.Objects;
 import java.util.Vector;
 
 /**
+ * This class represents a basic data resource that is is being searched for
+ * in the nhood engine.
  *
- * @param <K>
- * @param <D>
+ * DataResource consists of two elements:
+ * - a vector key that represents metadata of data resource
+ * - a data itself
+ *
+ * @param <K> a generic type of data metadata key vector.
+ * @param <D> a generic type of data resource.
  */
-public class DataResource<K, D> {
+public final class DataResource<K, D> {
 
     /**
-     *
+     * Data metadata key vector
      */
     private final Vector<K> key;
 
     /**
-     *
-     * @return
+     * Data metadata key vector
+     * @return actual metadata key value
      */
     public Vector<K> getKey() {
         return key;
     }
 
     /**
-     *
+     * Data resource
      */
     private final D data;
 
     /**
-     *
-     * @return
+     * Data resource
+     * @return actual data resource value
      */
     public D getData() {
         return data;
     }
 
     /**
-     *
-     * @param key
-     * @param data
+     * Default constructor
+     * @param key metadata key value
+     * @param data data resource value
      */
-    public DataResource(Vector<K> key, D data) {
+    public DataResource(final Vector<K> key, final D data) {
         this.key = key;
         this.data = data;
     }
 
     /**
-     *
-     * @return
+     * A static method exposing an auxiliary builder
+     * @return An instance of a builder
      */
     public static DataResourceBuilder builder() {
         return new DataResourceBuilder<>();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         DataResource<?, ?> that = (DataResource<?, ?>) o;
-        return Objects.equals(key, that.key) &&
-                Objects.equals(data, that.data);
+        return Objects.equals(key, that.key)
+                && Objects.equals(data, that.data);
     }
 
     @Override
@@ -70,16 +80,16 @@ public class DataResource<K, D> {
 
     @Override
     public String toString() {
-        return "DataResource{" +
-                "key=" + key +
-                ", data=" + data +
-                '}';
+        return "DataResource{"
+                + "key=" + key
+                + ", data=" + data
+                + '}';
     }
 
     /**
-     *
-     * @param <K>
-     * @param <D>
+     * An auxiliary builder of DataResource
+     * @param <K> a generic type of data metadata key vector.
+     * @param <D> a generic type of data resource.
      */
     public static final class DataResourceBuilder<K, D> {
         private Vector<K> key;
@@ -88,16 +98,30 @@ public class DataResource<K, D> {
         private DataResourceBuilder() {
         }
 
-        public DataResourceBuilder key(Vector<K> key) {
+        /**
+         * Data metadata key vector
+         * @param key metadata key value
+         * @return builder instance
+         */
+        public DataResourceBuilder key(final Vector<K> key) {
             this.key = key;
             return this;
         }
 
-        public DataResourceBuilder data(D data) {
+        /**
+         * Data resource
+         * @param data data resource value
+         * @return builder instance
+         */
+        public DataResourceBuilder data(final D data) {
             this.data = data;
             return this;
         }
 
+        /**
+         * Method will combine all gathered properties into DataResource instance
+         * @return a build instance of DataResource
+         */
         public DataResource<K, D> build() {
             return new DataResource<>(key, data);
         }
