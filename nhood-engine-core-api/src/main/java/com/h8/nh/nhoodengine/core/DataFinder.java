@@ -17,6 +17,12 @@ public interface DataFinder<K, D> {
 
     /**
      * Find a list of DataResource's in accordance with given criteria
+     *
+     * Data universe will be retrieved from data source in accordance
+     * with criteria metadata vector. Then geometrical distances are computed.
+     * Top n values (as the limit) will be returned in an order based
+     * on a distance. The shorter distance the higher score and higher order.
+     *
      * @param criteria a data finder criteria
      * @return list of data finder results's
      */

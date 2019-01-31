@@ -11,12 +11,13 @@
 	<parent>
 		<groupId>com.h8.nh</groupId>
 		<artifactId>nhood-parent-bom</artifactId>
-		<version>0.0.5-SNAPSHOT</version>
+		<version>0.0.5</version>
 	</parent>
 
 	<modules>
 		<module>nhood-engine-core-api</module>
-	</modules>
+        <module>nhood-engine-matrix-api</module>
+    </modules>
 
   	<scm>
  		<connection>scm:git:https://github.com/nhood-org/nhood-engine.git</connection>
