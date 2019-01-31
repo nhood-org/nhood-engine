@@ -10,6 +10,7 @@ The `nhood-engine` is a core library covering key engine functionaries.
 Project is split into two maven submodules:
 
 - `nhood-engine-core-api` containing core engine interfaces
+- `nhood-engine-matrix-api` containing matrix management interfaces
 
 ## Technology
 
