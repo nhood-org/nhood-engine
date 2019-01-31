@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>nhood-engine</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>com.h8.nh</groupId>
+		<artifactId>nhood-parent-bom</artifactId>
+		<version>0.0.5-SNAPSHOT</version>
+	</parent>
+
+	<modules>
+		<module>nhood-engine-core-api</module>
+	</modules>
+
+  	<scm>
+ 		<connection>scm:git:https://github.com/nhood-org/nhood-engine.git</connection>
+ 		<url>http://github.com/nhood-org/nhood-engine</url>
+ 		<developerConnection>scm:git:https://github.com/nhood-org/nhood-engine</developerConnection>
+ 	</scm>
+
+	<repositories>
+		<repository>
+			<id>nhood-mvn-repo</id>
+			<url>https://raw.github.com/nhood-org/nhood-repository/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+</project>
