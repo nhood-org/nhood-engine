@@ -22,8 +22,8 @@
  		<connection>scm:git:https://github.com/nhood-org/nhood-engine.git</connection>
  		<url>http://github.com/nhood-org/nhood-engine</url>
  		<developerConnection>scm:git:https://github.com/nhood-org/nhood-engine</developerConnection>
- 	  <tag>HEAD</tag>
-  </scm>
+ 	  	<tag>HEAD</tag>
+  	</scm>
 
 	<repositories>
 		<repository>
@@ -42,5 +42,18 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M1</version>
+				<configuration>
+					<useSystemClassLoader>false</useSystemClassLoader>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
