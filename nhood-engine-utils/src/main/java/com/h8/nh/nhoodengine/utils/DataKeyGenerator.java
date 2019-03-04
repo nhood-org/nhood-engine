@@ -1,6 +1,7 @@
 package com.h8.nh.nhoodengine.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.IntStream;
@@ -54,7 +55,7 @@ public final class DataKeyGenerator {
         if (previousLevelKeys == null) {
             return IntStream
                     .range(min, max)
-                    .mapToObj(Vector::new);
+                    .mapToObj(i -> new Vector<>(Collections.singletonList(i)));
         } else {
             return previousLevelKeys
                     .flatMap(v -> generateNextLevelKeysStream(v, min, max));
