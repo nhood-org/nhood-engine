@@ -1,19 +1,14 @@
 package com.h8.nh.nhoodengine.core;
 
 
+import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Vector;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirements {
-
-    private static final int KEY_VECTOR_SIZE = 3;
 
     private static final Vector<Integer> KEY_VECTOR_MIN_LIMIT = new Vector<>(Arrays.asList(-1000, -100, -10));
 
@@ -21,24 +16,22 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     private DataFinder<K, D> dataFinder;
 
-    protected abstract Vector<K> mapDataKey(Vector<Integer> key);
-
-    protected abstract D mapDataKeyToData(Vector<K> key);
-
-    protected abstract void registerDataResource(Vector<K> key, D data);
-
-    protected abstract DataFinder<K, D> initializeDataFinder();
-
     @BeforeEach
     public final void setUp() {
         dataFinder = initializeDataFinder();
-        initializeData();
+        DataKeyGenerator
+                .generate(KEY_VECTOR_MIN_LIMIT, KEY_VECTOR_MAX_LIMIT)
+                .map(this::toDataKey)
+                .forEach(k -> register(k, toData(k)));
     }
 
-    private void initializeData() {
-        generateKeys().map(this::mapDataKey)
-                .forEach(k -> registerDataResource(k, mapDataKeyToData(k)));
-    }
+    protected abstract DataFinder<K,D> initializeDataFinder();
+
+    protected abstract Vector<K> toDataKey(Vector<Integer> key);
+
+    protected abstract D toData(Vector<K> key);
+
+    protected abstract void register(Vector<K> key, D data);
 
     @Override
     @Test
@@ -104,35 +97,5 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     @Test
     public final void shouldReturnListOfClosestResultForAAllZeroesMetadataVector() {
 
-    }
-
-    private Stream<Vector<Integer>> generateKeys() {
-        Stream<Vector<Integer>> keys = generateFirstLevelKeys();
-        for (int i = 1; i < KEY_VECTOR_SIZE; i++) {
-            keys = generateNextLevelKeys(keys, i);
-        }
-        return keys;
-    }
-
-    private Stream<Vector<Integer>> generateFirstLevelKeys() {
-        return IntStream.range(KEY_VECTOR_MIN_LIMIT.get(0), KEY_VECTOR_MAX_LIMIT.get(0))
-                .mapToObj(Vector::new);
-    }
-
-    private Stream<Vector<Integer>> generateNextLevelKeys(Stream<Vector<Integer>> previousLevelKeys, int level) {
-        return previousLevelKeys
-                .flatMap(v -> generateNextLevelKeys(v, level));
-    }
-
-    private Stream<Vector<Integer>> generateNextLevelKeys(Vector<Integer> previousLevelKey, int level) {
-        return IntStream
-                .range(KEY_VECTOR_MIN_LIMIT.get(level), KEY_VECTOR_MAX_LIMIT.get(level))
-                .mapToObj(i -> generateNextLevelKey(previousLevelKey, i));
-    }
-
-    private Vector<Integer> generateNextLevelKey(Vector<Integer> previousLevelKey, Integer nextValue) {
-        List<Integer> nextLevelKey = new ArrayList<>(previousLevelKey);
-        nextLevelKey.add(nextValue);
-        return new Vector<>(nextLevelKey);
     }
 }

@@ -16,7 +16,8 @@
 		<module>nhood-engine-core-api</module>
         <module>nhood-engine-matrix-api</module>
         <module>nhood-engine-core-test</module>
-    </modules>
+		<module>nhood-engine-utils</module>
+	</modules>
 
   	<scm>
  		<connection>scm:git:https://github.com/nhood-org/nhood-engine.git</connection>
@@ -43,6 +44,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
+	<!--TODO!!!-->
 	<build>
 		<plugins>
 			<plugin>
