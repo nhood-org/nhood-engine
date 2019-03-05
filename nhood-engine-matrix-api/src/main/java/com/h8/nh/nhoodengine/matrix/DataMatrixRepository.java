@@ -23,12 +23,16 @@ public interface DataMatrixRepository<K, D> {
      * of matrix corresponding to its metadata vector.
      *
      * @param resource a data resource to be indexed
+     *
+     * @throws DataMatrixRepositoryFailedException
+     * when resource may not be added
      */
-    void add(DataResource<K, D> resource);
+    void add(DataResource<K, D> resource)
+            throws DataMatrixRepositoryFailedException;
 
     /**
      * Retrieval of list of data resource in accordance with given
-     * facade defined as vector position and value.
+     * facet defined as vector position and value.
      *
      * Data resources will be retrieved form section of matrix
      * corresponding metadata position and value.
@@ -36,8 +40,12 @@ public interface DataMatrixRepository<K, D> {
      * @param index metadata vector index
      * @param value metadata vector value
      * @return a list of data resources retrieved
+     *
+     * @throws DataMatrixRepositoryFailedException
+     * when find operation cannot be performed
      */
-    List<DataResource> findFacade(int index, K value);
+    List<DataResource> findFacet(int index, K value)
+            throws DataMatrixRepositoryFailedException;
 
     /**
      * Retrieval of list of data resource in accordance with given
@@ -49,6 +57,10 @@ public interface DataMatrixRepository<K, D> {
      *
      * @param metadata metadata vector
      * @return a list of data resources retrieved
+     *
+     * @throws DataMatrixRepositoryFailedException
+     * when find operation cannot be performed
      */
-    List<DataResource> findAll(Vector<K> metadata);
+    List<DataResource> findAll(Vector<K> metadata)
+            throws DataMatrixRepositoryFailedException;
 }

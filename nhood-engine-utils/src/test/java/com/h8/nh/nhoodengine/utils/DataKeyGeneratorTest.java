@@ -53,10 +53,12 @@ class DataKeyGeneratorTest {
         return Stream.of(
                 Arguments.of(vector(0), vector(1),
                         Collections.singletonList(vector(0))),
-                Arguments.of(vector(0), vector(3),
-                        Arrays.asList(vector(0), vector(1), vector(2))),
                 Arguments.of(vector(0, 0), vector(1, 1),
                         Collections.singletonList(vector(0, 0))),
+                Arguments.of(vector(0, 0), vector(1, 3),
+                        Arrays.asList(vector(0, 0), vector(0, 1), vector(0, 2))),
+                Arguments.of(vector(0), vector(3),
+                        Arrays.asList(vector(0), vector(1), vector(2))),
                 Arguments.of(vector(0, 0), vector(2, 2),
                         Arrays.asList(vector(0, 0), vector(0, 1), vector(1, 0), vector(1, 1))));
     }

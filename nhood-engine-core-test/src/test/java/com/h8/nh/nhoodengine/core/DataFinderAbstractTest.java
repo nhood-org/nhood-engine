@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Vector;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirements {
 
     private static final Vector<Integer> KEY_VECTOR_MIN_LIMIT = new Vector<>(Arrays.asList(-1000, -100, -10));
@@ -36,7 +38,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     @Override
     @Test
     public final void shouldThrowAnExceptionWhenCriteriaIsNull() {
-        dataFinder.find(null);
+        assertThatThrownBy(() -> dataFinder.find(null))
+                .isInstanceOf(DataFinderFailedException.class)
+                .hasMessage("DataFinderCriteria may not be null")
+                .hasNoCause();
     }
 
     @Override
