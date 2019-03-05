@@ -27,6 +27,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
                 .forEach(k -> register(k, toData(k)));
     }
 
+    protected abstract Class<D> getDataClass();
+
+    protected abstract Class<K> getDataKeyClass();
+
     protected abstract DataFinder<K,D> initializeDataFinder();
 
     protected abstract Vector<K> toDataKey(Vector<Integer> key);
@@ -47,19 +51,45 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     @Override
     @Test
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsNull() {
-
+        Class<K> keyClass = getDataKeyClass();
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(null)
+                .limit(10)
+                .build();
+        assertThatThrownBy(() -> dataFinder.find(criteria))
+                .isInstanceOf(DataFinderFailedException.class)
+                .hasMessage("DataFinderCriteria metadata may not be null")
+                .hasNoCause();
     }
 
     @Override
     @Test
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorSizeDoesNotMatch() {
-
+        Class<K> keyClass = getDataKeyClass();
+        Vector<K> metadata = vector(1, 1);
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(metadata)
+                .limit(10)
+                .build();
+        assertThatThrownBy(() -> dataFinder.find(criteria))
+                .isInstanceOf(DataFinderFailedException.class)
+                .hasMessage("DataFinderCriteria metadata size does not match data in repository")
+                .hasNoCause();
     }
 
     @Override
     @Test
     public final void shouldThrowAnExceptionWhenCriteriaLimitIsNegative() {
-
+        Class<K> keyClass = getDataKeyClass();
+        Vector<K> metadata = vector(1, 1, 1);
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(metadata)
+                .limit(-1)
+                .build();
+        assertThatThrownBy(() -> dataFinder.find(criteria))
+                .isInstanceOf(DataFinderFailedException.class)
+                .hasMessage("DataFinderCriteria limit may not be negative")
+                .hasNoCause();
     }
 
     @Override
@@ -102,5 +132,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     @Test
     public final void shouldReturnListOfClosestResultForAAllZeroesMetadataVector() {
 
+    }
+
+    private Vector<K> vector(Integer... values) {
+        Vector<Integer> key = new Vector<>(Arrays.asList(values));
+        return toDataKey(key);
     }
 }
