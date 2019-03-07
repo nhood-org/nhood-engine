@@ -48,10 +48,10 @@ public final class DataFinderCriteria<K> {
 
     /**
      * A static method exposing an auxiliary builder
-     * @param c DataFinderCriteria generic class
+     * @param keyClass key generic class
      * @return An instance of a builder
      */
-    public static <K> DataFinderCriteriaBuilder<K> builder(final Class<K> c) {
+    public static <K> DataFinderCriteriaBuilder<K> builder(final Class<K> keyClass) {
         return new DataFinderCriteriaBuilder<>();
     }
 

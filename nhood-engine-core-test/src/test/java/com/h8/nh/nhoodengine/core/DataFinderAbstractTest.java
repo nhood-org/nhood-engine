@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,18 +21,25 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     private DataFinder<K, D> dataFinder;
 
+    private List<DataResource<K, D>> data;
+
     @BeforeEach
     public final void setUp() {
         dataFinder = initializeDataFinder();
-        DataKeyGenerator
+        data = DataKeyGenerator
                 .generate(KEY_VECTOR_MIN_LIMIT, KEY_VECTOR_MAX_LIMIT)
                 .map(this::toDataKey)
-                .forEach(k -> register(k, toData(k)));
+                .map(k -> DataResource.builder(getDataKeyClass(), getDataClass())
+                        .key(k)
+                        .data(toData(k))
+                        .build())
+                .collect(Collectors.toList());
+        data.forEach(this::register);
     }
 
-    protected abstract Class<D> getDataClass();
-
     protected abstract Class<K> getDataKeyClass();
+
+    protected abstract Class<D> getDataClass();
 
     protected abstract DataFinder<K,D> initializeDataFinder();
 
@@ -39,7 +47,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     protected abstract D toData(Vector<K> key);
 
-    protected abstract void register(Vector<K> key, D data);
+    protected abstract void register(DataResource<K, D> data);
 
     @Override
     @Test
@@ -69,7 +77,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsEmpty() {
         Class<K> keyClass = getDataKeyClass();
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
-                .metadata(vector())
+                .metadata(dataKey())
                 .limit(10)
                 .build();
         assertThatThrownBy(() -> dataFinder.find(criteria))
@@ -82,7 +90,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     @Test
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorSizeDoesNotMatch() {
         Class<K> keyClass = getDataKeyClass();
-        Vector<K> metadata = vector(1, 1);
+        Vector<K> metadata = dataKey(0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(10)
@@ -97,7 +105,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     @Test
     public final void shouldThrowAnExceptionWhenCriteriaLimitIsNegative() {
         Class<K> keyClass = getDataKeyClass();
-        Vector<K> metadata = vector(1, 1, 1);
+        Vector<K> metadata = dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(-1)
@@ -113,7 +121,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldReturnAnEmptyResultListWhenCriteriaLimitZero()
             throws DataFinderFailedException {
         Class<K> keyClass = getDataKeyClass();
-        Vector<K> metadata = vector(1, 1, 1);
+        Vector<K> metadata = dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(0)
@@ -124,42 +132,95 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
-    public final void shouldReturnResultListOfLimitSizeWhenCriteriaLimitIsBelowDataSetSize() {
-
+    public final void shouldReturnResultListOfLimitSizeWhenCriteriaLimitIsBelowDataSetSize()
+            throws DataFinderFailedException {
+        Class<K> keyClass = getDataKeyClass();
+        Vector<K> metadata = dataKey(0, 0, 0);
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(metadata)
+                .limit(10)
+                .build();
+        List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
+        assertThat(results).hasSize(criteria.getLimit());
     }
 
     @Override
     @Test
-    public final void shouldReturnWholeResultSetWhenCriteriaLimitHigherThanDataSetSize() {
-
+    public final void shouldReturnWholeResultSetWhenCriteriaLimitHigherThanDataSetSize()
+            throws DataFinderFailedException {
+        Class<K> keyClass = getDataKeyClass();
+        Vector<K> metadata = dataKey(0, 0, 0);
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(metadata)
+                .limit(Integer.MAX_VALUE)
+                .build();
+        List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
+        assertThat(results).hasSize(data.size());
     }
 
     @Override
     @Test
-    public final void shouldReturnListOfClosestResultForAGivenMetadataVector() {
-
+    public final void shouldReturnListOfClosestResultForAGivenMetadataVector()
+            throws DataFinderFailedException {
+        Class<K> keyClass = getDataKeyClass();
+        Vector<K> metadata = dataKey(5, -50, 500);
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(metadata)
+                .limit(10)
+                .build();
+        List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
+        // TODO!!!
     }
 
     @Override
     @Test
-    public final void shouldReturnListOfClosestResultForALowestPossibleMetadataVector() {
-
+    public final void shouldReturnListOfClosestResultForALowestPossibleMetadataVector()
+            throws DataFinderFailedException {
+        Class<K> keyClass = getDataKeyClass();
+        Vector<K> metadata = dataKey(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(metadata)
+                .limit(10)
+                .build();
+        List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
+        // TODO!!!
     }
 
     @Override
     @Test
-    public final void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector() {
-
+    public final void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector()
+            throws DataFinderFailedException {
+        Class<K> keyClass = getDataKeyClass();
+        Vector<K> metadata = dataKey(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(metadata)
+                .limit(10)
+                .build();
+        List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
+        // TODO!!!
     }
 
     @Override
     @Test
-    public final void shouldReturnListOfClosestResultForAAllZeroesMetadataVector() {
-
+    public final void shouldReturnListOfClosestResultForAAllZeroesMetadataVector()
+            throws DataFinderFailedException {
+        Class<K> keyClass = getDataKeyClass();
+        Vector<K> metadata = dataKey(0, 0, 0);
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(metadata)
+                .limit(10)
+                .build();
+        List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
+        // TODO!!!
     }
 
-    private Vector<K> vector(Integer... values) {
+    private Vector<K> dataKey(Integer... values) {
         Vector<Integer> key = new Vector<>(Arrays.asList(values));
         return toDataKey(key);
+    }
+
+    private D data(Integer... values) {
+        Vector<K> key = dataKey(values);
+        return toData(key);
     }
 }
