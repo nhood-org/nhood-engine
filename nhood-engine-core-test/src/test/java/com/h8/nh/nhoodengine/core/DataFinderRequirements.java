@@ -7,21 +7,30 @@ public interface DataFinderRequirements {
 
     void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsNull();
 
+    void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsEmpty();
+
     void shouldThrowAnExceptionWhenCriteriaMetadataVectorSizeDoesNotMatch();
 
     void shouldThrowAnExceptionWhenCriteriaLimitIsNegative();
 
-    void shouldReturnAnEmptyResultListWhenCriteriaLimitZero();
+    void shouldReturnAnEmptyResultListWhenCriteriaLimitZero()
+            throws DataFinderFailedException;
 
-    void shouldReturnResultListOfLimitSizeWhenCriteriaLimitIsBelowDataSetSize();
+    void shouldReturnResultListOfLimitSizeWhenCriteriaLimitIsBelowDataSetSize()
+            throws DataFinderFailedException;
 
-    void shouldReturnWholeResultSetWhenCriteriaLimitHigherThanDataSetSize();
+    void shouldReturnWholeResultSetWhenCriteriaLimitHigherThanDataSetSize()
+            throws DataFinderFailedException;
 
-    void shouldReturnListOfClosestResultForAGivenMetadataVector();
+    void shouldReturnListOfClosestResultForAGivenMetadataVector()
+            throws DataFinderFailedException;
 
-    void shouldReturnListOfClosestResultForALowestPossibleMetadataVector();
+    void shouldReturnListOfClosestResultForALowestPossibleMetadataVector()
+            throws DataFinderFailedException;
 
-    void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector();
+    void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector()
+            throws DataFinderFailedException;
 
-    void shouldReturnListOfClosestResultForAAllZeroesMetadataVector();
+    void shouldReturnListOfClosestResultForAAllZeroesMetadataVector()
+            throws DataFinderFailedException;
 }

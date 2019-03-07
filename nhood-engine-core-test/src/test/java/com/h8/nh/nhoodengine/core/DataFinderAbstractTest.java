@@ -6,8 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirements {
@@ -64,6 +66,20 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsEmpty() {
+        Class<K> keyClass = getDataKeyClass();
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(vector())
+                .limit(10)
+                .build();
+        assertThatThrownBy(() -> dataFinder.find(criteria))
+                .isInstanceOf(DataFinderFailedException.class)
+                .hasMessage("DataFinderCriteria metadata may not be empty")
+                .hasNoCause();
+    }
+
+    @Override
+    @Test
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorSizeDoesNotMatch() {
         Class<K> keyClass = getDataKeyClass();
         Vector<K> metadata = vector(1, 1);
@@ -94,8 +110,16 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
-    public final void shouldReturnAnEmptyResultListWhenCriteriaLimitZero() {
-
+    public final void shouldReturnAnEmptyResultListWhenCriteriaLimitZero()
+            throws DataFinderFailedException {
+        Class<K> keyClass = getDataKeyClass();
+        Vector<K> metadata = vector(1, 1, 1);
+        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+                .metadata(metadata)
+                .limit(0)
+                .build();
+        List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
+        assertThat(results).isEmpty();
     }
 
     @Override
