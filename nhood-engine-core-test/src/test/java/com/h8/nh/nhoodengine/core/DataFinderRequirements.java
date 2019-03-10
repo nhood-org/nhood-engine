@@ -1,6 +1,8 @@
 package com.h8.nh.nhoodengine.core;
 
-
+/**
+ * This interface defines add basic requirements for DataFinder interface
+ */
 public interface DataFinderRequirements {
 
     void shouldThrowAnExceptionWhenCriteriaIsNull();
@@ -26,6 +28,12 @@ public interface DataFinderRequirements {
             throws DataFinderFailedException;
 
     void shouldReturnListOfClosestResultForALowestPossibleMetadataVector()
+            throws DataFinderFailedException;
+
+    void shouldCalculateScoresOfClosestResultForAGivenMetadataVector()
+            throws DataFinderFailedException;
+
+    void shouldOrderClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException;
 
     void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector()
