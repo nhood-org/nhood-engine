@@ -48,9 +48,10 @@ public final class DataFinderCriteria<K> {
 
     /**
      * A static method exposing an auxiliary builder
+     * @param keyClass key generic class
      * @return An instance of a builder
      */
-    public static DataFinderCriteriaBuilder builder() {
+    public static <K> DataFinderCriteriaBuilder<K> builder(final Class<K> keyClass) {
         return new DataFinderCriteriaBuilder<>();
     }
 
@@ -85,6 +86,7 @@ public final class DataFinderCriteria<K> {
      * @param <K> a generic type of data metadata key vector.
      */
     public static final class DataFinderCriteriaBuilder<K> {
+
         private Vector<K> metadata;
         private int limit;
 
@@ -96,7 +98,7 @@ public final class DataFinderCriteria<K> {
          * @param metadata key vector value
          * @return builder instance
          */
-        public DataFinderCriteriaBuilder metadata(final Vector<K> metadata) {
+        public DataFinderCriteriaBuilder<K> metadata(final Vector<K> metadata) {
             this.metadata = metadata;
             return this;
         }
@@ -106,7 +108,7 @@ public final class DataFinderCriteria<K> {
          * @param limit size limit value
          * @return builder instance
          */
-        public DataFinderCriteriaBuilder limit(final int limit) {
+        public DataFinderCriteriaBuilder<K> limit(final int limit) {
             this.limit = limit;
             return this;
         }
@@ -115,7 +117,7 @@ public final class DataFinderCriteria<K> {
          * Method will combine all gathered properties into DataFinderCriteria instance
          * @return a build instance of DataFinderCriteria
          */
-        public DataFinderCriteria build() {
+        public DataFinderCriteria<K> build() {
             return new DataFinderCriteria<>(metadata, limit);
         }
     }

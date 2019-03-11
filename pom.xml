@@ -9,20 +9,22 @@
 	<parent>
 		<groupId>com.h8.nh</groupId>
 		<artifactId>nhood-parent-bom</artifactId>
-		<version>0.0.5</version>
+		<version>0.0.6</version>
 	</parent>
 
 	<modules>
 		<module>nhood-engine-core-api</module>
         <module>nhood-engine-matrix-api</module>
-    </modules>
+        <module>nhood-engine-core-test</module>
+		<module>nhood-engine-utils</module>
+	</modules>
 
   	<scm>
  		<connection>scm:git:https://github.com/nhood-org/nhood-engine.git</connection>
  		<url>http://github.com/nhood-org/nhood-engine</url>
  		<developerConnection>scm:git:https://github.com/nhood-org/nhood-engine</developerConnection>
- 	  <tag>HEAD</tag>
-  </scm>
+ 	  	<tag>HEAD</tag>
+  	</scm>
 
 	<repositories>
 		<repository>

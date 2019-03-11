@@ -25,6 +25,9 @@ public interface DataFinder<K, D> {
      *
      * @param criteria a data finder criteria
      * @return list of data finder results's
+     *
+     * @throws DataFinderFailedException
+     * when find operation cannot be performed
      */
-    List<DataFinderResult<K, D>> find(DataFinderCriteria<K> criteria);
+    List<DataFinderResult<K, D>> find(DataFinderCriteria<K> criteria) throws DataFinderFailedException;
 }

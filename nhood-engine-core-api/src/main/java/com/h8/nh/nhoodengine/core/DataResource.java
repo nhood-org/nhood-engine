@@ -54,9 +54,12 @@ public final class DataResource<K, D> {
 
     /**
      * A static method exposing an auxiliary builder
+     * @param keyClass key generic class
+     * @param dataClass data generic class
      * @return An instance of a builder
      */
-    public static DataResourceBuilder builder() {
+    public static <K, D> DataResourceBuilder<K, D> builder(
+            final Class<K> keyClass, final Class<D> dataClass) {
         return new DataResourceBuilder<>();
     }
 
@@ -103,7 +106,7 @@ public final class DataResource<K, D> {
          * @param key metadata key value
          * @return builder instance
          */
-        public DataResourceBuilder key(final Vector<K> key) {
+        public DataResourceBuilder<K, D> key(final Vector<K> key) {
             this.key = key;
             return this;
         }
@@ -113,7 +116,7 @@ public final class DataResource<K, D> {
          * @param data data resource value
          * @return builder instance
          */
-        public DataResourceBuilder data(final D data) {
+        public DataResourceBuilder<K, D> data(final D data) {
             this.data = data;
             return this;
         }

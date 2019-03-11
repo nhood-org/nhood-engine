@@ -51,7 +51,8 @@ public final class DataFinderResult<K, D> {
      * A static method exposing an auxiliary builder
      * @return An instance of a builder
      */
-    public static DataFinderResultBuilder builder() {
+    public static <K, D> DataFinderResultBuilder<K, D> builder(
+            final Class<K> keyClass, final Class<D> dataClass) {
         return new DataFinderResultBuilder<>();
     }
 
@@ -98,7 +99,7 @@ public final class DataFinderResult<K, D> {
          * @param score score value
          * @return builder instance
          */
-        public DataFinderResultBuilder score(final double score) {
+        public DataFinderResultBuilder<K, D> score(final double score) {
             this.score = score;
             return this;
         }
@@ -108,7 +109,7 @@ public final class DataFinderResult<K, D> {
          * @param resource resource value
          * @return builder instance
          */
-        public DataFinderResultBuilder resource(final DataResource<K, D> resource) {
+        public DataFinderResultBuilder<K, D> resource(final DataResource<K, D> resource) {
             this.resource = resource;
             return this;
         }
@@ -117,7 +118,7 @@ public final class DataFinderResult<K, D> {
          * Method will combine all gathered properties into DataFinderResult instance
          * @return a build instance of DataFinderResult
          */
-        public DataFinderResult build() {
+        public DataFinderResult<K, D> build() {
             return new DataFinderResult<>(score, resource);
         }
     }
