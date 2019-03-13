@@ -8,14 +8,16 @@
 
 	<parent>
 		<groupId>com.h8.nh</groupId>
+		<!--TODO!!! create independent engine-bom-->
 		<artifactId>nhood-parent-bom</artifactId>
 		<version>0.0.6</version>
 	</parent>
 
 	<modules>
 		<module>nhood-engine-core-api</module>
+		<module>nhood-engine-core-performance-tests</module>
+		<module>nhood-engine-core-test</module>
         <module>nhood-engine-matrix-api</module>
-        <module>nhood-engine-core-test</module>
 		<module>nhood-engine-utils</module>
 	</modules>
 
