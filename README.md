@@ -14,7 +14,7 @@ Project is split into two maven submodules:
 - `nhood-engine-core-test` containing core engine abstract unit tests
 - `nhood-engine-core-performance-test` containing core engine abstract performance tests
 - `nhood-engine-matrix-api` containing matrix management interfaces
-- `nhood-engine-utils` containing utilities
+- `nhood-engine-test-utils` containing test utilities
 
 To be added:
 - `nhood-engine-matrix-test` containing matrix management abstract unit tests
