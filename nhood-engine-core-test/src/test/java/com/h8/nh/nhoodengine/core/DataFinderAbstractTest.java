@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -40,8 +39,6 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     private DataFinder<K, D> dataFinder;
 
-    private List<DataResource<K, D>> data;
-
     /**
      * Creates a new instance of DataFinderTestContext which is ctx for the whole test suite.
      * This instance is initialized once before execution of all tests in the test class.
@@ -54,15 +51,14 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void setUp() {
         ctx = initializeContext();
         dataFinder = ctx.initializeDataFinder();
-        data = DataKeyGenerator
+        DataKeyGenerator
                 .generate(KEY_VECTOR_MIN_LIMIT, KEY_VECTOR_MAX_LIMIT)
                 .map(ctx::dataKey)
                 .map(k -> DataResource.builder(ctx.dataKeyClass(), ctx.dataClass())
                         .key(k)
                         .data(ctx.data(k))
                         .build())
-                .collect(Collectors.toList());
-        data.forEach(ctx::register);
+                .forEach(ctx::register);
     }
 
     @Override
@@ -181,7 +177,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
-        assertThat(results).hasSize(data.size());
+        assertThat(results).hasSize(ctx.registerDataSize());
     }
 
     @Override

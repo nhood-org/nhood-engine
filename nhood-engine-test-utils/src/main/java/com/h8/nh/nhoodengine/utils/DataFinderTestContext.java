@@ -36,6 +36,12 @@ public interface DataFinderTestContext<K, D> {
     void register(DataResource<K, D> data);
 
     /**
+     * Size of registered data.
+     * @return a size of registered data.
+     */
+    int registerDataSize();
+
+    /**
      * Key type
      * @return a generic type of data metadata key vector.
      */
