@@ -19,7 +19,9 @@ class DataKeyGeneratorTest {
     @ParameterizedTest
     @MethodSource("illegalLimitsArguments")
     void shouldThrowAnException(
-            Vector<Integer> min, Vector<Integer> max, String message) {
+            final Vector<Integer> min,
+            final Vector<Integer> max,
+            final String message) {
         assertThatThrownBy(() -> DataKeyGenerator.generate(min, max))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(message);
@@ -42,7 +44,9 @@ class DataKeyGeneratorTest {
     @ParameterizedTest
     @MethodSource("properLimitsArguments")
     void shouldGenerateKeysInAccordanceWithGivenLimits(
-            Vector<Integer> min, Vector<Integer> max, List<Vector<Integer>> expected) {
+            final Vector<Integer> min,
+            final Vector<Integer> max,
+            final List<Vector<Integer>> expected) {
         List<Vector<Integer>> actual = DataKeyGenerator.generate(min, max)
                 .collect(Collectors.toList());
         assertThat(actual)
@@ -67,7 +71,7 @@ class DataKeyGeneratorTest {
                         Arrays.asList(vector(0, 0), vector(0, 1), vector(1, 0), vector(1, 1))));
     }
 
-    private static Vector<Integer> vector(Integer... values) {
+    private static Vector<Integer> vector(final Integer... values) {
         return new Vector<>(Arrays.asList(values));
     }
 }

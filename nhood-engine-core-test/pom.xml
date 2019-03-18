@@ -22,7 +22,7 @@
 
         <dependency>
             <groupId>com.h8.nh</groupId>
-            <artifactId>nhood-engine-utils</artifactId>
+            <artifactId>nhood-engine-test-utils</artifactId>
             <version>0.0.2-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>

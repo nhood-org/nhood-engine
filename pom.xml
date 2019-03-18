@@ -9,15 +9,27 @@
 	<parent>
 		<groupId>com.h8.nh</groupId>
 		<artifactId>nhood-parent-bom</artifactId>
-		<version>0.0.6</version>
+		<version>0.1.0</version>
 	</parent>
 
 	<modules>
 		<module>nhood-engine-core-api</module>
+		<module>nhood-engine-core-performance-tests</module>
+		<module>nhood-engine-core-test</module>
         <module>nhood-engine-matrix-api</module>
-        <module>nhood-engine-core-test</module>
-		<module>nhood-engine-utils</module>
+		<module>nhood-engine-test-utils</module>
 	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+
+		<!--Test-->
+		<jmh.version>1.21</jmh.version>
+	</properties>
 
   	<scm>
  		<connection>scm:git:https://github.com/nhood-org/nhood-engine.git</connection>
@@ -37,11 +49,60 @@
 		</repository>
 	</repositories>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<!--Test-->
+			<dependency>
+				<groupId>org.openjdk.jmh</groupId>
+				<artifactId>jmh-core</artifactId>
+				<version>${jmh.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.openjdk.jmh</groupId>
+				<artifactId>jmh-generator-annprocess</artifactId>
+				<version>${jmh.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!--Test-->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>
