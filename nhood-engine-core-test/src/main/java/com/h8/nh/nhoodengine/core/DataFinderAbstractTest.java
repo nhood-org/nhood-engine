@@ -39,9 +39,9 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     private static final Double DISTANCE_DIAGONAL_CUBE = Math.sqrt(3.0);
 
-    private static final Vector<Integer> KEY_VECTOR_MIN_LIMIT = new Vector<>(Arrays.asList(-1000, -100, -10));
+    private static final Vector<Integer> KEY_VECTOR_MIN_LIMIT = new Vector<>(Arrays.asList(-100, -100, -10));
 
-    private static final Vector<Integer> KEY_VECTOR_MAX_LIMIT = new Vector<>(Arrays.asList(10, 100, 1000));
+    private static final Vector<Integer> KEY_VECTOR_MAX_LIMIT = new Vector<>(Arrays.asList(10, 100, 100));
 
     private DataFinderTestContext<K, D> ctx;
 
@@ -201,7 +201,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldReturnListOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(5, -50, 500);
+        Vector<K> metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(11)
@@ -212,17 +212,17 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
-                        ctx.resource(5, -50, 500),
-                        ctx.resource(4, -50, 500),
-                        ctx.resource(5, -49, 500),
-                        ctx.resource(5, -51, 500),
-                        ctx.resource(6, -50, 500),
-                        ctx.resource(5, -50, 499),
-                        ctx.resource(5, -50, 501),
-                        ctx.resource(4, -49, 500),
-                        ctx.resource(4, -51, 500),
-                        ctx.resource(6, -49, 500),
-                        ctx.resource(6, -51, 500)
+                        ctx.resource(5, -50, 50),
+                        ctx.resource(4, -50, 50),
+                        ctx.resource(5, -49, 50),
+                        ctx.resource(5, -51, 50),
+                        ctx.resource(6, -50, 50),
+                        ctx.resource(5, -50, 49),
+                        ctx.resource(5, -50, 51),
+                        ctx.resource(4, -49, 50),
+                        ctx.resource(4, -51, 50),
+                        ctx.resource(6, -49, 50),
+                        ctx.resource(6, -51, 50)
                 );
     }
 
@@ -232,7 +232,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldCalculateScoresOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(5, -50, 500);
+        Vector<K> metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(27)
@@ -242,36 +242,36 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
         assertThat(results)
                 .containsExactlyInAnyOrder(
-                        ctx.result(ctx.resource(5, -50, 500), DISTANCE_ZERO),
+                        ctx.result(ctx.resource(5, -50, 50), DISTANCE_ZERO),
 
-                        ctx.result(ctx.resource(4, -50, 500), DISTANCE_ONE),
-                        ctx.result(ctx.resource(5, -49, 500), DISTANCE_ONE),
-                        ctx.result(ctx.resource(5, -50, 499), DISTANCE_ONE),
-                        ctx.result(ctx.resource(5, -50, 501), DISTANCE_ONE),
-                        ctx.result(ctx.resource(5, -51, 500), DISTANCE_ONE),
-                        ctx.result(ctx.resource(6, -50, 500), DISTANCE_ONE),
+                        ctx.result(ctx.resource(4, -50, 50), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -49, 50), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -50, 49), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -50, 51), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -51, 50), DISTANCE_ONE),
+                        ctx.result(ctx.resource(6, -50, 50), DISTANCE_ONE),
 
-                        ctx.result(ctx.resource(4, -49, 500), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(4, -51, 500), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(4, -50, 499), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(4, -50, 501), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(5, -49, 499), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(5, -51, 499), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(5, -49, 501), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(5, -51, 501), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(6, -49, 500), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(6, -51, 500), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(6, -50, 499), DISTANCE_DIAGONAL_SQUARE),
-                        ctx.result(ctx.resource(6, -50, 501), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -49, 50), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -51, 50), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -50, 49), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -50, 51), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -49, 49), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -51, 49), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -49, 51), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -51, 51), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -49, 50), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -51, 50), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -50, 49), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -50, 51), DISTANCE_DIAGONAL_SQUARE),
 
-                        ctx.result(ctx.resource(4, -49, 501), DISTANCE_DIAGONAL_CUBE),
-                        ctx.result(ctx.resource(4, -51, 501), DISTANCE_DIAGONAL_CUBE),
-                        ctx.result(ctx.resource(6, -49, 501), DISTANCE_DIAGONAL_CUBE),
-                        ctx.result(ctx.resource(6, -51, 501), DISTANCE_DIAGONAL_CUBE),
-                        ctx.result(ctx.resource(4, -49, 499), DISTANCE_DIAGONAL_CUBE),
-                        ctx.result(ctx.resource(4, -51, 499), DISTANCE_DIAGONAL_CUBE),
-                        ctx.result(ctx.resource(6, -49, 499), DISTANCE_DIAGONAL_CUBE),
-                        ctx.result(ctx.resource(6, -51, 499), DISTANCE_DIAGONAL_CUBE)
+                        ctx.result(ctx.resource(4, -49, 51), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(4, -51, 51), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -49, 51), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -51, 51), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(4, -49, 49), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(4, -51, 49), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -49, 49), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -51, 49), DISTANCE_DIAGONAL_CUBE)
                 );
     }
 
@@ -281,7 +281,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldOrderClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(5, -50, 500);
+        Vector<K> metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(27)
@@ -316,10 +316,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
-                        ctx.resource(-1000, -100, -10),
-                        ctx.resource(-1000, -100, -9),
-                        ctx.resource(-1000, -99, -10),
-                        ctx.resource(-999, -100, -10)
+                        ctx.resource(-100, -100, -10),
+                        ctx.resource(-100, -100, -9),
+                        ctx.resource(-100, -99, -10),
+                        ctx.resource(-99, -100, -10)
                 );
     }
 
@@ -340,10 +340,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
-                        ctx.resource(10, 100, 1000),
-                        ctx.resource(9, 100, 1000),
-                        ctx.resource(10, 99, 1000),
-                        ctx.resource(10, 100, 999)
+                        ctx.resource(10, 100, 100),
+                        ctx.resource(9, 100, 100),
+                        ctx.resource(10, 99, 100),
+                        ctx.resource(10, 100, 99)
                 );
     }
 
