@@ -49,6 +49,8 @@ public final class DataFinderResult<K, D> {
 
     /**
      * A static method exposing an auxiliary builder
+     * @param keyClass key generic class
+     * @param dataClass data generic class
      * @return An instance of a builder
      */
     public static <K, D> DataFinderResultBuilder<K, D> builder(

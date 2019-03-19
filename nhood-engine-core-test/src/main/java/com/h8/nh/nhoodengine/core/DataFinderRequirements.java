@@ -39,6 +39,6 @@ public interface DataFinderRequirements {
     void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector()
             throws DataFinderFailedException;
 
-    void shouldReturnListOfClosestResultForAAllZeroesMetadataVector()
+    void shouldReturnListOfClosestResultForAllZeroesMetadataVector()
             throws DataFinderFailedException;
 }

@@ -31,29 +31,11 @@ public interface DataMatrixRepository<K, D> {
             throws DataMatrixRepositoryFailedException;
 
     /**
-     * Retrieval of list of data resource in accordance with given
-     * facet defined as vector position and value.
-     *
-     * Data resources will be retrieved form section of matrix
-     * corresponding metadata position and value.
-     *
-     * @param index metadata vector index
-     * @param value metadata vector value
-     * @return a list of data resources retrieved
-     *
-     * @throws DataMatrixRepositoryFailedException
-     * when find operation cannot be performed
-     */
-    List<DataResource> findFacet(int index, K value)
-            throws DataMatrixRepositoryFailedException;
-
-    /**
-     * Retrieval of list of data resource in accordance with given
+     * Retrieval of list of closest data resources in accordance with given
      * metadata vector.
      *
      * Data resources will be retrieved form sections of matrix
-     * corresponding to all metadata vector values and merged.
-     * A logical intersection of all lists is returned.
+     * surrounding a given metadata vector point.
      *
      * @param metadata metadata vector
      * @return a list of data resources retrieved
@@ -61,6 +43,6 @@ public interface DataMatrixRepository<K, D> {
      * @throws DataMatrixRepositoryFailedException
      * when find operation cannot be performed
      */
-    List<DataResource> findAll(Vector<K> metadata)
+    List<DataResource<K, D>> findClosest(Vector<K> metadata)
             throws DataMatrixRepositoryFailedException;
 }

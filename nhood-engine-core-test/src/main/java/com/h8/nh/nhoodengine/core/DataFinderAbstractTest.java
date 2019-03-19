@@ -5,6 +5,7 @@ import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
 import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @param <K> a generic type of data metadata key vector.
  * @param <D> a generic type of data resource.
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirements {
 
     private static final Double DISTANCE_ZERO = 0.0;
@@ -56,7 +58,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     protected abstract DataFinderTestContext<K, D> initializeContext();
 
     @BeforeEach
-    public final void setUp() {
+    final void setUp() {
+        if (ctx != null) {
+            return;
+        }
         ctx = initializeContext();
         dataFinder = ctx.initializeDataFinder();
         DataKeyGenerator
@@ -204,7 +209,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         Vector<K> metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
-                .limit(11)
+                .limit(7)
                 .build();
 
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
@@ -215,14 +220,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
                         ctx.resource(5, -50, 50),
                         ctx.resource(4, -50, 50),
                         ctx.resource(5, -49, 50),
-                        ctx.resource(5, -51, 50),
-                        ctx.resource(6, -50, 50),
                         ctx.resource(5, -50, 49),
                         ctx.resource(5, -50, 51),
-                        ctx.resource(4, -49, 50),
-                        ctx.resource(4, -51, 50),
-                        ctx.resource(6, -49, 50),
-                        ctx.resource(6, -51, 50)
+                        ctx.resource(5, -51, 50),
+                        ctx.resource(6, -50, 50)
                 );
     }
 
@@ -290,7 +291,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
         assertThat(results.subList(0, 1))
-                .extracting("score").isEqualTo(1.0);
+                .extracting("score").containsOnly(0.0);
         assertThat(results.subList(1, 7))
                 .extracting("score").containsOnly(1.0);
         assertThat(results.subList(7, 19))
@@ -340,17 +341,17 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
-                        ctx.resource(10, 100, 100),
-                        ctx.resource(9, 100, 100),
-                        ctx.resource(10, 99, 100),
-                        ctx.resource(10, 100, 99)
+                        ctx.resource(9, 99, 99),
+                        ctx.resource(8, 99, 99),
+                        ctx.resource(9, 98, 99),
+                        ctx.resource(9, 99, 98)
                 );
     }
 
     @Override
     @Test
     @SuppressWarnings("checkstyle:magicnumber")
-    public final void shouldReturnListOfClosestResultForAAllZeroesMetadataVector()
+    public final void shouldReturnListOfClosestResultForAllZeroesMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
         Vector<K> metadata = ctx.dataKey(0, 0, 0);
