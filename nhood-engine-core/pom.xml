@@ -25,6 +25,13 @@
             <artifactId>nhood-engine-matrix-api</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
+
+        <!--Test-->
+        <dependency>
+            <groupId>com.h8.nh</groupId>
+            <artifactId>nhood-engine-core-test</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

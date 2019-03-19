@@ -31,6 +31,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirements {
 
+    private static final Double DISTANCE_ZERO = 0.0;
+
+    private static final Double DISTANCE_ONE = 1.0;
+
+    private static final Double DISTANCE_DIAGONAL_SQUARE = Math.sqrt(2.0);
+
+    private static final Double DISTANCE_DIAGONAL_CUBE = Math.sqrt(3.0);
+
     private static final Vector<Integer> KEY_VECTOR_MIN_LIMIT = new Vector<>(Arrays.asList(-1000, -100, -10));
 
     private static final Vector<Integer> KEY_VECTOR_MAX_LIMIT = new Vector<>(Arrays.asList(10, 100, 1000));
@@ -72,6 +80,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsNull() {
         Class<K> keyClass = ctx.dataKeyClass();
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
@@ -87,6 +96,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsEmpty() {
         Class<K> keyClass = ctx.dataKeyClass();
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
@@ -102,6 +112,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorSizeDoesNotMatch() {
         Class<K> keyClass = ctx.dataKeyClass();
         Vector<K> metadata = ctx.dataKey(0, 0);
@@ -118,6 +129,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaLimitIsNegative() {
         Class<K> keyClass = ctx.dataKeyClass();
         Vector<K> metadata = ctx.dataKey(0, 0, 0);
@@ -134,6 +146,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnAnEmptyResultListWhenCriteriaLimitZero()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
@@ -150,6 +163,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnResultListOfLimitSizeWhenCriteriaLimitIsBelowDataSetSize()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
@@ -166,6 +180,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnWholeResultSetWhenCriteriaLimitHigherThanDataSetSize()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
@@ -182,6 +197,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
@@ -212,6 +228,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldCalculateScoresOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
@@ -225,41 +242,42 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
         assertThat(results)
                 .containsExactlyInAnyOrder(
-                        ctx.result(ctx.resource(5, -50, 500), 0.0),
+                        ctx.result(ctx.resource(5, -50, 500), DISTANCE_ZERO),
 
-                        ctx.result(ctx.resource(4, -50, 500), 1.0),
-                        ctx.result(ctx.resource(5, -49, 500), 1.0),
-                        ctx.result(ctx.resource(5, -50, 499), 1.0),
-                        ctx.result(ctx.resource(5, -50, 501), 1.0),
-                        ctx.result(ctx.resource(5, -51, 500), 1.0),
-                        ctx.result(ctx.resource(6, -50, 500), 1.0),
+                        ctx.result(ctx.resource(4, -50, 500), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -49, 500), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -50, 499), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -50, 501), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -51, 500), DISTANCE_ONE),
+                        ctx.result(ctx.resource(6, -50, 500), DISTANCE_ONE),
 
-                        ctx.result(ctx.resource(4, -49, 500), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(4, -51, 500), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(4, -50, 499), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(4, -50, 501), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(5, -49, 499), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(5, -51, 499), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(5, -49, 501), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(5, -51, 501), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(6, -49, 500), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(6, -51, 500), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(6, -50, 499), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(6, -50, 501), Math.sqrt(1.0)),
+                        ctx.result(ctx.resource(4, -49, 500), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -51, 500), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -50, 499), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -50, 501), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -49, 499), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -51, 499), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -49, 501), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -51, 501), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -49, 500), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -51, 500), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -50, 499), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -50, 501), DISTANCE_DIAGONAL_SQUARE),
 
-                        ctx.result(ctx.resource(4, -49, 501), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(4, -51, 501), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(6, -49, 501), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(6, -51, 501), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(4, -49, 499), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(4, -51, 499), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(6, -49, 499), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(6, -51, 499), Math.sqrt(2.0))
+                        ctx.result(ctx.resource(4, -49, 501), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(4, -51, 501), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -49, 501), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -51, 501), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(4, -49, 499), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(4, -51, 499), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -49, 499), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -51, 499), DISTANCE_DIAGONAL_CUBE)
                 );
     }
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldOrderClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
@@ -276,13 +294,14 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         assertThat(results.subList(1, 7))
                 .extracting("score").containsOnly(1.0);
         assertThat(results.subList(7, 19))
-                .extracting("score").containsOnly(Math.sqrt(1.0));
+                .extracting("score").containsOnly(DISTANCE_DIAGONAL_SQUARE);
         assertThat(results.subList(19, 27))
-                .extracting("score").containsOnly(Math.sqrt(2.0));
+                .extracting("score").containsOnly(DISTANCE_DIAGONAL_CUBE);
     }
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForALowestPossibleMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
@@ -306,6 +325,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
@@ -329,6 +349,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAAllZeroesMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
