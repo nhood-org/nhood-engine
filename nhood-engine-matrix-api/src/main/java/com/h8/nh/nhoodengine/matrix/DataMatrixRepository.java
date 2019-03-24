@@ -2,7 +2,7 @@ package com.h8.nh.nhoodengine.matrix;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 
-import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -13,6 +13,12 @@ import java.util.Vector;
  * @param <D> a generic type of data resource.
  */
 public interface DataMatrixRepository<K, D> {
+
+    /**
+     * Returns size of metadata vector accepted within repository
+     * @return size of metadata vector
+     */
+    int getMetadataSize();
 
     /**
      * Add data resource into data matrix.
@@ -31,18 +37,35 @@ public interface DataMatrixRepository<K, D> {
             throws DataMatrixRepositoryFailedException;
 
     /**
-     * Retrieval of list of closest data resources in accordance with given
+     * Retrieval of set of closest data resources in accordance with given
      * metadata vector.
      *
-     * Data resources will be retrieved form sections of matrix
-     * surrounding a given metadata vector point.
+     * Data resources will be retrieved form a matrix cell
+     * corresponding to a given metadata vector point.
      *
      * @param metadata metadata vector
-     * @return a list of data resources retrieved
+     * @return a set of data resources retrieve
      *
      * @throws DataMatrixRepositoryFailedException
      * when find operation cannot be performed
      */
-    List<DataResource<K, D>> findClosest(Vector<K> metadata)
+    Set<DataResource<K, D>> findCell(Vector<K> metadata)
+            throws DataMatrixRepositoryFailedException;
+
+    /**
+     * Retrieval of set of data resources in accordance with given
+     * metadata vector and range.
+     *
+     * Data resources will be retrieved form matrix cells surrounding a cell
+     * corresponding to a given metadata vector point within a given range diameter.
+     *
+     * @param metadata metadata vector
+     * @param range a range diameter
+     * @return a set of data resources retrieved
+     *
+     * @throws DataMatrixRepositoryFailedException
+     * when find operation cannot be performed
+     */
+    Set<DataResource<K, D>> findNeighbourCells(Vector<K> metadata, Double range)
             throws DataMatrixRepositoryFailedException;
 }

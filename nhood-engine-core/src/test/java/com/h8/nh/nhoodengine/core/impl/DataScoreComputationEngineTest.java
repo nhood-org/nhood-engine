@@ -7,7 +7,6 @@ import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
 
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,19 +22,37 @@ class DataScoreComputationEngineTest extends DataFinderAbstractTest<Integer, Obj
         DataMatrixRepository<Integer, Object> repository = new DataMatrixRepository<Integer, Object>() {
 
             @Override
+            public int getMetadataSize() {
+                return 3;
+            }
+
+            @Override
             public void add(DataResource<Integer, Object> resource) {
                 container.add(resource);
             }
 
             @Override
-            public List<DataResource<Integer, Object>> findClosest(Vector<Integer> metadata) {
+            public Set<DataResource<Integer, Object>> findCell(
+                    Vector<Integer> metadata) {
                 return container
                         .stream()
                         .map(r -> DataResource.builder(Integer.class, Object.class)
                                 .key(r.getKey())
                                 .data(r.getData())
                                 .build())
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
+            }
+
+            @Override
+            public Set<DataResource<Integer, Object>> findNeighbourCells(
+                    Vector<Integer> metadata, Double range){
+                return container
+                        .stream()
+                        .map(r -> DataResource.builder(Integer.class, Object.class)
+                                .key(r.getKey())
+                                .data(r.getData())
+                                .build())
+                        .collect(Collectors.toSet());
             }
         };
 

@@ -18,4 +18,5 @@ final class DataMatrixAxisPoint {
     Double getQuantumSize() {
         return quantumSize;
     }
+
 }

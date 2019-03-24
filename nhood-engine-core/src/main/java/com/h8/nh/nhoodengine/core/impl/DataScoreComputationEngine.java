@@ -46,8 +46,7 @@ public final class DataScoreComputationEngine<K, D> implements DataFinder<K, D> 
                     "DataFinderCriteria metadata may not be empty");
         }
 
-        // TODO!!! - remove magic number
-        if (criteria.getMetadata().size() != 3) {
+        if (criteria.getMetadata().size() != repository.getMetadataSize()) {
             throw new DataFinderFailedException(
                     "DataFinderCriteria metadata size does not match data in repository");
         }
@@ -58,7 +57,7 @@ public final class DataScoreComputationEngine<K, D> implements DataFinder<K, D> 
         }
 
         try {
-            return repository.findClosest(criteria.getMetadata())
+            return repository.findCell(criteria.getMetadata())
                     .stream()
                     .map(r -> compute(r, criteria))
                     .sorted(Comparator.comparingDouble(DataFinderResult::getScore))
