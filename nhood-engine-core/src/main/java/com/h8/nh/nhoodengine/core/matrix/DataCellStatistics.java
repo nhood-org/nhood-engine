@@ -29,13 +29,13 @@ final class DataCellStatistics {
         }
     }
 
-    int getLowestStandardDeviationIndex() {
-        double lowestStandardDeviation = Double.POSITIVE_INFINITY;
+    int getHighestStandardDeviationIndex() {
         int index = 0;
+        double hsd = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < statistics.size(); i++) {
             double sd = statistics.get(i).getStandardDeviation();
-            if (lowestStandardDeviation > sd) {
-                lowestStandardDeviation = sd;
+            if (hsd < sd) {
+                hsd = sd;
                 index = i;
             }
         }

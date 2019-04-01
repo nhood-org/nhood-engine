@@ -59,11 +59,23 @@ final class DataMatrix<K, D> implements DataMatrixRepository<K, D> {
 
     @Override
     public void add(final DataResource<K, D> resource) {
-        Vector<Double> index = getCellIndex(resource.getKey());
-        DataCell<DataResource<K, D>> cell = cells.get(index);
+        Vector<Double> metadata = getResourceKey(resource.getKey());
 
+        Vector<Double> index = getCellIndex(metadata);
+        if (!cellsStatistics.containsKey(index)) {
+            throw new IllegalStateException(
+                    "Matrix cells are inconsistent");
+        }
+
+        DataCell<DataResource<K, D>> cell = cells.get(index);
         Set<DataResource<K, D>> resources = cell.getResources();
         resources.add(resource);
+
+        if (!cellsStatistics.containsKey(index)) {
+            throw new IllegalStateException(
+                    "Matrix cell statistics are inconsistent");
+        }
+        cellsStatistics.get(index).accept(metadata);
 
         if (resources.size() > CELL_SIZE_LIMIT) {
             split(cell);
@@ -72,24 +84,32 @@ final class DataMatrix<K, D> implements DataMatrixRepository<K, D> {
 
     @Override
     public Set<DataResource<K, D>> findCell(
-            final Vector<K> metadata) {
+            final Vector<K> key) {
+        Vector<Double> metadata = getResourceKey(key);
         Vector<Double> index = getCellIndex(metadata);
         return cells.get(index).getResources();
     }
 
     @Override
-    public Set<DataResource<K, D>> findNeighbourCells(
-            final Vector<K> metadata, final Double range) {
+    public Set<DataResource<K, D>> findNeighbourCells(final Vector<K> key, final Double range) {
+        Vector<Double> metadata = getResourceKey(key);
         Vector<Double> index = getCellIndex(metadata);
         return cells.get(index).getResources();
         // TODO!!!
     }
 
-    private Vector<Double> getCellIndex(final Vector<K> metadata) {
+    private Vector<Double> getResourceKey(final Vector<K> metadata) {
+        Vector<Double> result = new Vector<>(metadata.size());
+        for (K m : metadata) {
+            result.add(keyMapper.map(m));
+        }
+        return result;
+    }
+
+    private Vector<Double> getCellIndex(final Vector<Double> metadata) {
         Vector<Double> result = new Vector<>(metadata.size());
         for (int i = 0; i < metadata.size(); i++) {
-            double k = keyMapper.map(metadata.get(i));
-            result.add(i, axes.get(i).getCellIndex(k));
+            result.add(i, axes.get(i).getCellIndex(metadata.get(i)));
         }
         return result;
     }
@@ -101,9 +121,8 @@ final class DataMatrix<K, D> implements DataMatrixRepository<K, D> {
                     "Matrix cell statistics are inconsistent");
         }
 
-        int index = cellsStatistics.get(cell.getId()).getLowestStandardDeviationIndex();
+        int index = cellsStatistics.get(cell.getId()).getHighestStandardDeviationIndex();
         axes.get(index).splitCell(cell.getId().get(index));
         // TODO!!!
     }
-
 }
