@@ -50,7 +50,7 @@ workflows:
     jobs:
       - build
       - build-jdk11
-      - build-jdk12
+#       - build-jdk12
       - deploy:
           requires:
             - build
