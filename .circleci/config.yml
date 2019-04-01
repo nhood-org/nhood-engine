@@ -16,23 +16,16 @@ jobs:
     - store_test_results:
         path: target/surefire-reports
 
-  build-jdk9:
-    docker:
-    - image: circleci/openjdk:9-jdk
-    steps:
-    - checkout
-    - run: mvn clean install
-
-  build-jdk10:
-    docker:
-    - image: circleci/openjdk:10-jdk
-    steps:
-    - checkout
-    - run: mvn clean install
-
   build-jdk11:
     docker:
     - image: circleci/openjdk:11-jdk
+    steps:
+    - checkout
+    - run: mvn clean install
+
+  build-jdk12:
+    docker:
+    - image: circleci/openjdk:12-jdk
     steps:
     - checkout
     - run: mvn clean install
@@ -56,9 +49,8 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - build-jdk9
-      - build-jdk10
       - build-jdk11
+      - build-jdk12
       - deploy:
           requires:
             - build
