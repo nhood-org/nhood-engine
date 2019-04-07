@@ -4,39 +4,39 @@
 #
 defaults: &defaults
   docker:
-    - image: circleci/openjdk:8-jdk
-    
+  - image: circleci/openjdk:8-jdk
+
+defaults-env: &defaults-env
+  environment:
+    _JAVA_OPTIONS: -Xms1g -Xmx2g
+
 version: 2
 jobs:
   build:
     <<: *defaults
+    <<: *defaults-env
     steps:
     - checkout
     - run: mvn clean install
     - store_test_results:
         path: target/surefire-reports
 
-  build-jdk9:
-    docker:
-    - image: circleci/openjdk:9-jdk
-    steps:
-    - checkout
-    - run: mvn clean install
-
-  build-jdk10:
-    docker:
-    - image: circleci/openjdk:10-jdk
-    steps:
-    - checkout
-    - run: mvn clean install
-
   build-jdk11:
     docker:
     - image: circleci/openjdk:11-jdk
+    <<: *defaults-env
     steps:
     - checkout
     - run: mvn clean install
-            
+
+  build-jdk12:
+    docker:
+    - image: circleci/openjdk:12-jdk
+    <<: *defaults-env
+    steps:
+    - checkout
+    - run: mvn clean install
+
   deploy:
     <<: *defaults
     steps:
@@ -55,13 +55,12 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build
-#      - build-jdk9
-#      - build-jdk10
-      - build-jdk11
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
+    - build
+    - build-jdk11
+    #       - build-jdk12
+    - deploy:
+        requires:
+        - build
+        filters:
+          branches:
+            only: master
