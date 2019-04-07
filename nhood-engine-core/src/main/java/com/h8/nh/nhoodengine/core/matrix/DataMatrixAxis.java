@@ -42,26 +42,21 @@ final class DataMatrixAxis {
         return index;
     }
 
-    List<Double> splitCell(final double coordinate) {
-        // TODO!!!
-        // support negative quantization
-        double quantizedCoordinate = coordinate - (coordinate % quantumSize);
-        List<Double> result = new ArrayList<>();
+    List<DataMatrixAxisPoint> splitCell(final double quantizedCoordinate) {
+        List<DataMatrixAxisPoint> result = new ArrayList<>();
         if (cellIndices.containsKey(quantizedCoordinate)) {
             return splitCell(result, quantizedCoordinate);
         } else if (quantizedCoordinate < rangeMin) {
-            return expandNegativeSide(result, quantizedCoordinate);
+            return expandNegativeSide(result);
         } else if (quantizedCoordinate > rangeMax) {
-            return expandPositiveSide(result, quantizedCoordinate);
+            return expandPositiveSide(result);
         }
         throw new IllegalStateException(
                 "Axis within its lower and upper bounds is inconsistent");
     }
 
     Double getCellIndex(final double coordinate) {
-        //TODO!!!
-        // support negative quantization
-        double quantizedCoordinate = coordinate - (coordinate % quantumSize);
+        double quantizedCoordinate = quantize(coordinate, quantumSize);
         if (cellIndices.containsKey(quantizedCoordinate)) {
             return getCellIndex(coordinate, quantumSize);
         } else if (quantizedCoordinate < rangeMin) {
@@ -75,63 +70,52 @@ final class DataMatrixAxis {
 
     // TODO!!!
     // synchronize
-    private List<Double> splitCell(
-            final List<Double> result,
+    private List<DataMatrixAxisPoint> splitCell(
+            final List<DataMatrixAxisPoint> result,
             final double quantizedCoordinate) {
         double size = cellIndices.get(quantizedCoordinate).getQuantumSize() / SPLIT_FACTOR;
         for (int i = 0; i < SPLIT_FACTOR; i++) {
             double cellIndex = quantizedCoordinate + (i * size);
             DataMatrixAxisPoint p = new DataMatrixAxisPoint(cellIndex, size);
             cellIndices.put(cellIndex, p);
-            result.add(cellIndex);
+            result.add(p);
         }
         return result;
     }
 
     // TODO!!!
     // synchronize
-    private List<Double> expandNegativeSide(
-            final List<Double> result,
-            final double quantizedCoordinate) {
-        double lowerBoundCoordinate = quantizedCoordinate - EXPANSION_FACTOR * quantumSize;
-        double index = cellIndices.get(rangeMin).getCellIndex();
-        fillRangeWithIndex(result, lowerBoundCoordinate, quantizedCoordinate, index);
-        double upperBoundCoordinate = rangeMin;
-        fillRangeWithIndex(result, quantizedCoordinate, upperBoundCoordinate, quantizedCoordinate);
+    private List<DataMatrixAxisPoint> expandNegativeSide(
+            final List<DataMatrixAxisPoint> result) {
+        double lowerBoundCoordinate = rangeMin - EXPANSION_FACTOR * quantumSize;
+        fillRangeWithIndex(result, lowerBoundCoordinate, rangeMin);
         rangeMin = lowerBoundCoordinate;
         return result;
     }
 
     // TODO!!!
     // synchronize
-    private List<Double> expandPositiveSide(
-            final List<Double> result,
-            final double quantizedCoordinate) {
-        double lowerBoundCoordinate = rangeMax;
-        double index = cellIndices.get(rangeMax).getCellIndex();
-        fillRangeWithIndex(result, lowerBoundCoordinate, quantizedCoordinate, index);
-        double upperBoundCoordinate = quantizedCoordinate + EXPANSION_FACTOR * quantumSize;
-        fillRangeWithIndex(result, quantizedCoordinate, upperBoundCoordinate, quantizedCoordinate);
+    private List<DataMatrixAxisPoint> expandPositiveSide(
+            final List<DataMatrixAxisPoint> result) {
+        double upperBoundCoordinate = rangeMax + EXPANSION_FACTOR * quantumSize;
+        fillRangeWithIndex(result, rangeMax, upperBoundCoordinate);
         rangeMax = upperBoundCoordinate;
         return result;
     }
 
     private void fillRangeWithIndex(
-            final List<Double> result,
+            final List<DataMatrixAxisPoint> result,
             final double inclusiveLoweBoundCoordinate,
-            final double exclusiveUpperBoundCoordinate,
-            final double index) {
+            final double exclusiveUpperBoundCoordinate) {
         for (double i = inclusiveLoweBoundCoordinate; i <= exclusiveUpperBoundCoordinate; i = i + quantumSize) {
-            DataMatrixAxisPoint p = new DataMatrixAxisPoint(index, quantumSize);
+            DataMatrixAxisPoint p = new DataMatrixAxisPoint(i, quantumSize);
             cellIndices.put(i, p);
-            result.add(i);
+            result.add(p);
         }
     }
 
     private Double getCellIndex(final double coordinate, final double quantumSize) {
-        // TODO!!!
-        // support negative quantization
-        double quantizedCoordinate = coordinate - (coordinate % quantumSize);
+        double quantizedCoordinate = quantize(coordinate, quantumSize);
         if (!cellIndices.containsKey(quantizedCoordinate)) {
             throw new IllegalStateException(
                     "Axis within its lower and upper bounds is inconsistent");
@@ -143,6 +127,19 @@ final class DataMatrixAxis {
         }
 
         return getCellIndex(coordinate, quantumSize / SPLIT_FACTOR);
+    }
+
+    private Double quantize(final double coordinate, final double quantumSize) {
+        if (coordinate == Double.NEGATIVE_INFINITY) {
+            return coordinate;
+        }
+        if (coordinate == Double.POSITIVE_INFINITY) {
+            return coordinate;
+        }
+        if (coordinate < 0) {
+            return coordinate - (coordinate % quantumSize) - quantumSize;
+        }
+        return coordinate - (coordinate % quantumSize);
     }
 
 }

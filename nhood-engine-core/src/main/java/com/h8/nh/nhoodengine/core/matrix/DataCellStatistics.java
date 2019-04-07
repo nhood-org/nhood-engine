@@ -29,11 +29,12 @@ final class DataCellStatistics {
         }
     }
 
-    int getHighestStandardDeviationIndex() {
+    int getHighestUnifiedStandardDeviationIndex() {
         int index = 0;
         double hsd = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < statistics.size(); i++) {
-            double sd = statistics.get(i).getStandardDeviation();
+            DoubleRunningStatistics stats = statistics.get(i);
+            double sd = stats.getStandardDeviation() / (stats.getMax() - stats.getAverage());
             if (hsd < sd) {
                 hsd = sd;
                 index = i;
