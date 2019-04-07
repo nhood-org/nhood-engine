@@ -43,7 +43,8 @@ final class DataMatrixAxis {
     }
 
     List<Double> splitCell(final double coordinate) {
-        //TODO!!!
+        // TODO!!!
+        // support negative quantization
         double quantizedCoordinate = coordinate - (coordinate % quantumSize);
         List<Double> result = new ArrayList<>();
         if (cellIndices.containsKey(quantizedCoordinate)) {
@@ -59,6 +60,7 @@ final class DataMatrixAxis {
 
     Double getCellIndex(final double coordinate) {
         //TODO!!!
+        // support negative quantization
         double quantizedCoordinate = coordinate - (coordinate % quantumSize);
         if (cellIndices.containsKey(quantizedCoordinate)) {
             return getCellIndex(coordinate, quantumSize);
@@ -71,6 +73,7 @@ final class DataMatrixAxis {
                 "Axis within its lower and upper bounds is inconsistent");
     }
 
+    // TODO!!!
     // synchronize
     private List<Double> splitCell(
             final List<Double> result,
@@ -85,6 +88,7 @@ final class DataMatrixAxis {
         return result;
     }
 
+    // TODO!!!
     // synchronize
     private List<Double> expandNegativeSide(
             final List<Double> result,
@@ -98,6 +102,7 @@ final class DataMatrixAxis {
         return result;
     }
 
+    // TODO!!!
     // synchronize
     private List<Double> expandPositiveSide(
             final List<Double> result,
@@ -124,7 +129,8 @@ final class DataMatrixAxis {
     }
 
     private Double getCellIndex(final double coordinate, final double quantumSize) {
-        //TODO!!!
+        // TODO!!!
+        // support negative quantization
         double quantizedCoordinate = coordinate - (coordinate % quantumSize);
         if (!cellIndices.containsKey(quantizedCoordinate)) {
             throw new IllegalStateException(

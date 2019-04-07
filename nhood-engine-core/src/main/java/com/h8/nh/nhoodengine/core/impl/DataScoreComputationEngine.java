@@ -28,7 +28,6 @@ public final class DataScoreComputationEngine<K, D> implements DataFinder<K, D> 
     }
 
     @Override
-    @SuppressWarnings("checkstyle:magicnumber")
     public List<DataFinderResult<K, D>> find(final DataFinderCriteria<K> criteria)
             throws DataFinderFailedException {
         if (criteria == null) {

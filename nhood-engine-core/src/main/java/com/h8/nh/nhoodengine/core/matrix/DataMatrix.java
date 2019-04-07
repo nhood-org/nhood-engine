@@ -96,6 +96,7 @@ final class DataMatrix<K, D> implements DataMatrixRepository<K, D> {
         Vector<Double> index = getCellIndex(metadata);
         return cells.get(index).getResources();
         // TODO!!!
+        // find neighbour cells within a given range
     }
 
     private Vector<Double> getResourceKey(final Vector<K> metadata) {
@@ -124,5 +125,6 @@ final class DataMatrix<K, D> implements DataMatrixRepository<K, D> {
         int index = cellsStatistics.get(cell.getId()).getHighestStandardDeviationIndex();
         axes.get(index).splitCell(cell.getId().get(index));
         // TODO!!!
+        // split objects accordingly to the split
     }
 }
