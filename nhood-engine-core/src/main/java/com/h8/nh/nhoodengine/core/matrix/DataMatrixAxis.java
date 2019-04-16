@@ -55,6 +55,11 @@ final class DataMatrixAxis {
                 "Axis within its lower and upper bounds is inconsistent");
     }
 
+    boolean hasCellIndex(final double coordinate) {
+        double quantizedCoordinate = quantize(coordinate, quantumSize);
+        return cellIndices.containsKey(quantizedCoordinate);
+    }
+
     Double getCellIndex(final double coordinate) {
         double quantizedCoordinate = quantize(coordinate, quantumSize);
         if (cellIndices.containsKey(quantizedCoordinate)) {
@@ -63,6 +68,20 @@ final class DataMatrixAxis {
             return getCellIndex(rangeMin, quantumSize);
         } else if (quantizedCoordinate > rangeMax) {
             return cellIndices.get(rangeMax).getCellIndex();
+        }
+        throw new IllegalStateException(
+                "Axis within its lower and upper bounds is inconsistent");
+    }
+
+    boolean hasCellAxisPoint(final double coordinate) {
+        double cellId = getCellIndex(coordinate, quantumSize);
+        return hasCellIndex(cellId);
+    }
+
+    DataMatrixAxisPoint getCellAxisPoint(final double coordinate) {
+        double cellId = getCellIndex(coordinate, quantumSize);
+        if (cellIndices.containsKey(cellId)) {
+            return cellIndices.get(cellId);
         }
         throw new IllegalStateException(
                 "Axis within its lower and upper bounds is inconsistent");

@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class DataScoreComputationEngine<K, D> implements DataFinder<K, D> {
 
@@ -56,12 +57,29 @@ public final class DataScoreComputationEngine<K, D> implements DataFinder<K, D> 
         }
 
         try {
-            return repository.findCell(criteria.getMetadata())
+            List<DataFinderResult<K, D>> results = repository.findCell(criteria.getMetadata())
                     .stream()
                     .map(r -> compute(r, criteria))
                     .sorted(Comparator.comparingDouble(DataFinderResult::getScore))
                     .limit(criteria.getLimit())
                     .collect(Collectors.toList());
+
+            DataFinderResult<K, D> last = results.get(results.size() - 1);
+
+            //TODO!!! add criteria
+            List<DataFinderResult<K, D>> nextResults = repository
+                    .findNeighbourCells(criteria.getMetadata(), last.getScore())
+                    .stream()
+                    .map(r -> compute(r, criteria))
+                    .sorted(Comparator.comparingDouble(DataFinderResult::getScore))
+                    .limit(criteria.getLimit())
+                    .collect(Collectors.toList());
+
+            return Stream.concat(results.stream(), nextResults.stream())
+                    .sorted(Comparator.comparingDouble(DataFinderResult::getScore))
+                    .limit(criteria.getLimit())
+                    .collect(Collectors.toList());
+
         } catch (DataMatrixRepositoryFailedException e) {
             throw new DataFinderFailedException(
                     "Could not perform search operation due to an unexpected repository error", e);

@@ -53,8 +53,24 @@ public interface DataMatrixRepository<K, D> {
             throws DataMatrixRepositoryFailedException;
 
     /**
-     * Retrieval of set of data resources in accordance with given
-     * metadata vector and range.
+     * Retrieval of set of data resources from surrounding cells
+     * in accordance with given metadata vector.
+     *
+     * Data resources will be retrieved form matrix cells surrounding a cell
+     * corresponding to a given metadata vector.
+     *
+     * @param metadata metadata vector
+     * @return a set of data resources retrieved
+     *
+     * @throws DataMatrixRepositoryFailedException
+     * when find operation cannot be performed
+     */
+    Set<DataResource<K, D>> findNeighbourCells(Vector<K> metadata)
+            throws DataMatrixRepositoryFailedException;
+
+    /**
+     * Retrieval of set of data resources from surrounding cells
+     * in accordance with given metadata vector and range.
      *
      * Data resources will be retrieved form matrix cells surrounding a cell
      * corresponding to a given metadata vector point within a given range diameter.
