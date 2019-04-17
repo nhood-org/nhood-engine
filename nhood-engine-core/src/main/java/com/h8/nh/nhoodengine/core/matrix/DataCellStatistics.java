@@ -43,4 +43,18 @@ final class DataCellStatistics {
         return index;
     }
 
+    int getWidestRangeIndex() {
+        int index = 0;
+        double wr = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < statistics.size(); i++) {
+            DoubleRunningStatistics stats = statistics.get(i);
+            double range = stats.getMax() - stats.getMin();
+            if (wr < range) {
+                wr = range;
+                index = i;
+            }
+        }
+        return index;
+    }
+
 }

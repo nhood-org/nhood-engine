@@ -4,9 +4,7 @@ import com.h8.nh.nhoodengine.core.DataFinderKeyMapper;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -15,7 +13,9 @@ import java.util.stream.Collectors;
 
 public final class DataMatrix<K, D> implements DataMatrixRepository<K, D> {
 
-    private static final int CELL_SIZE_LIMIT = 2000;
+    private static final int CELL_SIZE_LIMIT = 100 * 1000;
+
+    private static final double MINIMAL_DELTA = 1.0E-07;
 
     private final Integer size;
 
@@ -145,7 +145,8 @@ public final class DataMatrix<K, D> implements DataMatrixRepository<K, D> {
             return;
         }
         if (point - lowerBound > range) {
-            double previousPoint = lowerBound - Double.MIN_VALUE;
+            // TODO!!! refactor
+            double previousPoint = lowerBound - MINIMAL_DELTA;
             if (axes.get(index).hasCellAxisPoint(previousPoint)) {
                 points.add(previousPoint);
                 DataMatrixAxisPoint previousAxisPoint = axes.get(index).getCellAxisPoint(previousPoint);
@@ -218,37 +219,18 @@ public final class DataMatrix<K, D> implements DataMatrixRepository<K, D> {
         }
 
         // TODO!!! consider splitting by the widest side
-        int index = cellsStatistics.get(cell.getId()).getHighestUnifiedStandardDeviationIndex();
-        List<DataMatrixAxisPoint> points = axes.get(index).splitCell(cell.getId().get(index));
-
-        Map<Vector<Double>, DataCell<DataResource<K, D>>> splitCells = new HashMap<>();
-        Map<Vector<Double>, DataCellStatistics> splitCellsStatistics = new HashMap<>();
-
-        for (DataMatrixAxisPoint p : points) {
-            Vector<Double> v = (Vector<Double>) cellId.clone();
-            v.set(index, p.getCellIndex());
-            splitCells.put(v, new DataCell<>(v));
-            splitCellsStatistics.put(v, new DataCellStatistics(v));
-        }
+        int index = cellsStatistics.get(cell.getId()).getWidestRangeIndex();
+        axes.get(index).splitCell(cell.getId().get(index));
 
         if (!cells.containsKey(cellId)) {
             throw new IllegalStateException(
                     "Matrix cell statistics are inconsistent");
         }
 
+        cells.put(cellId, new DataCell<>(cellId));
+        cellsStatistics.put(cellId, new DataCellStatistics(cellId));
         for (DataResource<K, D> r : cell.getResources()) {
-            Vector<Double> rid = getResourceKey(r.getKey());
-            Vector<Double> cid = getCellIndex(rid);
-            try {
-                splitCells.get(cid).getResources().add(r);
-                splitCellsStatistics.get(cid).accept(rid);
-            } catch (NullPointerException e) {
-                throw new IllegalStateException(
-                        "!!!");
-            }
+            add(r);
         }
-
-        cells.putAll(splitCells);
-        cellsStatistics.putAll(splitCellsStatistics);
     }
 }
