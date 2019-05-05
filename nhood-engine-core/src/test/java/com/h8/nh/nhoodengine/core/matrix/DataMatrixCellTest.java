@@ -1,6 +1,12 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
+import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -14,12 +20,12 @@ class DataMatrixCellTest {
                     .build();
 
     @Test
-    void shouldCreateCellWithGivenMetadataSize() {
+    void shouldCreateRootCellWithGivenMetadataSize() {
         // given
         int metadataSize = 3;
 
         // when
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(metadataSize, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell = DataMatrixCell.root(metadataSize, cellConfiguration);
 
         // then
         assertThat(cell.getIndex()).hasSize(metadataSize);
@@ -35,7 +41,8 @@ class DataMatrixCellTest {
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
 
         // when
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell =
+                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
 
         // then
         assertThat(cell.getIndex()).isEqualTo(cellKey);
@@ -49,20 +56,21 @@ class DataMatrixCellTest {
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
 
         // when / then
-        assertThatThrownBy(() -> new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration))
+        assertThatThrownBy(() -> new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Index and dimensions arrays must have the same length")
                 .hasNoCause();
     }
 
     @Test
-    void shouldAcceptResourceWhenAddingToApplicableCell() {
+    void shouldAcceptResourceWhenAddingToRelevantCell() {
         // given
         DataMatrixResource r = () -> new double[] {0.0, 0.0, 0.0};
 
         double[] cellKey = new double[] {0.0, 0.0, 0.0};
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell =
+                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
 
         // when
         cell.add(r);
@@ -80,7 +88,8 @@ class DataMatrixCellTest {
 
         double[] cellKey = new double[] {0.0, 0.0, 0.0};
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell =
+                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
 
         // when
         cell.add(r1);
@@ -93,13 +102,14 @@ class DataMatrixCellTest {
     }
 
     @Test
-    void shouldNotAcceptResourceWhenAddingToNotApplicableCell() {
+    void shouldNotAcceptResourceWhenAddingToIrrelevantCell() {
         // given
-        DataMatrixResource r = () -> new double[] {0.0, 0.0, 0.0};
+        DataMatrixResource r = () -> new double[] {100.0, 100.0, 100.0};
 
-        double[] cellKey = new double[] {0.1, 0.1, 0.1};
+        double[] cellKey = new double[] {0.0, 0.0, 0.0};
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell =
+                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
 
         // when / then
         assertThatThrownBy(() -> cell.add(r))
@@ -116,7 +126,8 @@ class DataMatrixCellTest {
 
         double[] cellKey = new double[] {0.0, 0.0, 0.0};
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell =
+                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
 
         // when
         cell.add(r1);
@@ -129,20 +140,23 @@ class DataMatrixCellTest {
         DataMatrixCell<DataMatrixResource> r1Cell = cell.getChildren().iterator().next();
         assertThat(r1Cell.getResources()).hasSize(1);
         assertThat(r1Cell.getResources()).containsAnyOf(r1, r2);
+        assertThat(r1Cell.getParent()).isEqualTo(cell);
 
         DataMatrixCell<DataMatrixResource> r2Cell = cell.getChildren().iterator().next();
         assertThat(r2Cell.getResources()).hasSize(1);
         assertThat(r2Cell.getResources()).containsAnyOf(r1, r2);
+        assertThat(r2Cell.getParent()).isEqualTo(cell);
     }
 
     @Test
-    void shouldNotSplitCellWhenLimitOfResourcesIsNotExceeded() {
+    void shouldNotSplitCellWhenNumberOfResourcesIsBelowLimit() {
         // given
         DataMatrixResource r = () -> new double[] {0.0, 0.0, 0.0};
 
         double[] cellKey = new double[] {0.0, 0.0, 0.0};
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell =
+                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
 
         // when
         cell.add(r);
@@ -152,60 +166,104 @@ class DataMatrixCellTest {
         assertThat(cell.getChildren()).isEmpty();
     }
 
-    @Test
-    void shouldResolveClosestCellFromSingleCell() {
+    @ParameterizedTest
+    @MethodSource("pointsAndDistances")
+    void shouldReturnProperDistanceFromGivenPoint(
+            final double[] point,
+            final double expectedDistance) {
         // given
-        DataMatrixResource r = () -> new double[] {0.0, 0.0, 0.0};
-
         double[] cellKey = new double[] {0.0, 0.0, 0.0};
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration);
-
-        cell.add(r);
+        DataMatrixCell<DataMatrixResource> cell =
+                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
 
         // when
-        DataMatrixCell<DataMatrixResource> closestCell = cell.getClosestCell(() -> new double[] {10.0, 10.0, 10.0});
+        double actualDistance = cell.distanceFrom(point);
 
         // then
-        assertThat(closestCell).isEqualTo(cell);
+        assertThat(actualDistance).isCloseTo(expectedDistance, Offset.offset(0.0001));
     }
 
-    @Test
-    void shouldResolveClosestCellFromSplitCell() {
-        // given
-        DataMatrixResource r1 = () -> new double[] {0.0, 0.0, 0.0};
-        DataMatrixResource r2 = () -> new double[] {50.0, 50.0, 50.0};
+    private static Stream<Arguments> pointsAndDistances() {
+        return Stream.of(
+                Arguments.of(new double[] {0.0, 0.0, 0.0}, 0.0),
+                Arguments.of(new double[] {50.0, 50.0, 50.0}, 0),
+                Arguments.of(new double[] {100.0, 100.0, 100.0}, 0),
+                Arguments.of(new double[] {-1.0, 0.0, 0.0}, 1.0),
+                Arguments.of(new double[] {0.0, -10.0, 0.0}, 10.0),
+                Arguments.of(new double[] {0.0, 0.0, -100.0}, 100.0),
+                Arguments.of(new double[] {101.0, 0.0, 0.0}, 1.0),
+                Arguments.of(new double[] {0.0, 110.0, 0.0}, 10.0),
+                Arguments.of(new double[] {0.0, 0.0, 1110.0}, 1010.0),
+                Arguments.of(new double[] {-10.0, -10.0, 0.0}, 10.0 * Math.sqrt(2.0)),
+                Arguments.of(new double[] {110.0, 110.0, 110.0}, 10.0 * Math.sqrt(3.0))
+        );
+    }
 
+    @ParameterizedTest
+    @MethodSource("pointsAndWrapResults")
+    void shouldReturnWrapResultForGivenPoints(
+            final double[] point,
+            final boolean expectedResult) {
+        // given
         double[] cellKey = new double[] {0.0, 0.0, 0.0};
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration);
-
-        cell.add(r1);
-        cell.add(r2);
+        DataMatrixCell<DataMatrixResource> cell =
+                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
 
         // when
-        DataMatrixCell<DataMatrixResource> closestCell = cell.getClosestCell(() -> new double[] {10.0, 10.0, 10.0});
+        boolean actualResult = cell.wrapsKey(point);
 
         // then
-        assertThat(closestCell).isNotEqualTo(cell);
-        assertThat(closestCell.getResources()).containsOnly(r1);
+        assertThat(actualResult).isEqualTo(expectedResult);
     }
 
-    @Test
-    void shouldThrowAnExceptionOnResolutionOfClosestCellFromNotApplicableOne() {
-        // given
-        DataMatrixResource r = () -> new double[] {0.0, 0.0, 0.0};
+    private static Stream<Arguments> pointsAndWrapResults() {
+        return Stream.of(
+                Arguments.of(new double[] {0.0, 0.0, 0.0}, true),
+                Arguments.of(new double[] {50.0, 50.0, 50.0}, true),
+                Arguments.of(new double[] {99.9, 99.9, 99.9}, true),
+                Arguments.of(new double[] {100,0, 100, 100}, false),
+                Arguments.of(new double[] {-1.0, 0.0, 0.0}, false),
+                Arguments.of(new double[] {0.0, -10.0, 0.0}, false),
+                Arguments.of(new double[] {0.0, 0.0, -100.0}, false),
+                Arguments.of(new double[] {101.0, 0.0, 0.0}, false),
+                Arguments.of(new double[] {0.0, 110.0, 0.0}, false),
+                Arguments.of(new double[] {0.0, 0.0, 1110.0}, false),
+                Arguments.of(new double[] {-10.0, -10.0, 0.0}, false),
+                Arguments.of(new double[] {110.0, 110.0, 110.0}, false)
+        );
+    }
 
+    @ParameterizedTest
+    @MethodSource("pointsAndRangesAndWrapResults")
+    void shouldReturnWrapResultForGivenPointsAndRanges(
+            final double[] point,
+            final double range,
+            final boolean expectedResult) {
+        // given
         double[] cellKey = new double[] {0.0, 0.0, 0.0};
         double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(cellKey, cellDimensions, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell =
+                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
 
-        cell.add(r);
+        // when
+        boolean actualResult = cell.wrapsKey(point, range);
 
-        // when / then
-        assertThatThrownBy(() -> cell.getClosestCell(() -> new double[] {100.1, 100.1, 100.1}))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Cell does not cover given key")
-                .hasNoCause();
+        // then
+        assertThat(actualResult).isEqualTo(expectedResult);
+    }
+
+    private static Stream<Arguments> pointsAndRangesAndWrapResults() {
+        return Stream.of(
+                Arguments.of(new double[] {0.0, 0.0, 0.0}, 0.0, true),
+                Arguments.of(new double[] {50.0, 50.0, 50.0}, 0.0, true),
+                Arguments.of(new double[] {99.9, 99.9, 99.9}, 0.0, true),
+                Arguments.of(new double[] {100.0, 100.0, 100.0}, 0.0, false),
+                Arguments.of(new double[] {0.0, 0.0, 0.0}, 10.0, false),
+                Arguments.of(new double[] {50.0, 50.0, 50.0}, 10.0, true),
+                Arguments.of(new double[] {50.0, 50.0, 50.0}, 50.1, false),
+                Arguments.of(new double[] {100.0, 100.0, 100.0}, 10.0, false)
+        );
     }
 }

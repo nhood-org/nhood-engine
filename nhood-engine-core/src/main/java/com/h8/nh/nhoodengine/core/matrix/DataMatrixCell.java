@@ -13,30 +13,36 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
 
     private final double[] index;
     private final double[] dimensions;
+
+    private final DataMatrixCell<R> parent;
     private final Set<DataMatrixCell<R>> children;
     private final Set<R> resources;
-    private final DataMatrixCellConfiguration configuration;
 
-    public DataMatrixCell(
-            final int size,
-            final DataMatrixCellConfiguration configuration) {
-        this(new double[size], new double[size], configuration);
-        Arrays.fill(this.index, Double.MIN_VALUE);
-        Arrays.fill(this.dimensions, Double.MAX_VALUE);
-    }
+    private final DataMatrixCellConfiguration configuration;
 
     DataMatrixCell(
             final double[] index,
             final double[] dimensions,
+            final DataMatrixCell<R> parent,
             final DataMatrixCellConfiguration configuration) {
         if (index.length != dimensions.length) {
             throw new IllegalStateException("Index and dimensions arrays must have the same length");
         }
         this.index = Arrays.copyOf(index, index.length);
         this.dimensions = Arrays.copyOf(dimensions, dimensions.length);
-        this.configuration = configuration;
+        this.parent = parent;
         this.children = new HashSet<>();
         this.resources = new HashSet<>();
+        this.configuration = configuration;
+    }
+
+    public static <R extends DataMatrixResource> DataMatrixCell<R> root(
+            final int size,
+            final DataMatrixCellConfiguration configuration) {
+        DataMatrixCell<R> cell = new DataMatrixCell<>(new double[size], new double[size], null, configuration);
+        Arrays.fill(cell.index, Double.MIN_VALUE);
+        Arrays.fill(cell.dimensions, Double.MAX_VALUE);
+        return cell;
     }
 
     double[] getIndex() {
@@ -47,27 +53,54 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         return dimensions;
     }
 
-    Set<R> getResources() {
-        return Collections.unmodifiableSet(resources);
+    DataMatrixCell<R> getParent() {
+        return parent;
+    }
+
+    boolean hasChildren() {
+        return !children.isEmpty();
     }
 
     Set<DataMatrixCell<R>> getChildren() {
         return Collections.unmodifiableSet(children);
     }
 
-    public DataMatrixCell<R> getClosestCell(final R resource) {
-        if (!this.hasKeyWithinRange(resource.getKey())) {
-            throw new IllegalStateException("Cell does not cover given key");
-        }
-        if (this.hasChildren()) {
-            return findRelevantChild(resource).getClosestCell(resource);
-        } else {
-            return this;
-        }
+    Set<R> getResources() {
+        return Collections.unmodifiableSet(resources);
     }
 
-    public void add(final R resource) {
-        if (!this.hasKeyWithinRange(resource.getKey())) {
+    boolean wrapsKey(final double[] key) {
+        for (int i = 0; i < index.length; i++) {
+            boolean isWithin = key[i] >= index[i] && key[i] < index[i] + dimensions[i];
+            if (!isWithin) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    boolean wrapsKey(final double[] key, final double range) {
+        for (int i = 0; i < index.length; i++) {
+            boolean isWithin = key[i] - range >= index[i] && key[i] + range < index[i] + dimensions[i];
+            if (!isWithin) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    double distanceFrom(final double[] key) {
+        double sumOfSquares = 0.0;
+        for (int i = 0; i < index.length; i++) {
+            double d = Math.max(index[i] - key[i], key[i] - (index[i] + dimensions[i]));
+            d = Math.max(0, d);
+            sumOfSquares += d * d;
+        }
+        return Math.sqrt(sumOfSquares);
+    }
+
+    void add(final R resource) {
+        if (!this.wrapsKey(resource.getKey())) {
             throw new IllegalStateException("Cell does not cover given key");
         }
         if (this.hasChildren()) {
@@ -80,7 +113,7 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
 
     private DataMatrixCell<R> findRelevantChild(final R resource) {
         return children.stream()
-                .filter(c -> c.hasKeyWithinRange(resource.getKey()))
+                .filter(c -> c.wrapsKey(resource.getKey()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("There is no cell covering given key"));
     }
@@ -102,12 +135,12 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         for (int i = 0; i < factor; i++) {
             double[] index = Arrays.copyOf(this.index, this.index.length);
             index[idx] = this.index[idx] + i * size;
-            double[] dimensions =  Arrays.copyOf(this.dimensions, this.dimensions.length);
+            double[] dimensions = Arrays.copyOf(this.dimensions, this.dimensions.length);
             dimensions[idx] = size;
-            DataMatrixCell<R> cell = new DataMatrixCell<>(index, dimensions, this.configuration);
+            DataMatrixCell<R> cell = new DataMatrixCell<>(index, dimensions, this, this.configuration);
             this.resources
                     .stream()
-                    .filter(r -> cell.hasKeyWithinRange(r.getKey()))
+                    .filter(r -> cell.wrapsKey(r.getKey()))
                     .forEach(cell::add);
             this.children.add(cell);
         }
@@ -125,20 +158,6 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
             }
         }
         return idx;
-    }
-
-    private boolean hasChildren() {
-        return !children.isEmpty();
-    }
-
-    private boolean hasKeyWithinRange(final double[] key) {
-        for (int i = 0; i < index.length; i++) {
-            boolean isWithin = key[i] >= index[i] && key[i] < index[i] + dimensions[i];
-            if (!isWithin) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
