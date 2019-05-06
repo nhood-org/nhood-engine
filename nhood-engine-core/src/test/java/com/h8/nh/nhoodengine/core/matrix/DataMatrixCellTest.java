@@ -15,7 +15,7 @@ class DataMatrixCellTest {
 
     private final DataMatrixCellConfiguration cellConfiguration =
             DataMatrixCellConfiguration.builder()
-                    .splitFactor(2)
+                    .splitIterations(1)
                     .cellSize(2)
                     .build();
 
@@ -28,10 +28,20 @@ class DataMatrixCellTest {
         DataMatrixCell<DataMatrixResource> cell = DataMatrixCell.root(metadataSize, cellConfiguration);
 
         // then
-        assertThat(cell.getIndex()).hasSize(metadataSize);
-        assertThat(cell.getIndex()).containsOnly(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
-        assertThat(cell.getDimensions()).hasSize(metadataSize);
-        assertThat(cell.getDimensions()).containsOnly(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        assertThat(cell.getIndex())
+                .hasSize(metadataSize);
+        assertThat(cell.getIndex())
+                .containsOnly(
+                        -1 * cellConfiguration.getRootRange() / 2,
+                        -1 * cellConfiguration.getRootRange() / 2,
+                        -1 * cellConfiguration.getRootRange() / 2);
+        assertThat(cell.getDimensions())
+                .hasSize(metadataSize);
+        assertThat(cell.getDimensions())
+                .containsOnly(
+                        cellConfiguration.getRootRange(),
+                        cellConfiguration.getRootRange(),
+                        cellConfiguration.getRootRange());
     }
 
     @Test
@@ -98,7 +108,8 @@ class DataMatrixCellTest {
 
         // then
         assertThat(cell.getResources()).isEmpty();
-        assertThat(cell.getChildren()).hasSize(cellConfiguration.getSplitFactor());
+        int size = (int) Math.pow(2, cellConfiguration.getSplitIterations());
+        assertThat(cell.getChildren()).hasSize(size);
     }
 
     @Test
@@ -135,7 +146,8 @@ class DataMatrixCellTest {
 
         // then
         assertThat(cell.getResources()).isEmpty();
-        assertThat(cell.getChildren()).hasSize(cellConfiguration.getSplitFactor());
+        int size = (int) Math.pow(2, cellConfiguration.getSplitIterations());
+        assertThat(cell.getChildren()).hasSize(size);
 
         DataMatrixCell<DataMatrixResource> r1Cell = cell.getChildren().iterator().next();
         assertThat(r1Cell.getResources()).hasSize(1);

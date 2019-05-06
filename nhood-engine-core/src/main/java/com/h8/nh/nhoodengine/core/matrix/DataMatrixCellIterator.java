@@ -24,7 +24,7 @@ public final class DataMatrixCellIterator<R extends DataMatrixResource> {
         next = advance();
     }
 
-    public <R extends DataMatrixResource> DataMatrixCellIterator<R> startWith(
+    public static <R extends DataMatrixResource> DataMatrixCellIterator<R> startWith(
             final double[] entryPoint,
             final DataMatrixCell<R> cell) {
         return new DataMatrixCellIterator<>(entryPoint, cell);
@@ -32,7 +32,9 @@ public final class DataMatrixCellIterator<R extends DataMatrixResource> {
 
     public DataMatrixCell<R> next() {
         DataMatrixCell<R> result = next;
-        next = advance();
+        do {
+            next = advance();
+        } while (next != null && !next.hasResources());
         return result;
     }
 
@@ -55,19 +57,15 @@ public final class DataMatrixCellIterator<R extends DataMatrixResource> {
     }
 
     private DataMatrixCell<R> advance() {
-
         if (itIsInitialAdviseOfResourceCell()) {
             return cell;
         }
-
         if (!nestedIteratorHasNext() && nestedIteratorCanBeInitializer()) {
             nestedCellIterator = startWith(entryPoint, cellIterator.next());
         }
-
         if (nestedIteratorHasNext()) {
             return nestedCellIterator.next();
         }
-
         return null;
     }
 

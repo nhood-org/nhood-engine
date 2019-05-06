@@ -16,59 +16,65 @@ class DataMatrixCellConfigurationTest {
         // then
         assertThat(configuration.getCellSize())
                 .isEqualTo(DataMatrixCellConfiguration.DEFAULT_MAX_CELL_SIZE);
-        assertThat(configuration.getSplitFactor())
-                .isEqualTo(DataMatrixCellConfiguration.DEFAULT_SPLIT_FACTOR);
+        assertThat(configuration.getSplitIterations())
+                .isEqualTo(DataMatrixCellConfiguration.DEFAULT_SPLIT_ITERATIONS);
+        assertThat(configuration.getRootRange())
+                .isEqualTo(DataMatrixCellConfiguration.DEFAULT_ROOT_RANGE);
     }
 
     @Test
     void shouldBuildNewConfigurationWithGivenValues() {
         // given
         int cellSize = 2;
-        int splitFactor = 2;
+        int splitIterations = 1;
+        double rootRange = 1000;
 
         // when
         DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder()
                 .cellSize(cellSize)
-                .splitFactor(splitFactor)
+                .splitIterations(splitIterations)
+                .rootRange(rootRange)
                 .build();
 
         // then
         assertThat(configuration.getCellSize())
                 .isEqualTo(cellSize);
-        assertThat(configuration.getSplitFactor())
-                .isEqualTo(splitFactor);
+        assertThat(configuration.getSplitIterations())
+                .isEqualTo(splitIterations);
+        assertThat(configuration.getRootRange())
+                .isEqualTo(rootRange);
     }
 
     @Test
-    void shouldValidateIllegalSplitFactorWhenConstructed() {
+    void shouldValidateIllegalSplitIterationsWhenConstructed() {
         // given
         int cellSize = 2;
-        int splitFactor = 1;
+        int splitIterations = 0;
 
         // when / then
         assertThatThrownBy(() -> DataMatrixCellConfiguration.builder()
                 .cellSize(cellSize)
-                .splitFactor(splitFactor)
+                .splitIterations(splitIterations)
                 .build())
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Split factor must be greater that 1")
+                .hasMessage("Split iterations must be greater than 0")
                 .hasNoCause();
     }
 
     @Test
-    void shouldValidateIllegalSplitFactorWhenModified() {
+    void shouldValidateIllegalSplitIterationsWhenModified() {
         // given
         int cellSize = 2;
-        int splitFactor = 2;
+        int splitIterations = 1;
         DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder()
                 .cellSize(cellSize)
-                .splitFactor(splitFactor)
+                .splitIterations(splitIterations)
                 .build();
 
         // when / then
-        assertThatThrownBy(() -> configuration.setSplitFactor(1))
+        assertThatThrownBy(() -> configuration.setSplitIterations(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Split factor must be greater that 1")
+                .hasMessage("Split iterations must be greater than 0")
                 .hasNoCause();
     }
 
@@ -76,15 +82,15 @@ class DataMatrixCellConfigurationTest {
     void shouldValidateIllegalCellSizeWhenConstructed() {
         // given
         int cellSize = 1;
-        int splitFactor = 2;
+        int splitIterations = 1;
 
         // when / then
         assertThatThrownBy(() -> DataMatrixCellConfiguration.builder()
                 .cellSize(cellSize)
-                .splitFactor(splitFactor)
+                .splitIterations(splitIterations)
                 .build())
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Cell size must be greater that 1")
+                .hasMessage("Cell size must be greater than 1")
                 .hasNoCause();
 
     }
@@ -93,16 +99,52 @@ class DataMatrixCellConfigurationTest {
     void shouldValidateIllegalCellSizeWhenModified() {
         // given
         int cellSize = 2;
-        int splitFactor = 2;
+        int splitIterations = 1;
         DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder()
                 .cellSize(cellSize)
-                .splitFactor(splitFactor)
+                .splitIterations(splitIterations)
                 .build();
 
         // when / then
         assertThatThrownBy(() -> configuration.setCellSize(1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Cell size must be greater that 1")
+                .hasMessage("Cell size must be greater than 1")
+                .hasNoCause();
+    }
+
+    @Test
+    void shouldValidateIllegalRootRangeWhenConstructed() {
+        // given
+        int cellSize = 2;
+        int splitIterations = 1;
+        int rootRange = 0;
+
+        // when / then
+        assertThatThrownBy(() -> DataMatrixCellConfiguration.builder()
+                .cellSize(cellSize)
+                .splitIterations(splitIterations)
+                .rootRange(rootRange)
+                .build())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Root range must be greater than 0")
+                .hasNoCause();
+
+    }
+
+    @Test
+    void shouldValidateIllegalRootRangeWhenModified() {
+        // given
+        int cellSize = 2;
+        int splitIterations = 1;
+        DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder()
+                .cellSize(cellSize)
+                .splitIterations(splitIterations)
+                .build();
+
+        // when / then
+        assertThatThrownBy(() -> configuration.setRootRange(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Root range must be greater than 0")
                 .hasNoCause();
     }
 }

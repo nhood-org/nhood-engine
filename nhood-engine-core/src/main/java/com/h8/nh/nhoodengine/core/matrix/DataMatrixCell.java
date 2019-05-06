@@ -2,17 +2,23 @@ package com.h8.nh.nhoodengine.core.matrix;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ *
+ * @param <R>
+ */
 public final class DataMatrixCell<R extends DataMatrixResource> {
 
     private final UUID uuid = UUID.randomUUID();
 
     private final double[] index;
     private final double[] dimensions;
+    private final DoubleSummaryStatistics[] statistics;
 
     private final DataMatrixCell<R> parent;
     private final Set<DataMatrixCell<R>> children;
@@ -28,8 +34,13 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         if (index.length != dimensions.length) {
             throw new IllegalStateException("Index and dimensions arrays must have the same length");
         }
+
         this.index = Arrays.copyOf(index, index.length);
         this.dimensions = Arrays.copyOf(dimensions, dimensions.length);
+
+        this.statistics = new DoubleSummaryStatistics[index.length];
+        Arrays.fill(this.statistics, new DoubleSummaryStatistics());
+
         this.parent = parent;
         this.children = new HashSet<>();
         this.resources = new HashSet<>();
@@ -40,8 +51,8 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
             final int size,
             final DataMatrixCellConfiguration configuration) {
         DataMatrixCell<R> cell = new DataMatrixCell<>(new double[size], new double[size], null, configuration);
-        Arrays.fill(cell.index, Double.MIN_VALUE);
-        Arrays.fill(cell.dimensions, Double.MAX_VALUE);
+        Arrays.fill(cell.index, -1 * configuration.getRootRange() / 2);
+        Arrays.fill(cell.dimensions, configuration.getRootRange());
         return cell;
     }
 
@@ -63,6 +74,10 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
 
     Set<DataMatrixCell<R>> getChildren() {
         return Collections.unmodifiableSet(children);
+    }
+
+    boolean hasResources() {
+        return !resources.isEmpty();
     }
 
     Set<R> getResources() {
@@ -107,6 +122,7 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
             findRelevantChild(resource).add(resource);
         } else {
             resources.add(resource);
+            updateStatistics(resource);
             split();
         }
     }
@@ -118,46 +134,97 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
                 .orElseThrow(() -> new IllegalStateException("There is no cell covering given key"));
     }
 
+    private void updateStatistics(final R resource) {
+        double[] key = resource.getKey();
+        for (int i = 0; i < key.length; i++) {
+            statistics[i].accept(key[i]);
+        }
+    }
+
     private void split() {
         if (hasChildren()) {
             throw new IllegalStateException("Cell has already been split");
         }
 
         if (this.resources.size() >= configuration.getCellSize()) {
-            int idx = findWidestDimension();
+            int idx = findWidestRangeDimension();
             split(idx);
         }
     }
 
     private void split(final int idx) {
-        int factor = configuration.getSplitFactor();
-        double size = dimensions[idx] / factor;
-        for (int i = 0; i < factor; i++) {
-            double[] index = Arrays.copyOf(this.index, this.index.length);
-            index[idx] = this.index[idx] + i * size;
-            double[] dimensions = Arrays.copyOf(this.dimensions, this.dimensions.length);
-            dimensions[idx] = size;
-            DataMatrixCell<R> cell = new DataMatrixCell<>(index, dimensions, this, this.configuration);
-            this.resources
-                    .stream()
-                    .filter(r -> cell.wrapsKey(r.getKey()))
-                    .forEach(cell::add);
-            this.children.add(cell);
-        }
+        int iterations = this.configuration.getSplitIterations();
+        Set<DataMatrixCell<R>> subCells = split(idx, iterations);
+
+        this.children.addAll(subCells);
+        this.resources
+                .stream()
+                .filter(r -> this.wrapsKey(r.getKey()))
+                .forEach(this::add);
 
         this.resources.clear();
     }
 
-    private int findWidestDimension() {
+    private Set<DataMatrixCell<R>> split(final int idx, final int iterations) {
+        Set<DataMatrixCell<R>> subCells = new HashSet<>();
+        subCells.add(this);
+
+        int i = iterations;
+        while (i > 0) {
+            Set<DataMatrixCell<R>> created = new HashSet<>();
+            for (DataMatrixCell<R> c : subCells) {
+                double cutPoint = c.findCutPoint(idx);
+                created.add(c.createLeftCell(idx, cutPoint, this));
+                created.add(c.createRightCell(idx, cutPoint, this));
+            }
+            subCells = created;
+            i--;
+        }
+
+        return subCells;
+    }
+
+    private DataMatrixCell<R> createLeftCell(
+            final int idx,
+            final double cutPoint,
+            final DataMatrixCell<R> parent) {
+        double[] leftIndex = Arrays.copyOf(this.index, this.index.length);
+        leftIndex[idx] = this.index[idx];
+        double[] leftDimensions = Arrays.copyOf(this.dimensions, this.dimensions.length);
+        leftDimensions[idx] = cutPoint - this.index[idx];
+        return new DataMatrixCell<>(leftIndex, leftDimensions, parent, this.configuration);
+    }
+
+    private DataMatrixCell<R> createRightCell(
+            final int idx,
+            final double cutPoint,
+            final DataMatrixCell<R> parent) {
+        double[] rightIndex = Arrays.copyOf(this.index, this.index.length);
+        rightIndex[idx] = cutPoint;
+        double[] rightDimensions = Arrays.copyOf(this.dimensions, this.dimensions.length);
+        rightDimensions[idx] = this.index[idx] + this.dimensions[idx] - cutPoint;
+        return new DataMatrixCell<>(rightIndex, rightDimensions, parent, this.configuration);
+    }
+
+    private int findWidestRangeDimension() {
         int idx = 0;
-        double width = 0.0;
-        for (int i = 0; i < dimensions.length; i++) {
-            if (dimensions[i] > width) {
+        double widestRange = 0.0;
+        for (int i = 0; i < statistics.length; i++) {
+            double range = statistics[i].getMax() - statistics[i].getMin();
+            if (range > widestRange) {
                 idx = i;
-                width = dimensions[i];
+                widestRange = range;
             }
         }
         return idx;
+    }
+
+    private double findCutPoint(final int idx) {
+        if (statistics[idx].getCount() != 0) {
+            return statistics[idx].getAverage();
+        } else {
+            return index[idx] + (dimensions[idx] / 2.0);
+        }
     }
 
     @Override
