@@ -9,10 +9,11 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- *
  * @param <R>
  */
 public final class DataMatrixCell<R extends DataMatrixResource> {
+
+    private static final int DOUBLE_PRECISION = 1000;
 
     private final UUID uuid = UUID.randomUUID();
 
@@ -80,7 +81,7 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         return !resources.isEmpty();
     }
 
-    Set<R> getResources() {
+    public Set<R> getResources() {
         return Collections.unmodifiableSet(resources);
     }
 
@@ -154,14 +155,14 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
 
     private void split(final int idx) {
         int iterations = this.configuration.getSplitIterations();
-        Set<DataMatrixCell<R>> subCells = split(idx, iterations);
 
+        Set<DataMatrixCell<R>> subCells = split(idx, iterations);
         this.children.addAll(subCells);
+
         this.resources
                 .stream()
                 .filter(r -> this.wrapsKey(r.getKey()))
                 .forEach(this::add);
-
         this.resources.clear();
     }
 
@@ -220,11 +221,21 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
     }
 
     private double findCutPoint(final int idx) {
+        double cutPoint;
         if (statistics[idx].getCount() != 0) {
-            return statistics[idx].getAverage();
+            cutPoint = statistics[idx].getAverage();
         } else {
-            return index[idx] + (dimensions[idx] / 2.0);
+            cutPoint = index[idx] + (dimensions[idx] / 2.0);
         }
+        return round(cutPoint);
+    }
+
+    private double round(final double d) {
+        double val = d;
+        val = val * DOUBLE_PRECISION;
+        val = (double) ((int) val);
+        val = val / DOUBLE_PRECISION;
+        return val;
     }
 
     @Override

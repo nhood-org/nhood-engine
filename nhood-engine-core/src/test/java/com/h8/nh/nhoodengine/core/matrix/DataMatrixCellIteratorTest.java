@@ -69,8 +69,8 @@ class DataMatrixCellIteratorTest {
     void shouldReturnExpectedSequenceOfCells() {
         // given
         DataMatrixResource r1 = () -> new double[]{50.0, 50.0, 50.0};
-        DataMatrixResource r2 = () -> new double[]{100.0, 100.0, 100.0};
-        DataMatrixResource r3 = () -> new double[]{200.0, 200.0, 200.0};
+        DataMatrixResource r2 = () -> new double[]{51.0, 51.0, 51.0};
+        DataMatrixResource r3 = () -> new double[]{52.0, 52.0, 52.0};
 
         DataMatrixCell<DataMatrixResource> cell =
                   DataMatrixCell.root(3, cellConfiguration);

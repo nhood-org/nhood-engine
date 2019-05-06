@@ -21,7 +21,7 @@ public final class DataMatrixCellConfiguration {
      * Default value of root range.
      * Used when value is not defined in the builder.
      */
-    static final double DEFAULT_ROOT_RANGE = Math.pow(10, 16);
+    static final double DEFAULT_ROOT_RANGE = Math.pow(10, 14);
 
     /**
      * Defines into how many times a single cell is split in half
