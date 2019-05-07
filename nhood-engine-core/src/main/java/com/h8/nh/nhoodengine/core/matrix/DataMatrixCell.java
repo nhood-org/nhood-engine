@@ -1,7 +1,5 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
-import com.h8.nh.nhoodengine.core.utils.BigDecimalUtils;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
@@ -116,7 +114,8 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
             d = d.max(key[i].subtract(closure[i]));
             sumOfSquares = sumOfSquares.add(d.pow(2));
         }
-        return BigDecimalUtils.sqrt(sumOfSquares);
+        return BigDecimal.valueOf(Math.sqrt(sumOfSquares.doubleValue()))
+                .setScale(SCALE, RoundingMode.CEILING);
     }
 
     void add(final R resource) {
