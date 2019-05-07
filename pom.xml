@@ -41,7 +41,7 @@
 	<repositories>
 		<repository>
 			<id>nhood-mvn-repo</id>
-			<url>https://github.com/nhood-org/nhood-repository/blob/mvn-repo/</url>
+			<url>https://raw.githubusercontent.com/nhood-org/nhood-repository/mvn-repo/</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
