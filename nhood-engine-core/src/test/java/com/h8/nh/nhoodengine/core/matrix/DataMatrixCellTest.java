@@ -6,12 +6,23 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.math.BigDecimal;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DataMatrixCellTest {
+
+    private static final BigDecimal ZERO = BigDecimal.ZERO;
+    private static final BigDecimal ONE = BigDecimal.ONE;
+    private static final BigDecimal TEN = BigDecimal.TEN;
+    private static final BigDecimal TEN_PLUS = BigDecimal.TEN.add(BigDecimal.valueOf(Double.MIN_VALUE));
+
+    private static final BigDecimal HUNDRED = BigDecimal.valueOf(100);
+    private static final BigDecimal HUNDRED_MINUS = HUNDRED.subtract(BigDecimal.valueOf(Double.MIN_VALUE));
+
+    private static final Offset<BigDecimal> OFFSET = Offset.offset(BigDecimal.valueOf(0.0001));
 
     private final DataMatrixCellConfiguration cellConfiguration =
             DataMatrixCellConfiguration.builder()
@@ -20,67 +31,42 @@ class DataMatrixCellTest {
                     .build();
 
     @Test
-    void shouldCreateRootCellWithGivenMetadataSize() {
-        // given
-        int metadataSize = 3;
-
-        // when
-        DataMatrixCell<DataMatrixResource> cell = DataMatrixCell.root(metadataSize, cellConfiguration);
-
-        // then
-        assertThat(cell.getIndex())
-                .hasSize(metadataSize);
-        assertThat(cell.getIndex())
-                .containsOnly(
-                        -1 * cellConfiguration.getRootRange() / 2,
-                        -1 * cellConfiguration.getRootRange() / 2,
-                        -1 * cellConfiguration.getRootRange() / 2);
-        assertThat(cell.getDimensions())
-                .hasSize(metadataSize);
-        assertThat(cell.getDimensions())
-                .containsOnly(
-                        cellConfiguration.getRootRange(),
-                        cellConfiguration.getRootRange(),
-                        cellConfiguration.getRootRange());
-    }
-
-    @Test
     void shouldCreateCellWithGivenIndexAndDimensions() {
         // given
-        double[] cellKey = new double[] {0.0, 0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
+        BigDecimal[] cellIndex = new BigDecimal[]{ZERO, ZERO, ZERO};
+        BigDecimal[] cellClosure = new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED};
 
         // when
         DataMatrixCell<DataMatrixResource> cell =
-                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
+                new DataMatrixCell<>(cellIndex, cellClosure, null, cellConfiguration);
 
         // then
-        assertThat(cell.getIndex()).isEqualTo(cellKey);
-        assertThat(cell.getDimensions()).isEqualTo(cellDimensions);
+        assertThat(cell.getIndex()).isEqualTo(cellIndex);
+        assertThat(cell.getClosure()).isEqualTo(cellClosure);
     }
 
     @Test
     void shouldNotCreateCellWithIllegalIndexAndDimensions() {
         // given
-        double[] cellKey = new double[] {0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
+        BigDecimal[] cellIndex = new BigDecimal[]{ZERO, ZERO};
+        BigDecimal[] cellClosure = new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED};
 
         // when / then
-        assertThatThrownBy(() -> new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration))
+        assertThatThrownBy(() -> new DataMatrixCell<>(cellIndex, cellClosure, null, cellConfiguration))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Index and dimensions arrays must have the same length")
+                .hasMessage("Index and closure arrays must have the same length")
                 .hasNoCause();
     }
 
     @Test
     void shouldAcceptResourceWhenAddingToRelevantCell() {
         // given
-        DataMatrixResource r = () -> new double[] {0.0, 0.0, 0.0};
-
-        double[] cellKey = new double[] {0.0, 0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell =
-                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
+        DataMatrixResource r = () -> new BigDecimal[]{ZERO, ZERO, ZERO};
+        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+                new BigDecimal[]{ZERO, ZERO, ZERO},
+                new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
+                null,
+                cellConfiguration);
 
         // when
         cell.add(r);
@@ -92,14 +78,15 @@ class DataMatrixCellTest {
     @Test
     void shouldAcceptResourceWhenAddingToSplitCell() {
         // given
-        DataMatrixResource r1 = () -> new double[] {0.0, 0.0, 0.0};
-        DataMatrixResource r2 = () -> new double[] {50.0, 50.0, 50.0};
-        DataMatrixResource r3 = () -> new double[] {51.0, 51.0, 51.0};
+        DataMatrixResource r1 = () -> new BigDecimal[]{ZERO, ZERO, ZERO};
+        DataMatrixResource r2 = () -> new BigDecimal[]{ONE, ONE, ONE};
+        DataMatrixResource r3 = () -> new BigDecimal[]{TEN, TEN, TEN};
 
-        double[] cellKey = new double[] {0.0, 0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell =
-                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+                new BigDecimal[]{ZERO, ZERO, ZERO},
+                new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
+                null,
+                cellConfiguration);
 
         // when
         cell.add(r1);
@@ -115,12 +102,13 @@ class DataMatrixCellTest {
     @Test
     void shouldNotAcceptResourceWhenAddingToIrrelevantCell() {
         // given
-        DataMatrixResource r = () -> new double[] {100.0, 100.0, 100.0};
+        DataMatrixResource r = () -> new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED};
 
-        double[] cellKey = new double[] {0.0, 0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell =
-                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+                new BigDecimal[]{ZERO, ZERO, ZERO},
+                new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
+                null,
+                cellConfiguration);
 
         // when / then
         assertThatThrownBy(() -> cell.add(r))
@@ -132,13 +120,14 @@ class DataMatrixCellTest {
     @Test
     void shouldSplitCellWhenLimitOfResourcesIsExceeded() {
         // given
-        DataMatrixResource r1 = () -> new double[] {0.0, 0.0, 0.0};
-        DataMatrixResource r2 = () -> new double[] {50.0, 50.0, 50.0};
+        DataMatrixResource r1 = () -> new BigDecimal[]{ZERO, ZERO, ZERO};
+        DataMatrixResource r2 = () -> new BigDecimal[]{TEN, TEN, TEN};
 
-        double[] cellKey = new double[] {0.0, 0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell =
-                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+                new BigDecimal[]{ZERO, ZERO, ZERO},
+                new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
+                null,
+                cellConfiguration);
 
         // when
         cell.add(r1);
@@ -163,12 +152,13 @@ class DataMatrixCellTest {
     @Test
     void shouldNotSplitCellWhenNumberOfResourcesIsBelowLimit() {
         // given
-        DataMatrixResource r = () -> new double[] {0.0, 0.0, 0.0};
+        DataMatrixResource r = () -> new BigDecimal[]{ZERO, ZERO, ZERO};
 
-        double[] cellKey = new double[] {0.0, 0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell =
-                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+                new BigDecimal[]{ZERO, ZERO, ZERO},
+                new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
+                null,
+                cellConfiguration);
 
         // when
         cell.add(r);
@@ -181,47 +171,55 @@ class DataMatrixCellTest {
     @ParameterizedTest
     @MethodSource("pointsAndDistances")
     void shouldReturnProperDistanceFromGivenPoint(
-            final double[] point,
-            final double expectedDistance) {
+            final BigDecimal[] point,
+            final BigDecimal expectedDistance) {
         // given
-        double[] cellKey = new double[] {0.0, 0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell =
-                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+                new BigDecimal[]{ZERO, ZERO, ZERO},
+                new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
+                null,
+                cellConfiguration);
 
         // when
-        double actualDistance = cell.distanceFrom(point);
+        BigDecimal actualDistance = cell.distanceFrom(point);
 
         // then
-        assertThat(actualDistance).isCloseTo(expectedDistance, Offset.offset(0.0001));
+        assertThat(actualDistance)
+                .isCloseTo(expectedDistance, OFFSET);
     }
 
     private static Stream<Arguments> pointsAndDistances() {
         return Stream.of(
-                Arguments.of(new double[] {0.0, 0.0, 0.0}, 0.0),
-                Arguments.of(new double[] {50.0, 50.0, 50.0}, 0),
-                Arguments.of(new double[] {100.0, 100.0, 100.0}, 0),
-                Arguments.of(new double[] {-1.0, 0.0, 0.0}, 1.0),
-                Arguments.of(new double[] {0.0, -10.0, 0.0}, 10.0),
-                Arguments.of(new double[] {0.0, 0.0, -100.0}, 100.0),
-                Arguments.of(new double[] {101.0, 0.0, 0.0}, 1.0),
-                Arguments.of(new double[] {0.0, 110.0, 0.0}, 10.0),
-                Arguments.of(new double[] {0.0, 0.0, 1110.0}, 1010.0),
-                Arguments.of(new double[] {-10.0, -10.0, 0.0}, 10.0 * Math.sqrt(2.0)),
-                Arguments.of(new double[] {110.0, 110.0, 110.0}, 10.0 * Math.sqrt(3.0))
+                Arguments.of(new BigDecimal[]{ZERO, ZERO, ZERO}, ZERO),
+                Arguments.of(new BigDecimal[]{TEN, TEN, TEN}, ZERO),
+                Arguments.of(new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED}, ZERO),
+
+                Arguments.of(new BigDecimal[]{HUNDRED.add(ONE), ZERO, ZERO}, ONE),
+                Arguments.of(new BigDecimal[]{ZERO, HUNDRED.add(TEN), ZERO}, TEN),
+                Arguments.of(new BigDecimal[]{ZERO, ZERO, HUNDRED.add(HUNDRED)}, HUNDRED),
+
+                Arguments.of(new BigDecimal[]{ONE.negate(), ZERO, ZERO}, ONE),
+                Arguments.of(new BigDecimal[]{ZERO, TEN.negate(), ZERO}, TEN),
+                Arguments.of(new BigDecimal[]{ZERO, ZERO, HUNDRED.negate()}, HUNDRED),
+
+                Arguments.of(new BigDecimal[]{TEN.negate(), TEN.negate(), ZERO},
+                        BigDecimal.valueOf(10.0 * Math.sqrt(2.0))),
+                Arguments.of(new BigDecimal[]{HUNDRED.add(TEN), HUNDRED.add(TEN), HUNDRED.add(TEN)},
+                        BigDecimal.valueOf(10.0 * Math.sqrt(3.0)))
         );
     }
 
     @ParameterizedTest
     @MethodSource("pointsAndWrapResults")
     void shouldReturnWrapResultForGivenPoints(
-            final double[] point,
+            final BigDecimal[] point,
             final boolean expectedResult) {
         // given
-        double[] cellKey = new double[] {0.0, 0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell =
-                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+                new BigDecimal[]{ZERO, ZERO, ZERO},
+                new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
+                null,
+                cellConfiguration);
 
         // when
         boolean actualResult = cell.wrapsKey(point);
@@ -232,32 +230,33 @@ class DataMatrixCellTest {
 
     private static Stream<Arguments> pointsAndWrapResults() {
         return Stream.of(
-                Arguments.of(new double[] {0.0, 0.0, 0.0}, true),
-                Arguments.of(new double[] {50.0, 50.0, 50.0}, true),
-                Arguments.of(new double[] {99.9, 99.9, 99.9}, true),
-                Arguments.of(new double[] {100,0, 100, 100}, false),
-                Arguments.of(new double[] {-1.0, 0.0, 0.0}, false),
-                Arguments.of(new double[] {0.0, -10.0, 0.0}, false),
-                Arguments.of(new double[] {0.0, 0.0, -100.0}, false),
-                Arguments.of(new double[] {101.0, 0.0, 0.0}, false),
-                Arguments.of(new double[] {0.0, 110.0, 0.0}, false),
-                Arguments.of(new double[] {0.0, 0.0, 1110.0}, false),
-                Arguments.of(new double[] {-10.0, -10.0, 0.0}, false),
-                Arguments.of(new double[] {110.0, 110.0, 110.0}, false)
+                Arguments.of(new BigDecimal[]{ZERO, ZERO, ZERO}, true),
+                Arguments.of(new BigDecimal[]{TEN, TEN, TEN}, true),
+                Arguments.of(new BigDecimal[]{HUNDRED_MINUS, HUNDRED_MINUS, HUNDRED_MINUS}, true),
+                Arguments.of(new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED}, false),
+
+                Arguments.of(new BigDecimal[]{HUNDRED.add(ONE), ZERO, ZERO}, false),
+                Arguments.of(new BigDecimal[]{ZERO, HUNDRED.add(TEN), ZERO}, false),
+                Arguments.of(new BigDecimal[]{ZERO, ZERO, HUNDRED.add(HUNDRED)}, false),
+
+                Arguments.of(new BigDecimal[]{ONE.negate(), ZERO, ZERO}, false),
+                Arguments.of(new BigDecimal[]{ZERO, TEN.negate(), ZERO}, false),
+                Arguments.of(new BigDecimal[]{ZERO, ZERO, HUNDRED.negate()}, false)
         );
     }
 
     @ParameterizedTest
     @MethodSource("pointsAndRangesAndWrapResults")
     void shouldReturnWrapResultForGivenPointsAndRanges(
-            final double[] point,
-            final double range,
+            final BigDecimal[] point,
+            final BigDecimal range,
             final boolean expectedResult) {
         // given
-        double[] cellKey = new double[] {0.0, 0.0, 0.0};
-        double[] cellDimensions = new double[] {100.0, 100.0, 100.0};
-        DataMatrixCell<DataMatrixResource> cell =
-                new DataMatrixCell<>(cellKey, cellDimensions, null, cellConfiguration);
+        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+                new BigDecimal[]{ZERO, ZERO, ZERO},
+                new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
+                null,
+                cellConfiguration);
 
         // when
         boolean actualResult = cell.wrapsKey(point, range);
@@ -268,14 +267,15 @@ class DataMatrixCellTest {
 
     private static Stream<Arguments> pointsAndRangesAndWrapResults() {
         return Stream.of(
-                Arguments.of(new double[] {0.0, 0.0, 0.0}, 0.0, true),
-                Arguments.of(new double[] {50.0, 50.0, 50.0}, 0.0, true),
-                Arguments.of(new double[] {99.9, 99.9, 99.9}, 0.0, true),
-                Arguments.of(new double[] {100.0, 100.0, 100.0}, 0.0, false),
-                Arguments.of(new double[] {0.0, 0.0, 0.0}, 10.0, false),
-                Arguments.of(new double[] {50.0, 50.0, 50.0}, 10.0, true),
-                Arguments.of(new double[] {50.0, 50.0, 50.0}, 50.1, false),
-                Arguments.of(new double[] {100.0, 100.0, 100.0}, 10.0, false)
+                Arguments.of(new BigDecimal[]{ZERO, ZERO, ZERO}, ZERO, true),
+                Arguments.of(new BigDecimal[]{TEN, TEN, TEN}, ZERO, true),
+                Arguments.of(new BigDecimal[]{HUNDRED_MINUS, HUNDRED_MINUS, HUNDRED_MINUS}, ZERO, true),
+                Arguments.of(new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED}, ZERO, false),
+
+                Arguments.of(new BigDecimal[]{ZERO, ZERO, ZERO}, TEN, false),
+                Arguments.of(new BigDecimal[]{TEN, TEN, TEN}, TEN, true),
+                Arguments.of(new BigDecimal[]{TEN, TEN, TEN}, TEN_PLUS, false),
+                Arguments.of(new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED}, TEN, false)
         );
     }
 }

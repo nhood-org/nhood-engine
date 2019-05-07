@@ -1,5 +1,7 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
+import java.math.BigDecimal;
+
 /**
  * This is a configuration class for DataMatrixCell
  */
@@ -15,13 +17,19 @@ public final class DataMatrixCellConfiguration {
      * Default value of cell size.
      * Used when value is not defined in the builder.
      */
-    static final int DEFAULT_MAX_CELL_SIZE = (int) Math.pow(10, 4);
+    static final int DEFAULT_MAX_CELL_SIZE = 10 * 1000;
+
+    /**
+     * Maximum value of root range.
+     * Used when value is not defined in the builder.
+     */
+    static final BigDecimal MAX_ROOT_RANGE = BigDecimal.valueOf(Integer.MAX_VALUE);
 
     /**
      * Default value of root range.
      * Used when value is not defined in the builder.
      */
-    static final double DEFAULT_ROOT_RANGE = Math.pow(10, 14);
+    static final BigDecimal DEFAULT_ROOT_RANGE = MAX_ROOT_RANGE;
 
     /**
      * Defines into how many times a single cell is split in half
@@ -40,12 +48,12 @@ public final class DataMatrixCellConfiguration {
      * Defines an initial range of root cell.
      * Large values may impact metadata precision.
      */
-    private double rootRange;
+    private BigDecimal rootRange;
 
     private DataMatrixCellConfiguration(
             final int splitIterations,
             final int cellSize,
-            final double rootRange) {
+            final BigDecimal rootRange) {
         this.splitIterations = splitIterations;
         this.cellSize = cellSize;
         this.rootRange = rootRange;
@@ -90,7 +98,7 @@ public final class DataMatrixCellConfiguration {
      * Defines an initial range of root cell.
      * @return current root range value
      */
-    public double getRootRange() {
+    public BigDecimal getRootRange() {
         return rootRange;
     }
 
@@ -98,7 +106,7 @@ public final class DataMatrixCellConfiguration {
      * Defines an initial range of root cell.
      * @param rootRange new root range value
      */
-    public void setRootRange(final double rootRange) {
+    public void setRootRange(final BigDecimal rootRange) {
         this.rootRange = rootRange;
         validate();
     }
@@ -110,8 +118,11 @@ public final class DataMatrixCellConfiguration {
         if (this.cellSize <= 1) {
             throw new IllegalArgumentException("Cell size must be greater than 1");
         }
-        if (this.rootRange <= 0) {
+        if (BigDecimal.ZERO.compareTo(this.rootRange) >= 0) {
             throw new IllegalArgumentException("Root range must be greater than 0");
+        }
+        if (MAX_ROOT_RANGE.compareTo(this.rootRange) < 0) {
+            throw new IllegalArgumentException("Root range must be lower than Integer.MAX_VALUE");
         }
     }
 
@@ -123,7 +134,7 @@ public final class DataMatrixCellConfiguration {
 
         private int splitIterations;
         private int cellSize;
-        private double rootRange;
+        private BigDecimal rootRange;
 
         private DataMatrixCellConfigurationBuilder() {
             splitIterations = DEFAULT_SPLIT_ITERATIONS;
@@ -141,7 +152,7 @@ public final class DataMatrixCellConfiguration {
             return this;
         }
 
-        public DataMatrixCellConfigurationBuilder rootRange(final double rootRange) {
+        public DataMatrixCellConfigurationBuilder rootRange(final BigDecimal rootRange) {
             this.rootRange = rootRange;
             return this;
         }

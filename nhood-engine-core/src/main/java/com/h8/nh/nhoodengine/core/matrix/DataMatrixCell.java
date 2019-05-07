@@ -1,5 +1,9 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
+import com.h8.nh.nhoodengine.core.utils.BigDecimalUtils;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.DoubleSummaryStatistics;
@@ -13,12 +17,13 @@ import java.util.UUID;
  */
 public final class DataMatrixCell<R extends DataMatrixResource> {
 
-    private static final int DOUBLE_PRECISION = 1000;
+    // TODO!!! move to configuration
+    private static final int SCALE = 4;
 
     private final UUID uuid = UUID.randomUUID();
 
-    private final double[] index;
-    private final double[] dimensions;
+    private final BigDecimal[] index;
+    private final BigDecimal[] closure;
     private final DoubleSummaryStatistics[] statistics;
 
     private final DataMatrixCell<R> parent;
@@ -28,41 +33,35 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
     private final DataMatrixCellConfiguration configuration;
 
     DataMatrixCell(
-            final double[] index,
-            final double[] dimensions,
+            final BigDecimal[] index,
+            final BigDecimal[] closure,
             final DataMatrixCell<R> parent,
             final DataMatrixCellConfiguration configuration) {
-        if (index.length != dimensions.length) {
-            throw new IllegalStateException("Index and dimensions arrays must have the same length");
+        if (index.length != closure.length) {
+            throw new IllegalStateException("Index and closure arrays must have the same length");
         }
 
         this.index = Arrays.copyOf(index, index.length);
-        this.dimensions = Arrays.copyOf(dimensions, dimensions.length);
+        this.closure = Arrays.copyOf(closure, closure.length);
 
         this.statistics = new DoubleSummaryStatistics[index.length];
-        Arrays.fill(this.statistics, new DoubleSummaryStatistics());
+        for (int i = 0; i < this.statistics.length; i++) {
+            this.statistics[i] = new DoubleSummaryStatistics();
+        }
 
         this.parent = parent;
         this.children = new HashSet<>();
         this.resources = new HashSet<>();
         this.configuration = configuration;
+
     }
 
-    public static <R extends DataMatrixResource> DataMatrixCell<R> root(
-            final int size,
-            final DataMatrixCellConfiguration configuration) {
-        DataMatrixCell<R> cell = new DataMatrixCell<>(new double[size], new double[size], null, configuration);
-        Arrays.fill(cell.index, -1 * configuration.getRootRange() / 2);
-        Arrays.fill(cell.dimensions, configuration.getRootRange());
-        return cell;
-    }
-
-    double[] getIndex() {
+    BigDecimal[] getIndex() {
         return index;
     }
 
-    double[] getDimensions() {
-        return dimensions;
+    BigDecimal[] getClosure() {
+        return closure;
     }
 
     DataMatrixCell<R> getParent() {
@@ -85,9 +84,11 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         return Collections.unmodifiableSet(resources);
     }
 
-    boolean wrapsKey(final double[] key) {
+    boolean wrapsKey(final BigDecimal[] key) {
         for (int i = 0; i < index.length; i++) {
-            boolean isWithin = key[i] >= index[i] && key[i] < index[i] + dimensions[i];
+            boolean isWithin =
+                    key[i].compareTo(index[i]) >= 0
+                            && key[i].compareTo(closure[i]) < 0;
             if (!isWithin) {
                 return false;
             }
@@ -95,9 +96,11 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         return true;
     }
 
-    boolean wrapsKey(final double[] key, final double range) {
+    boolean wrapsKey(final BigDecimal[] key, final BigDecimal range) {
         for (int i = 0; i < index.length; i++) {
-            boolean isWithin = key[i] - range >= index[i] && key[i] + range < index[i] + dimensions[i];
+            boolean isWithin =
+                    key[i].subtract(range).compareTo(index[i]) >= 0
+                            && key[i].add(range).compareTo(closure[i]) < 0;
             if (!isWithin) {
                 return false;
             }
@@ -105,14 +108,15 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         return true;
     }
 
-    double distanceFrom(final double[] key) {
-        double sumOfSquares = 0.0;
+    BigDecimal distanceFrom(final BigDecimal[] key) {
+        BigDecimal sumOfSquares = BigDecimal.ZERO;
         for (int i = 0; i < index.length; i++) {
-            double d = Math.max(index[i] - key[i], key[i] - (index[i] + dimensions[i]));
-            d = Math.max(0, d);
-            sumOfSquares += d * d;
+            BigDecimal d = BigDecimal.ZERO;
+            d = d.max(index[i].subtract(key[i]));
+            d = d.max(key[i].subtract(closure[i]));
+            sumOfSquares = sumOfSquares.add(d.pow(2));
         }
-        return Math.sqrt(sumOfSquares);
+        return BigDecimalUtils.sqrt(sumOfSquares);
     }
 
     void add(final R resource) {
@@ -136,9 +140,9 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
     }
 
     private void updateStatistics(final R resource) {
-        double[] key = resource.getKey();
+        BigDecimal[] key = resource.getKey();
         for (int i = 0; i < key.length; i++) {
-            statistics[i].accept(key[i]);
+            statistics[i].accept(key[i].doubleValue());
         }
     }
 
@@ -146,7 +150,6 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         if (hasChildren()) {
             throw new IllegalStateException("Cell has already been split");
         }
-
         if (this.resources.size() >= configuration.getCellSize()) {
             int idx = findWidestRangeDimension();
             split(idx);
@@ -174,9 +177,9 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         while (i > 0) {
             Set<DataMatrixCell<R>> created = new HashSet<>();
             for (DataMatrixCell<R> c : subCells) {
-                double cutPoint = c.findCutPoint(idx);
-                created.add(c.createLeftCell(idx, cutPoint, this));
-                created.add(c.createRightCell(idx, cutPoint, this));
+                BigDecimal splitPoint = c.computeSplitPoint(idx);
+                created.add(c.createLeftCell(idx, splitPoint, this));
+                created.add(c.createRightCell(idx, splitPoint, this));
             }
             subCells = created;
             i--;
@@ -187,23 +190,21 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
 
     private DataMatrixCell<R> createLeftCell(
             final int idx,
-            final double cutPoint,
+            final BigDecimal splitPoint,
             final DataMatrixCell<R> parent) {
-        double[] leftIndex = Arrays.copyOf(this.index, this.index.length);
-        leftIndex[idx] = this.index[idx];
-        double[] leftDimensions = Arrays.copyOf(this.dimensions, this.dimensions.length);
-        leftDimensions[idx] = cutPoint - this.index[idx];
+        BigDecimal[] leftIndex = Arrays.copyOf(this.index, this.index.length);
+        BigDecimal[] leftDimensions = Arrays.copyOf(this.closure, this.closure.length);
+        leftDimensions[idx] = splitPoint;
         return new DataMatrixCell<>(leftIndex, leftDimensions, parent, this.configuration);
     }
 
     private DataMatrixCell<R> createRightCell(
             final int idx,
-            final double cutPoint,
+            final BigDecimal splitPoint,
             final DataMatrixCell<R> parent) {
-        double[] rightIndex = Arrays.copyOf(this.index, this.index.length);
-        rightIndex[idx] = cutPoint;
-        double[] rightDimensions = Arrays.copyOf(this.dimensions, this.dimensions.length);
-        rightDimensions[idx] = this.index[idx] + this.dimensions[idx] - cutPoint;
+        BigDecimal[] rightIndex = Arrays.copyOf(this.index, this.index.length);
+        rightIndex[idx] = splitPoint;
+        BigDecimal[] rightDimensions = Arrays.copyOf(this.closure, this.closure.length);
         return new DataMatrixCell<>(rightIndex, rightDimensions, parent, this.configuration);
     }
 
@@ -220,22 +221,13 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
         return idx;
     }
 
-    private double findCutPoint(final int idx) {
-        double cutPoint;
+    private BigDecimal computeSplitPoint(final int idx) {
         if (statistics[idx].getCount() != 0) {
-            cutPoint = statistics[idx].getAverage();
+            return BigDecimal.valueOf(statistics[idx].getAverage());
         } else {
-            cutPoint = index[idx] + (dimensions[idx] / 2.0);
+            return index[idx].add(closure[idx])
+                    .divide(BigDecimal.valueOf(2), SCALE, RoundingMode.CEILING);
         }
-        return round(cutPoint);
-    }
-
-    private double round(final double d) {
-        double val = d;
-        val = val * DOUBLE_PRECISION;
-        val = (double) ((int) val);
-        val = val / DOUBLE_PRECISION;
-        return val;
     }
 
     @Override

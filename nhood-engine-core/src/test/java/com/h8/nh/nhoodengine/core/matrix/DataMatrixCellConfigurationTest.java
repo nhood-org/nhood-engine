@@ -2,6 +2,8 @@ package com.h8.nh.nhoodengine.core.matrix;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -27,7 +29,7 @@ class DataMatrixCellConfigurationTest {
         // given
         int cellSize = 2;
         int splitIterations = 1;
-        double rootRange = 1000;
+        BigDecimal rootRange = BigDecimal.valueOf(1000);
 
         // when
         DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder()
@@ -92,7 +94,6 @@ class DataMatrixCellConfigurationTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cell size must be greater than 1")
                 .hasNoCause();
-
     }
 
     @Test
@@ -113,11 +114,11 @@ class DataMatrixCellConfigurationTest {
     }
 
     @Test
-    void shouldValidateIllegalRootRangeWhenConstructed() {
+    void shouldValidateZeroRootRangeWhenConstructed() {
         // given
         int cellSize = 2;
         int splitIterations = 1;
-        int rootRange = 0;
+        BigDecimal rootRange = BigDecimal.ZERO;
 
         // when / then
         assertThatThrownBy(() -> DataMatrixCellConfiguration.builder()
@@ -128,11 +129,10 @@ class DataMatrixCellConfigurationTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Root range must be greater than 0")
                 .hasNoCause();
-
     }
 
     @Test
-    void shouldValidateIllegalRootRangeWhenModified() {
+    void shouldValidateZeroRootRangeWhenModified() {
         // given
         int cellSize = 2;
         int splitIterations = 1;
@@ -142,9 +142,83 @@ class DataMatrixCellConfigurationTest {
                 .build();
 
         // when / then
-        assertThatThrownBy(() -> configuration.setRootRange(0))
+        assertThatThrownBy(() -> configuration.setRootRange(BigDecimal.ZERO))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Root range must be greater than 0")
+                .hasNoCause();
+    }
+
+    @Test
+    void shouldValidateNegativeRootRangeWhenConstructed() {
+        // given
+        int cellSize = 2;
+        int splitIterations = 1;
+        BigDecimal rootRange = BigDecimal.ONE.negate();
+
+        // when / then
+        assertThatThrownBy(() -> DataMatrixCellConfiguration.builder()
+                .cellSize(cellSize)
+                .splitIterations(splitIterations)
+                .rootRange(rootRange)
+                .build())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Root range must be greater than 0")
+                .hasNoCause();
+    }
+
+    @Test
+    void shouldValidateNegativeRootRangeWhenModified() {
+        // given
+        int cellSize = 2;
+        int splitIterations = 1;
+        DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder()
+                .cellSize(cellSize)
+                .splitIterations(splitIterations)
+                .build();
+
+        // when / then
+        assertThatThrownBy(() -> configuration.setRootRange(BigDecimal.ONE.negate()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Root range must be greater than 0")
+                .hasNoCause();
+    }
+
+    @Test
+    void shouldValidateTooBigRootRangeWhenConstructed() {
+        // given
+        int cellSize = 2;
+        int splitIterations = 1;
+        BigDecimal rootRange = BigDecimal.valueOf(Double.MAX_VALUE / 2)
+                .add(BigDecimal.valueOf(Double.MIN_VALUE));
+
+        // when / then
+        assertThatThrownBy(() -> DataMatrixCellConfiguration.builder()
+                .cellSize(cellSize)
+                .splitIterations(splitIterations)
+                .rootRange(rootRange)
+                .build())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Root range must be lower than Integer.MAX_VALUE")
+                .hasNoCause();
+    }
+
+    @Test
+    void shouldValidateTooBigRootRangeWhenModified() {
+        // given
+        int cellSize = 2;
+        int splitIterations = 1;
+        BigDecimal rootRange = BigDecimal.valueOf(Double.MAX_VALUE / 2)
+                .add(BigDecimal.valueOf(Double.MIN_VALUE));
+
+        DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder()
+                .cellSize(cellSize)
+                .splitIterations(splitIterations)
+                .build();
+
+        // when / then
+        assertThatThrownBy(() -> configuration.setRootRange(rootRange))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Root range must be lower than Integer.MAX_VALUE")
                 .hasNoCause();
     }
 }
