@@ -51,7 +51,7 @@ Project is continuously integrated with `circleCi` pipeline that link to which m
 
 Pipeline is fairly simple:
 
-1. Build and test project with a set of jdk: `1.8`, `9`, `10` and `11`.
+1. Build and test project with a set of jdk: `1.8` and `11`.
 2. Deploy new snapshot version to [nhood maven repository](https://github.com/nhood-org/nhood-repository/tree/mvn-repo/com/h8/nh)
 
 Configuration of CI is implemented in `.circleci` and  `.circleci.setting.xml`.
