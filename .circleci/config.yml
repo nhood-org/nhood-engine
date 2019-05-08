@@ -29,14 +29,6 @@ jobs:
     - checkout
     - run: mvn clean install
 
-  build-jdk12:
-    docker:
-    - image: circleci/openjdk:12-jdk
-    <<: *defaults-env
-    steps:
-    - checkout
-    - run: mvn clean install
-
   deploy:
     <<: *defaults
     steps:
@@ -55,12 +47,11 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-    - build
-    - build-jdk11
-    #       - build-jdk12
-    - deploy:
-        requires:
-        - build
-        filters:
-          branches:
-            only: master
+      - build
+      - build-jdk11
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
