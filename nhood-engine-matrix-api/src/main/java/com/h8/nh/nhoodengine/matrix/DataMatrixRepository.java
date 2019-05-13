@@ -10,7 +10,7 @@ import java.util.Vector;
  * This interface is a main facade of nhood engine data matrix
  * management functionality.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
 public interface DataMatrixRepository<K extends DataResourceKey, D> {

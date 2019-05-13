@@ -3,15 +3,11 @@ package com.h8.nh.nhoodengine.core.matrix;
 import com.h8.nh.nhoodengine.core.DataResource;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
-/**
- *
- */
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCALE;
+
 public final class DataMatrixCellFactory {
-
-    // TODO!!! move to configuration
-    private static final int SCALE = 4;
 
     private DataMatrixCellFactory() {
     }
@@ -36,12 +32,12 @@ public final class DataMatrixCellFactory {
             final DataMatrixCellConfiguration configuration) {
         return configuration.getRootRange()
                 .negate()
-                .divide(BigDecimal.valueOf(2.0), SCALE, RoundingMode.CEILING);
+                .divide(BigDecimal.valueOf(2.0), UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
     }
 
     private static BigDecimal getRootClosure(
             final DataMatrixCellConfiguration configuration) {
         return configuration.getRootRange()
-                .divide(BigDecimal.valueOf(2.0), SCALE, RoundingMode.CEILING);
+                .divide(BigDecimal.valueOf(2.0), UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
     }
 }

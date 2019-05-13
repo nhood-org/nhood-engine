@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  * into a sequence of integers and all relations, and geometrical features are inherited.
  * Therefore all tests are based on integer-typed vectors.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
 public interface DataFinderTestContext<K extends DataResourceKey, D> {

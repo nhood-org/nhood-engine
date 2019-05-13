@@ -3,7 +3,6 @@ package com.h8.nh.nhoodengine.core.matrix;
 import com.h8.nh.nhoodengine.core.DataResource;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.DoubleSummaryStatistics;
@@ -12,13 +11,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * @param <R>
- */
-public final class DataMatrixCell<R extends DataResource> {
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCALE;
 
-    // TODO!!! move to configuration
-    private static final int SCALE = 4;
+public final class DataMatrixCell<R extends DataResource> {
 
     private final UUID uuid = UUID.randomUUID();
 
@@ -117,7 +113,7 @@ public final class DataMatrixCell<R extends DataResource> {
             sumOfSquares = sumOfSquares.add(d.pow(2));
         }
         return BigDecimal.valueOf(Math.sqrt(sumOfSquares.doubleValue()))
-                .setScale(SCALE, RoundingMode.CEILING);
+                .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
     }
 
     public void add(final R resource) {
@@ -227,7 +223,7 @@ public final class DataMatrixCell<R extends DataResource> {
             return BigDecimal.valueOf(statistics[idx].getAverage());
         } else {
             return index[idx].add(closure[idx])
-                    .divide(BigDecimal.valueOf(2), SCALE, RoundingMode.CEILING);
+                    .divide(BigDecimal.valueOf(2), UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
         }
     }
 

@@ -11,20 +11,19 @@ import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellIterator;
 import com.h8.nh.nhoodengine.core.utils.BoundedTreeSet;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCALE;
+
 public final class DataScoreComputationEngine<K extends DataResourceKey, D> implements DataFinder<K, D> {
 
-    // TODO!!! move to configuration
-    private static final int SCALE = 4;
-
-    // TODO!!! remove
-    private static final int SIZE = 3;
+    // TODO!!!
+    public static final int SIZE = 3;
 
     private final DataMatrixCell<DataResource<K, D>> cell;
 
@@ -80,7 +79,6 @@ public final class DataScoreComputationEngine<K extends DataResourceKey, D> impl
                     "DataFinderCriteria metadata may not be empty");
         }
 
-        // TODO!!!
         if (criteria.getMetadata().unified().length != SIZE) {
             throw new DataFinderFailedException(
                     "DataFinderCriteria metadata size does not match data in repository");
@@ -110,7 +108,7 @@ public final class DataScoreComputationEngine<K extends DataResourceKey, D> impl
             sumOfSquares = sumOfSquares.add(d.pow(2));
         }
         return BigDecimal.valueOf(Math.sqrt(sumOfSquares.doubleValue()))
-                .setScale(SCALE, RoundingMode.CEILING);
+                .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
     }
 
     private boolean shouldContinue(

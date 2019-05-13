@@ -11,7 +11,7 @@ import java.util.Objects;
  * - a vector key that represents metadata of data resource
  * - a data itself
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
 public final class DataResource<K extends DataResourceKey, D> {
@@ -91,7 +91,7 @@ public final class DataResource<K extends DataResourceKey, D> {
 
     /**
      * An auxiliary builder of DataResource
-     * @param <K> a generic type of data metadata key vector.
+     * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
      * @param <D> a generic type of data resource.
      */
     public static final class DataResourceBuilder<K extends DataResourceKey, D> {

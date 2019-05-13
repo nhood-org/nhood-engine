@@ -5,16 +5,17 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * This class is a wrapper of data resource returned by data fined.
+ * This class is a wrapper of data resource returned by data finder.
  * Data is enriched with additional stats and metrics.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
-public final class DataFinderResult<K extends DataResourceKey, D> implements Comparable<DataFinderResult<K, D>> {
+public final class DataFinderResult<K extends DataResourceKey, D>
+        implements Comparable<DataFinderResult<K, D>> {
 
     /**
-     * TODO!!!
+     * An internal unique identifier;
      */
     private final UUID uuid;
 
@@ -24,17 +25,17 @@ public final class DataFinderResult<K extends DataResourceKey, D> implements Com
     private final BigDecimal score;
 
     /**
+     * An actual data resource found
+     */
+    private final DataResource<K, D> resource;
+
+    /**
      * A score which resource gained during the course of evaluation
      * @return actual score value
      */
     public BigDecimal getScore() {
         return score;
     }
-
-    /**
-     * An actual data resource found
-     */
-    private final DataResource<K, D> resource;
 
     /**
      * An actual data resource found
@@ -68,9 +69,9 @@ public final class DataFinderResult<K extends DataResourceKey, D> implements Com
 
     @Override
     public int compareTo(final DataFinderResult<K, D> o) {
-        int res = score.compareTo(o.score);
-        if (res != 0) {
-            return res;
+        int result = score.compareTo(o.score);
+        if (result != 0) {
+            return result;
         }
         return uuid.compareTo(o.uuid);
     }
@@ -84,7 +85,7 @@ public final class DataFinderResult<K extends DataResourceKey, D> implements Com
             return false;
         }
         DataFinderResult<?, ?> that = (DataFinderResult<?, ?>) o;
-        return that.score.compareTo(score) == 0
+        return Objects.equals(score, that.score)
                 && Objects.equals(resource, that.resource);
     }
 
@@ -103,7 +104,7 @@ public final class DataFinderResult<K extends DataResourceKey, D> implements Com
 
     /**
      * An auxiliary builder of DataFinderResult
-     * @param <K> a generic type of data metadata key vector.
+     * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
      * @param <D> a generic type of data resource.
      */
     public static final class DataFinderResultBuilder<K extends DataResourceKey, D> {

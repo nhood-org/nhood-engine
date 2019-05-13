@@ -1,11 +1,11 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
 import com.h8.nh.nhoodengine.core.DataResource;
-import com.h8.nh.nhoodengine.core.DataResourceKey;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
+import static com.h8.nh.nhoodengine.core.utils.DataResourceUtils.resource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DataMatrixCellIteratorTest {
@@ -123,10 +123,5 @@ class DataMatrixCellIteratorTest {
         assertThat(actualCell.getResources()).containsExactlyInAnyOrder(r5);
 
         assertThat(iterator.hasNext()).isFalse();
-    }
-
-    // TODO!!! extract
-    private static DataResource resource(DataResourceKey key) {
-        return new DataResource<>(key, null);
     }
 }

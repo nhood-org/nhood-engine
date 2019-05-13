@@ -1,7 +1,6 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
 import com.h8.nh.nhoodengine.core.DataResource;
-import com.h8.nh.nhoodengine.core.DataResourceKey;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,6 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
+import static com.h8.nh.nhoodengine.core.utils.DataResourceUtils.resource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -279,10 +279,5 @@ class DataMatrixCellTest {
                 Arguments.of(new BigDecimal[]{TEN, TEN, TEN}, TEN_PLUS, false),
                 Arguments.of(new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED}, TEN, false)
         );
-    }
-
-    // TODO!!! extract
-    private static DataResource resource(DataResourceKey key) {
-        return new DataResource<>(key, null);
     }
 }

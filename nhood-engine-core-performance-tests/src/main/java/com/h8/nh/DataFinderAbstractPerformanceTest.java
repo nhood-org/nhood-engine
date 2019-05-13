@@ -32,7 +32,7 @@ import java.util.List;
  * While testing a concrete implementation of DataFinder
  * an implementer has to implement a DataFinderTestContext interface.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
 @State(Scope.Benchmark)

@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -27,28 +28,25 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * While testing a concrete implementation of DataFinder
  * an implementer has to implement a DataFinderTestContext interface.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> implements DataFinderRequirements {
 
-    // TODO!!! move to configuration
-    private static final int SCALE = 4;
+    private static final BigDecimal DISTANCE_ZERO = BigDecimal.ZERO
+            .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
 
-    private static final BigDecimal DISTANCE_ZERO =
-            BigDecimal.ZERO.setScale(SCALE, RoundingMode.CEILING);
-
-    private static final BigDecimal DISTANCE_ONE =
-            BigDecimal.ONE.setScale(SCALE, RoundingMode.CEILING);
+    private static final BigDecimal DISTANCE_ONE = BigDecimal.ONE
+            .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
 
     private static final double DIAGONAL_SQUARE = Math.sqrt(2.0);
-    private static final BigDecimal DISTANCE_DIAGONAL_SQUARE =
-            BigDecimal.valueOf(DIAGONAL_SQUARE).setScale(SCALE, RoundingMode.CEILING);
+    private static final BigDecimal DISTANCE_DIAGONAL_SQUARE = BigDecimal.valueOf(DIAGONAL_SQUARE)
+            .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
 
     private static final double DIAGONAL_CUBE = Math.sqrt(3.0);
-    private static final BigDecimal DISTANCE_DIAGONAL_CUBE =
-            BigDecimal.valueOf(DIAGONAL_CUBE).setScale(SCALE, RoundingMode.CEILING);
+    private static final BigDecimal DISTANCE_DIAGONAL_CUBE = BigDecimal.valueOf(DIAGONAL_CUBE)
+            .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
 
     private static final Integer[] KEY_VECTOR_MIN_LIMIT = new Integer[]{-100, -100, -10};
 

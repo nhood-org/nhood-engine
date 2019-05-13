@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * This class is a set of data finder search criteria.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  */
 public final class DataFinderCriteria<K extends DataResourceKey> {
 
@@ -82,7 +82,7 @@ public final class DataFinderCriteria<K extends DataResourceKey> {
 
     /**
      * An auxiliary builder of DataFinderCriteria
-     * @param <K> a generic type of data metadata key vector.
+     * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
      */
     public static final class DataFinderCriteriaBuilder<K extends DataResourceKey> {
 

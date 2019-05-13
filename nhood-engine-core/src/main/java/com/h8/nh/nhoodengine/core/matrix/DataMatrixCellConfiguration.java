@@ -64,7 +64,7 @@ public final class DataMatrixCellConfiguration {
      * Defines into how many times a single cell is split in half
      * @return current split iterations value
      */
-    public int getSplitIterations() {
+    int getSplitIterations() {
         return splitIterations;
     }
 
@@ -72,7 +72,7 @@ public final class DataMatrixCellConfiguration {
      * Defines into how many times a single cell is split in half
      * @param splitIterations new split iterations value
      */
-    public void setSplitIterations(final int splitIterations) {
+    void setSplitIterations(final int splitIterations) {
         this.splitIterations = splitIterations;
         validate();
     }
@@ -81,7 +81,7 @@ public final class DataMatrixCellConfiguration {
      * Defines an inclusive limit of cell size. When exceeded a cell is split.
      * @return current cell size
      */
-    public int getCellSize() {
+    int getCellSize() {
         return cellSize;
     }
 
@@ -89,7 +89,7 @@ public final class DataMatrixCellConfiguration {
      * Defines an inclusive limit of cell size. When exceeded a cell is split.
      * @param cellSize new cell size value
      */
-    public void setCellSize(final int cellSize) {
+    void setCellSize(final int cellSize) {
         this.cellSize = cellSize;
         validate();
     }
@@ -98,7 +98,7 @@ public final class DataMatrixCellConfiguration {
      * Defines an initial range of root cell.
      * @return current root range value
      */
-    public BigDecimal getRootRange() {
+    BigDecimal getRootRange() {
         return rootRange;
     }
 
@@ -106,7 +106,7 @@ public final class DataMatrixCellConfiguration {
      * Defines an initial range of root cell.
      * @param rootRange new root range value
      */
-    public void setRootRange(final BigDecimal rootRange) {
+    void setRootRange(final BigDecimal rootRange) {
         this.rootRange = rootRange;
         validate();
     }
@@ -142,17 +142,17 @@ public final class DataMatrixCellConfiguration {
             rootRange = DEFAULT_ROOT_RANGE;
         }
 
-        public DataMatrixCellConfigurationBuilder splitIterations(final int splitIterations) {
+        DataMatrixCellConfigurationBuilder splitIterations(final int splitIterations) {
             this.splitIterations = splitIterations;
             return this;
         }
 
-        public DataMatrixCellConfigurationBuilder cellSize(final int cellSize) {
+        DataMatrixCellConfigurationBuilder cellSize(final int cellSize) {
             this.cellSize = cellSize;
             return this;
         }
 
-        public DataMatrixCellConfigurationBuilder rootRange(final BigDecimal rootRange) {
+        DataMatrixCellConfigurationBuilder rootRange(final BigDecimal rootRange) {
             this.rootRange = rootRange;
             return this;
         }
