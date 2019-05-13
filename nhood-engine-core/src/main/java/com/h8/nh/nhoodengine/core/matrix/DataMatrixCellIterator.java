@@ -1,23 +1,27 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
 import com.h8.nh.nhoodengine.core.DataResource;
+import com.h8.nh.nhoodengine.core.DataResourceKey;
+import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Set;
 
-public final class DataMatrixCellIterator<R extends DataResource> {
+public final class DataMatrixCellIterator<K extends DataResourceKey, D>
+        implements DataMatrixResourceIterator<K, D> {
 
     private final BigDecimal[] entryPoint;
-    private final DataMatrixCell<R> cell;
-    private final Iterator<DataMatrixCell<R>> cellIterator;
+    private final DataMatrixCell<DataResource<K, D>> cell;
+    private final Iterator<DataMatrixCell<DataResource<K, D>>> cellIterator;
 
-    private DataMatrixCellIterator<R> nestedCellIterator;
-    private DataMatrixCell<R> next;
+    private DataMatrixCellIterator<K, D> nestedCellIterator;
+    private DataMatrixCell<DataResource<K, D>> next;
 
     private DataMatrixCellIterator(
             final BigDecimal[] entryPoint,
-            final DataMatrixCell<R> cell) {
+            final DataMatrixCell<DataResource<K, D>> cell) {
         this.entryPoint = entryPoint;
         this.cell = cell;
         this.cellIterator = cell.getChildren()
@@ -27,18 +31,14 @@ public final class DataMatrixCellIterator<R extends DataResource> {
         next = advance();
     }
 
-    public static <R extends DataResource> DataMatrixCellIterator<R> startWith(
+    public static <K extends DataResourceKey, D> DataMatrixCellIterator<K, D> startWith(
             final BigDecimal[] entryPoint,
-            final DataMatrixCell<R> cell) {
+            final DataMatrixCell<DataResource<K, D>> cell) {
         return new DataMatrixCellIterator<>(entryPoint, cell);
     }
 
-    public DataMatrixCell<R> next() {
-        DataMatrixCell<R> result = next;
-        do {
-            next = advance();
-        } while (next != null && !next.hasResources());
-        return result;
+    public Set<DataResource<K, D>> next() {
+        return nextCell().getResources();
     }
 
     public boolean hasNext() {
@@ -48,7 +48,15 @@ public final class DataMatrixCellIterator<R extends DataResource> {
     public boolean hasNextWithinRange(final BigDecimal range) {
         return hasNext()
                 && (distanceFromEntryPointToNextIsWithinRange(range)
-                        || !parentOfNextWrapsAllPointsAroundTheEntryPointWithinRange(range));
+                || !parentOfNextWrapsAllPointsAroundTheEntryPointWithinRange(range));
+    }
+
+    private DataMatrixCell<DataResource<K, D>> nextCell() {
+        DataMatrixCell<DataResource<K, D>> result = next;
+        do {
+            next = advance();
+        } while (next != null && !next.hasResources());
+        return result;
     }
 
     private boolean distanceFromEntryPointToNextIsWithinRange(final BigDecimal range) {
@@ -59,7 +67,7 @@ public final class DataMatrixCellIterator<R extends DataResource> {
         return next.getParent() != null && next.getParent().wrapsKey(entryPoint, range);
     }
 
-    private DataMatrixCell<R> advance() {
+    private DataMatrixCell<DataResource<K, D>> advance() {
         if (itIsInitialAdviseOfResourceCell()) {
             return cell;
         }
@@ -67,7 +75,7 @@ public final class DataMatrixCellIterator<R extends DataResource> {
             nestedCellIterator = startWith(entryPoint, cellIterator.next());
         }
         if (nestedIteratorHasNext()) {
-            return nestedCellIterator.next();
+            return nestedCellIterator.nextCell();
         }
         return null;
     }

@@ -6,9 +6,10 @@ import com.h8.nh.nhoodengine.core.DataFinderFailedException;
 import com.h8.nh.nhoodengine.core.DataFinderResult;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCell;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellIterator;
 import com.h8.nh.nhoodengine.core.utils.BoundedTreeSet;
+import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
+import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
+import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -22,14 +23,11 @@ import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCA
 
 public final class DataScoreComputationEngine<K extends DataResourceKey, D> implements DataFinder<K, D> {
 
-    // TODO!!!
-    public static final int SIZE = 3;
-
-    private final DataMatrixCell<DataResource<K, D>> cell;
+    private final DataMatrixRepository<K, D> repository;
 
     DataScoreComputationEngine(
-            final DataMatrixCell<DataResource<K, D>> cell) {
-        this.cell = cell;
+            final DataMatrixRepository<K, D> repository) {
+        this.repository = repository;
     }
 
     @Override
@@ -41,15 +39,25 @@ public final class DataScoreComputationEngine<K extends DataResourceKey, D> impl
             return Collections.emptyList();
         }
 
-        DataMatrixCellIterator<DataResource<K, D>> iterator =
-                DataMatrixCellIterator.startWith(criteria.getMetadata().unified(), cell);
+        try {
+            DataMatrixResourceIterator<K, D> iterator =
+                    repository.findNeighbours(criteria.getMetadata());
+            return find(criteria, iterator);
+        } catch (DataMatrixRepositoryFailedException e) {
+            throw new DataFinderFailedException(
+                    "Could not find resources because of unexpected error", e);
+        }
+    }
 
+    private List<DataFinderResult<K, D>> find(
+            final DataFinderCriteria<K> criteria,
+            final DataMatrixResourceIterator<K, D> iterator) {
         TreeSet<DataFinderResult<K, D>> sorted =
                 new BoundedTreeSet<>(criteria.getLimit(), DataFinderResult::compareTo);
 
         do {
             Set<DataFinderResult<K, D>> neighbours =
-                    iterator.next().getResources()
+                    iterator.next()
                             .stream()
                             .map(r -> compute(r, criteria))
                             .collect(Collectors.toSet());
@@ -79,7 +87,7 @@ public final class DataScoreComputationEngine<K extends DataResourceKey, D> impl
                     "DataFinderCriteria metadata may not be empty");
         }
 
-        if (criteria.getMetadata().unified().length != SIZE) {
+        if (criteria.getMetadata().unified().length != repository.getMetadataSize()) {
             throw new DataFinderFailedException(
                     "DataFinderCriteria metadata size does not match data in repository");
         }
@@ -112,7 +120,7 @@ public final class DataScoreComputationEngine<K extends DataResourceKey, D> impl
     }
 
     private boolean shouldContinue(
-            final DataMatrixCellIterator<DataResource<K, D>> iterator,
+            final DataMatrixResourceIterator<K, D> iterator,
             final TreeSet<DataFinderResult<K, D>> sorted,
             final DataFinderCriteria<K> criteria) {
         if (limitReached(sorted, criteria)) {

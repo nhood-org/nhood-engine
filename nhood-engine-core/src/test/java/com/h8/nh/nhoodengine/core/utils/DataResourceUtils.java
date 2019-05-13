@@ -8,7 +8,7 @@ public final class DataResourceUtils {
     private DataResourceUtils() {
     }
 
-    public static DataResource resource(DataResourceKey key) {
+    public static DataResource<DataResourceKey, Object> resource(DataResourceKey key) {
         return new DataResource<>(key, null);
     }
 }

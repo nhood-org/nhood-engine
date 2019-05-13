@@ -7,6 +7,9 @@ import com.h8.nh.nhoodengine.core.DataResourceKey;
 import com.h8.nh.nhoodengine.core.matrix.DataMatrixCell;
 import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellConfiguration;
 import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellFactory;
+import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellIterator;
+import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
+import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
 import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
 
 import java.util.Arrays;
@@ -20,23 +23,22 @@ class DataScoreComputationEngineTest extends DataFinderAbstractTest<DataResource
 
     private static class TestContext implements DataFinderTestContext<DataResourceKey, Object> {
 
-        private final DataMatrixCell<DataResource<DataResourceKey, Object>> cell;
+        private TestContextRepository repository;
 
         private int registered;
 
         TestContext() {
-            DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder().build();
-            this.cell = DataMatrixCellFactory.root(3, configuration);
+            this.repository = new TestContextRepository();
         }
 
         @Override
         public DataFinder<DataResourceKey, Object> initializeDataFinder() {
-            return new DataScoreComputationEngine<>(cell);
+            return new DataScoreComputationEngine<>(repository);
         }
 
         @Override
         public void register(DataResource<DataResourceKey, Object> data) {
-            cell.add(data);
+            repository.add(data);
             registered++;
         }
 
@@ -63,6 +65,31 @@ class DataScoreComputationEngineTest extends DataFinderAbstractTest<DataResource
         @Override
         public Object data(DataResourceKey key) {
             return Arrays.toString(key.unified());
+        }
+    }
+
+    private static class TestContextRepository implements DataMatrixRepository<DataResourceKey, Object> {
+
+        private final DataMatrixCell<DataResource<DataResourceKey, Object>> cell;
+
+        TestContextRepository() {
+            DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder().build();
+            this.cell = DataMatrixCellFactory.root(3, configuration);
+        }
+
+        @Override
+        public int getMetadataSize() {
+            return 3;
+        }
+
+        @Override
+        public void add(DataResource<DataResourceKey, Object> resource) {
+            cell.add(resource);
+        }
+
+        @Override
+        public DataMatrixResourceIterator<DataResourceKey, Object> findNeighbours(DataResourceKey metadata) {
+            return DataMatrixCellIterator.startWith(metadata.unified(), cell);
         }
     }
 }

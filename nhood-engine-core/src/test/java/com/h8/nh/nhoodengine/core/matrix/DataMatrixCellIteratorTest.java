@@ -1,9 +1,11 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
 import com.h8.nh.nhoodengine.core.DataResource;
+import com.h8.nh.nhoodengine.core.DataResourceKey;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import static com.h8.nh.nhoodengine.core.utils.DataResourceUtils.resource;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,9 +26,10 @@ class DataMatrixCellIteratorTest {
     @Test
     void shouldReturnCellWhenIteratingThroughResourceCell() {
         // given
-        DataResource r = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
+        DataResource<DataResourceKey, Object> r =
+                resource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataResource> cell =
+        DataMatrixCell<DataResource<DataResourceKey, Object>> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
         cell.add(r);
 
@@ -35,14 +38,15 @@ class DataMatrixCellIteratorTest {
 
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
-        DataMatrixCellIterator<DataResource> iterator =
+        DataMatrixCellIterator<DataResourceKey, Object> iterator =
                 DataMatrixCellIterator.startWith(entryPoint, cell);
 
         // then
         assertThat(iterator.hasNext()).isTrue();
         assertThat(iterator.hasNextWithinRange(ZERO)).isTrue();
-        DataMatrixCell<DataResource> actualCell = iterator.next();
-        assertThat(actualCell).isEqualTo(cell);
+
+        Set<DataResource<DataResourceKey, Object>> resourceSet = iterator.next();
+        assertThat(resourceSet).isEqualTo(cell.getResources());
 
         assertThat(iterator.hasNext()).isFalse();
         assertThat(iterator.hasNextWithinRange(ZERO)).isFalse();
@@ -51,10 +55,12 @@ class DataMatrixCellIteratorTest {
     @Test
     void shouldReturnFirstResourceCellWhenIteratingThroughSplitCell() {
         // given
-        DataResource r1 = resource(() -> new BigDecimal[]{TEN.negate(), TEN, TEN});
-        DataResource r2 = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
+        DataResource<DataResourceKey, Object> r1 =
+                resource(() -> new BigDecimal[]{TEN.negate(), TEN, TEN});
+        DataResource<DataResourceKey, Object> r2 =
+                resource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataResource> cell =
+        DataMatrixCell<DataResource<DataResourceKey, Object>> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
         cell.add(r1);
         cell.add(r2);
@@ -64,15 +70,16 @@ class DataMatrixCellIteratorTest {
 
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
-        DataMatrixCellIterator<DataResource> iterator =
+        DataMatrixCellIterator<DataResourceKey, Object> iterator =
                 DataMatrixCellIterator.startWith(entryPoint, cell);
 
         // then
         assertThat(iterator.hasNext()).isTrue();
         assertThat(iterator.hasNextWithinRange(ZERO)).isTrue();
-        DataMatrixCell<DataResource> actualCell = iterator.next();
-        assertThat(actualCell).isNotEqualTo(cell);
-        assertThat(actualCell.getResources()).hasSize(1);
+
+        Set<DataResource<DataResourceKey, Object>> resourceSet = iterator.next();
+        assertThat(resourceSet).isNotEqualTo(cell.getResources());
+        assertThat(resourceSet).hasSize(1);
 
         assertThat(iterator.hasNext()).isTrue();
         assertThat(iterator.hasNextWithinRange(ZERO)).isFalse();
@@ -82,13 +89,18 @@ class DataMatrixCellIteratorTest {
     @Test
     void shouldReturnExpectedSequenceOfCells() {
         // given
-        DataResource r1 = resource(() -> new BigDecimal[]{ONE, ONE, ONE});
-        DataResource r2 = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
-        DataResource r3 = resource(() -> new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED});
-        DataResource r4 = resource(() -> new BigDecimal[]{TEN.negate(), TEN.negate(), TEN.negate()});
-        DataResource r5 = resource(() -> new BigDecimal[]{HUNDRED.negate(), HUNDRED.negate(), HUNDRED.negate()});
+        DataResource<DataResourceKey, Object> r1 =
+                resource(() -> new BigDecimal[]{ONE, ONE, ONE});
+        DataResource<DataResourceKey, Object> r2 =
+                resource(() -> new BigDecimal[]{TEN, TEN, TEN});
+        DataResource<DataResourceKey, Object> r3 =
+                resource(() -> new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED});
+        DataResource<DataResourceKey, Object> r4 =
+                resource(() -> new BigDecimal[]{TEN.negate(), TEN.negate(), TEN.negate()});
+        DataResource<DataResourceKey, Object> r5 =
+                resource(() -> new BigDecimal[]{HUNDRED.negate(), HUNDRED.negate(), HUNDRED.negate()});
 
-        DataMatrixCell<DataResource> cell =
+        DataMatrixCell<DataResource<DataResourceKey, Object>> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
         cell.add(r1);
         cell.add(r2);
@@ -98,29 +110,24 @@ class DataMatrixCellIteratorTest {
 
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
-        DataMatrixCellIterator<DataResource> iterator =
+        DataMatrixCellIterator<DataResourceKey, Object> iterator =
                 DataMatrixCellIterator.startWith(entryPoint, cell);
 
         // then
         assertThat(iterator.hasNext()).isTrue();
-        DataMatrixCell<DataResource> actualCell = iterator.next();
-        assertThat(actualCell.getResources()).containsExactlyInAnyOrder(r2);
+        assertThat(iterator.next()).containsExactlyInAnyOrder(r2);
 
         assertThat(iterator.hasNext()).isTrue();
-        actualCell = iterator.next();
-        assertThat(actualCell.getResources()).containsExactlyInAnyOrder(r3);
+        assertThat(iterator.next()).containsExactlyInAnyOrder(r3);
 
         assertThat(iterator.hasNext()).isTrue();
-        actualCell = iterator.next();
-        assertThat(actualCell.getResources()).containsExactlyInAnyOrder(r1);
+        assertThat(iterator.next()).containsExactlyInAnyOrder(r1);
 
         assertThat(iterator.hasNext()).isTrue();
-        actualCell = iterator.next();
-        assertThat(actualCell.getResources()).containsExactlyInAnyOrder(r4);
+        assertThat(iterator.next()).containsExactlyInAnyOrder(r4);
 
         assertThat(iterator.hasNext()).isTrue();
-        actualCell = iterator.next();
-        assertThat(actualCell.getResources()).containsExactlyInAnyOrder(r5);
+        assertThat(iterator.next()).containsExactlyInAnyOrder(r5);
 
         assertThat(iterator.hasNext()).isFalse();
     }
