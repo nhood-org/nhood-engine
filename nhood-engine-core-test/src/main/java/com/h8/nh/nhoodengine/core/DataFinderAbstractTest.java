@@ -7,9 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
-import java.util.Vector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,13 +17,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * DataFinderAbstractTest is an abstract test class
  * that implements DataFinderRequirements.
- *
+ * <p>
  * This class has been abstracted in order to maintain generic approach.
- *
+ * <p>
  * It is assumed that all sequences of metadata types may be mapped
  * into a sequence of integers and all relations, and geometrical features are inherited.
  * Therefore all tests are based on integer-typed vectors.
- *
+ * <p>
  * While testing a concrete implementation of DataFinder
  * an implementer has to implement a DataFinderTestContext interface.
  *
@@ -31,19 +31,28 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @param <D> a generic type of data resource.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirements {
+public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> implements DataFinderRequirements {
 
-    private static final Double DISTANCE_ZERO = 0.0;
+    // TODO!!! move to configuration
+    private static final int SCALE = 4;
 
-    private static final Double DISTANCE_ONE = 1.0;
+    private static final BigDecimal DISTANCE_ZERO =
+            BigDecimal.ZERO.setScale(SCALE, RoundingMode.CEILING);
 
-    private static final Double DISTANCE_DIAGONAL_SQUARE = Math.sqrt(2.0);
+    private static final BigDecimal DISTANCE_ONE =
+            BigDecimal.ONE.setScale(SCALE, RoundingMode.CEILING);
 
-    private static final Double DISTANCE_DIAGONAL_CUBE = Math.sqrt(3.0);
+    private static final double DIAGONAL_SQUARE = Math.sqrt(2.0);
+    private static final BigDecimal DISTANCE_DIAGONAL_SQUARE =
+            BigDecimal.valueOf(DIAGONAL_SQUARE).setScale(SCALE, RoundingMode.CEILING);
 
-    private static final Vector<Integer> KEY_VECTOR_MIN_LIMIT = new Vector<>(Arrays.asList(-100, -100, -10));
+    private static final double DIAGONAL_CUBE = Math.sqrt(3.0);
+    private static final BigDecimal DISTANCE_DIAGONAL_CUBE =
+            BigDecimal.valueOf(DIAGONAL_CUBE).setScale(SCALE, RoundingMode.CEILING);
 
-    private static final Vector<Integer> KEY_VECTOR_MAX_LIMIT = new Vector<>(Arrays.asList(10, 100, 100));
+    private static final Integer[] KEY_VECTOR_MIN_LIMIT = new Integer[]{-100, -100, -10};
+
+    private static final Integer[] KEY_VECTOR_MAX_LIMIT = new Integer[]{10, 100, 100};
 
     private DataFinderTestContext<K, D> ctx;
 
@@ -120,7 +129,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorSizeDoesNotMatch() {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0);
+        K metadata = ctx.dataKey(0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(10)
@@ -137,7 +146,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaLimitIsNegative() {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(-1)
@@ -155,7 +164,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldReturnAnEmptyResultListWhenCriteriaLimitZero()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(0)
@@ -172,7 +181,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldReturnResultListOfLimitSizeWhenCriteriaLimitIsBelowDataSetSize()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(10)
@@ -189,7 +198,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldReturnWholeResultSetWhenCriteriaLimitHigherThanDataSetSize()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(Integer.MAX_VALUE)
@@ -206,7 +215,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldReturnListOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(5, -50, 50);
+        K metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(7)
@@ -233,7 +242,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldCalculateScoresOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(5, -50, 50);
+        K metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(27)
@@ -282,7 +291,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldOrderClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(5, -50, 50);
+        K metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(27)
@@ -291,9 +300,9 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
         assertThat(results.subList(0, 1))
-                .extracting("score").containsOnly(0.0);
+                .extracting("score").containsOnly(DISTANCE_ZERO);
         assertThat(results.subList(1, 7))
-                .extracting("score").containsOnly(1.0);
+                .extracting("score").containsOnly(DISTANCE_ONE);
         assertThat(results.subList(7, 19))
                 .extracting("score").containsOnly(DISTANCE_DIAGONAL_SQUARE);
         assertThat(results.subList(19, 27))
@@ -306,7 +315,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldReturnListOfClosestResultForALowestPossibleMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
+        K metadata = ctx.dataKey(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(4)
@@ -330,7 +339,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        K metadata = ctx.dataKey(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(4)
@@ -354,7 +363,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     public final void shouldReturnListOfClosestResultForAllZeroesMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(7)

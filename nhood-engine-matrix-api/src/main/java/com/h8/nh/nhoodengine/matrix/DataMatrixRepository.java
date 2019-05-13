@@ -1,6 +1,7 @@
 package com.h8.nh.nhoodengine.matrix;
 
 import com.h8.nh.nhoodengine.core.DataResource;
+import com.h8.nh.nhoodengine.core.DataResourceKey;
 
 import java.util.Set;
 import java.util.Vector;
@@ -12,7 +13,7 @@ import java.util.Vector;
  * @param <K> a generic type of data metadata key vector.
  * @param <D> a generic type of data resource.
  */
-public interface DataMatrixRepository<K, D> {
+public interface DataMatrixRepository<K extends DataResourceKey, D> {
 
     /**
      * Returns size of metadata vector accepted within repository

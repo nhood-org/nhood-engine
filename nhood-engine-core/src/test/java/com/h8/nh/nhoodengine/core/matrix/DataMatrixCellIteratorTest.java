@@ -1,5 +1,7 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
+import com.h8.nh.nhoodengine.core.DataResource;
+import com.h8.nh.nhoodengine.core.DataResourceKey;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -22,9 +24,9 @@ class DataMatrixCellIteratorTest {
     @Test
     void shouldReturnCellWhenIteratingThroughResourceCell() {
         // given
-        DataMatrixResource r = () -> new BigDecimal[]{TEN, TEN, TEN};
+        DataResource r = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataMatrixResource> cell =
+        DataMatrixCell<DataResource> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
         cell.add(r);
 
@@ -33,13 +35,13 @@ class DataMatrixCellIteratorTest {
 
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
-        DataMatrixCellIterator<DataMatrixResource> iterator =
+        DataMatrixCellIterator<DataResource> iterator =
                 DataMatrixCellIterator.startWith(entryPoint, cell);
 
         // then
         assertThat(iterator.hasNext()).isTrue();
         assertThat(iterator.hasNextWithinRange(ZERO)).isTrue();
-        DataMatrixCell<DataMatrixResource> actualCell = iterator.next();
+        DataMatrixCell<DataResource> actualCell = iterator.next();
         assertThat(actualCell).isEqualTo(cell);
 
         assertThat(iterator.hasNext()).isFalse();
@@ -49,10 +51,10 @@ class DataMatrixCellIteratorTest {
     @Test
     void shouldReturnFirstResourceCellWhenIteratingThroughSplitCell() {
         // given
-        DataMatrixResource r1 = () -> new BigDecimal[]{TEN.negate(), TEN, TEN};
-        DataMatrixResource r2 = () -> new BigDecimal[]{TEN, TEN, TEN};
+        DataResource r1 = resource(() -> new BigDecimal[]{TEN.negate(), TEN, TEN});
+        DataResource r2 = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataMatrixResource> cell =
+        DataMatrixCell<DataResource> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
         cell.add(r1);
         cell.add(r2);
@@ -62,13 +64,13 @@ class DataMatrixCellIteratorTest {
 
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
-        DataMatrixCellIterator<DataMatrixResource> iterator =
+        DataMatrixCellIterator<DataResource> iterator =
                 DataMatrixCellIterator.startWith(entryPoint, cell);
 
         // then
         assertThat(iterator.hasNext()).isTrue();
         assertThat(iterator.hasNextWithinRange(ZERO)).isTrue();
-        DataMatrixCell<DataMatrixResource> actualCell = iterator.next();
+        DataMatrixCell<DataResource> actualCell = iterator.next();
         assertThat(actualCell).isNotEqualTo(cell);
         assertThat(actualCell.getResources()).hasSize(1);
 
@@ -80,13 +82,13 @@ class DataMatrixCellIteratorTest {
     @Test
     void shouldReturnExpectedSequenceOfCells() {
         // given
-        DataMatrixResource r1 = () -> new BigDecimal[]{ONE, ONE, ONE};
-        DataMatrixResource r2 = () -> new BigDecimal[]{TEN, TEN, TEN};
-        DataMatrixResource r3 = () -> new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED};
-        DataMatrixResource r4 = () -> new BigDecimal[]{TEN.negate(), TEN.negate(), TEN.negate()};
-        DataMatrixResource r5 = () -> new BigDecimal[]{HUNDRED.negate(), HUNDRED.negate(), HUNDRED.negate()};
+        DataResource r1 = resource(() -> new BigDecimal[]{ONE, ONE, ONE});
+        DataResource r2 = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
+        DataResource r3 = resource(() -> new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED});
+        DataResource r4 = resource(() -> new BigDecimal[]{TEN.negate(), TEN.negate(), TEN.negate()});
+        DataResource r5 = resource(() -> new BigDecimal[]{HUNDRED.negate(), HUNDRED.negate(), HUNDRED.negate()});
 
-        DataMatrixCell<DataMatrixResource> cell =
+        DataMatrixCell<DataResource> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
         cell.add(r1);
         cell.add(r2);
@@ -96,12 +98,12 @@ class DataMatrixCellIteratorTest {
 
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
-        DataMatrixCellIterator<DataMatrixResource> iterator =
+        DataMatrixCellIterator<DataResource> iterator =
                 DataMatrixCellIterator.startWith(entryPoint, cell);
 
         // then
         assertThat(iterator.hasNext()).isTrue();
-        DataMatrixCell<DataMatrixResource> actualCell = iterator.next();
+        DataMatrixCell<DataResource> actualCell = iterator.next();
         assertThat(actualCell.getResources()).containsExactlyInAnyOrder(r2);
 
         assertThat(iterator.hasNext()).isTrue();
@@ -121,5 +123,10 @@ class DataMatrixCellIteratorTest {
         assertThat(actualCell.getResources()).containsExactlyInAnyOrder(r5);
 
         assertThat(iterator.hasNext()).isFalse();
+    }
+
+    // TODO!!! extract
+    private static DataResource resource(DataResourceKey key) {
+        return new DataResource<>(key, null);
     }
 }

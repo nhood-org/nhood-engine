@@ -1,10 +1,12 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
+import com.h8.nh.nhoodengine.core.DataResource;
+
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Iterator;
 
-public final class DataMatrixCellIterator<R extends DataMatrixResource> {
+public final class DataMatrixCellIterator<R extends DataResource> {
 
     private final BigDecimal[] entryPoint;
     private final DataMatrixCell<R> cell;
@@ -25,7 +27,7 @@ public final class DataMatrixCellIterator<R extends DataMatrixResource> {
         next = advance();
     }
 
-    public static <R extends DataMatrixResource> DataMatrixCellIterator<R> startWith(
+    public static <R extends DataResource> DataMatrixCellIterator<R> startWith(
             final BigDecimal[] entryPoint,
             final DataMatrixCell<R> cell) {
         return new DataMatrixCellIterator<>(entryPoint, cell);

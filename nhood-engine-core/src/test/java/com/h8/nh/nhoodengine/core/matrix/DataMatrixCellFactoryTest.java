@@ -1,5 +1,6 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
+import com.h8.nh.nhoodengine.core.DataResource;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ class DataMatrixCellFactoryTest {
                         .build();
 
         // when
-        DataMatrixCell<DataMatrixResource> cell = DataMatrixCellFactory.root(metadataSize, cellConfiguration);
+        DataMatrixCell<DataResource> cell = DataMatrixCellFactory.root(metadataSize, cellConfiguration);
 
         // then
         assertThat(cell.getIndex()).hasSize(metadataSize);

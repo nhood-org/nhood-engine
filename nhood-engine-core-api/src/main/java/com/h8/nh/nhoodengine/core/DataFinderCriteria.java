@@ -1,32 +1,41 @@
 package com.h8.nh.nhoodengine.core;
 
 import java.util.Objects;
-import java.util.Vector;
 
 /**
  * This class is a set of data finder search criteria.
  *
  * @param <K> a generic type of data metadata key vector.
  */
-public final class DataFinderCriteria<K> {
+public final class DataFinderCriteria<K extends DataResourceKey> {
 
     /**
      * Metadata key vector representing a geometric point of interest
      */
-    private final Vector<K> metadata;
-
-    /**
-     * Metadata key vector representing a geometric point of interest
-     * @return actual key vector value
-     */
-    public Vector<K> getMetadata() {
-        return metadata;
-    }
+    private final K metadata;
 
     /**
      * Limit of size of returned results
      */
     private final int limit;
+
+    /**
+     * Default constructor
+     * @param metadata metadata key vector
+     * @param limit size limit
+     */
+    public DataFinderCriteria(final K metadata, final int limit) {
+        this.metadata = metadata;
+        this.limit = limit;
+    }
+
+    /**
+     * Metadata key vector representing a geometric point of interest
+     * @return actual key vector value
+     */
+    public K getMetadata() {
+        return metadata;
+    }
 
     /**
      * Limit of size of returned results
@@ -37,21 +46,11 @@ public final class DataFinderCriteria<K> {
     }
 
     /**
-     * Default constructor
-     * @param metadata metadata key vector
-     * @param limit size limit
-     */
-    public DataFinderCriteria(final Vector<K> metadata, final int limit) {
-        this.metadata = metadata;
-        this.limit = limit;
-    }
-
-    /**
      * A static method exposing an auxiliary builder
      * @param keyClass key generic class
      * @return An instance of a builder
      */
-    public static <K> DataFinderCriteriaBuilder<K> builder(final Class<K> keyClass) {
+    public static <K extends DataResourceKey> DataFinderCriteriaBuilder<K> builder(final Class<K> keyClass) {
         return new DataFinderCriteriaBuilder<>();
     }
 
@@ -85,9 +84,9 @@ public final class DataFinderCriteria<K> {
      * An auxiliary builder of DataFinderCriteria
      * @param <K> a generic type of data metadata key vector.
      */
-    public static final class DataFinderCriteriaBuilder<K> {
+    public static final class DataFinderCriteriaBuilder<K extends DataResourceKey> {
 
-        private Vector<K> metadata;
+        private K metadata;
         private int limit;
 
         private DataFinderCriteriaBuilder() {
@@ -98,7 +97,7 @@ public final class DataFinderCriteria<K> {
          * @param metadata key vector value
          * @return builder instance
          */
-        public DataFinderCriteriaBuilder<K> metadata(final Vector<K> metadata) {
+        public DataFinderCriteriaBuilder<K> metadata(final K metadata) {
             this.metadata = metadata;
             return this;
         }

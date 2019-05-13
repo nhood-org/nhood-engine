@@ -1,5 +1,7 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
+import com.h8.nh.nhoodengine.core.DataResource;
+import com.h8.nh.nhoodengine.core.DataResourceKey;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,7 +39,7 @@ class DataMatrixCellTest {
         BigDecimal[] cellClosure = new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED};
 
         // when
-        DataMatrixCell<DataMatrixResource> cell =
+        DataMatrixCell<DataResource> cell =
                 new DataMatrixCell<>(cellIndex, cellClosure, null, cellConfiguration);
 
         // then
@@ -61,8 +63,8 @@ class DataMatrixCellTest {
     @Test
     void shouldAcceptResourceWhenAddingToRelevantCell() {
         // given
-        DataMatrixResource r = () -> new BigDecimal[]{ZERO, ZERO, ZERO};
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+        DataResource r = resource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
+        DataMatrixCell<DataResource> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -78,11 +80,11 @@ class DataMatrixCellTest {
     @Test
     void shouldAcceptResourceWhenAddingToSplitCell() {
         // given
-        DataMatrixResource r1 = () -> new BigDecimal[]{ZERO, ZERO, ZERO};
-        DataMatrixResource r2 = () -> new BigDecimal[]{ONE, ONE, ONE};
-        DataMatrixResource r3 = () -> new BigDecimal[]{TEN, TEN, TEN};
+        DataResource r1 = resource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
+        DataResource r2 = resource(() -> new BigDecimal[]{ONE, ONE, ONE});
+        DataResource r3 = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataResource> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -102,9 +104,9 @@ class DataMatrixCellTest {
     @Test
     void shouldNotAcceptResourceWhenAddingToIrrelevantCell() {
         // given
-        DataMatrixResource r = () -> new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED};
+        DataResource r = resource(() -> new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED});
 
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataResource> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -120,10 +122,10 @@ class DataMatrixCellTest {
     @Test
     void shouldSplitCellWhenLimitOfResourcesIsExceeded() {
         // given
-        DataMatrixResource r1 = () -> new BigDecimal[]{ZERO, ZERO, ZERO};
-        DataMatrixResource r2 = () -> new BigDecimal[]{TEN, TEN, TEN};
+        DataResource r1 = resource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
+        DataResource r2 = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataResource> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -138,12 +140,12 @@ class DataMatrixCellTest {
         int size = (int) Math.pow(2, cellConfiguration.getSplitIterations());
         assertThat(cell.getChildren()).hasSize(size);
 
-        DataMatrixCell<DataMatrixResource> r1Cell = cell.getChildren().iterator().next();
+        DataMatrixCell<DataResource> r1Cell = cell.getChildren().iterator().next();
         assertThat(r1Cell.getResources()).hasSize(1);
         assertThat(r1Cell.getResources()).containsAnyOf(r1, r2);
         assertThat(r1Cell.getParent()).isEqualTo(cell);
 
-        DataMatrixCell<DataMatrixResource> r2Cell = cell.getChildren().iterator().next();
+        DataMatrixCell<DataResource> r2Cell = cell.getChildren().iterator().next();
         assertThat(r2Cell.getResources()).hasSize(1);
         assertThat(r2Cell.getResources()).containsAnyOf(r1, r2);
         assertThat(r2Cell.getParent()).isEqualTo(cell);
@@ -152,9 +154,9 @@ class DataMatrixCellTest {
     @Test
     void shouldNotSplitCellWhenNumberOfResourcesIsBelowLimit() {
         // given
-        DataMatrixResource r = () -> new BigDecimal[]{ZERO, ZERO, ZERO};
+        DataResource r = resource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
 
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataResource> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -174,7 +176,7 @@ class DataMatrixCellTest {
             final BigDecimal[] point,
             final BigDecimal expectedDistance) {
         // given
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataResource> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -215,7 +217,7 @@ class DataMatrixCellTest {
             final BigDecimal[] point,
             final boolean expectedResult) {
         // given
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataResource> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -252,7 +254,7 @@ class DataMatrixCellTest {
             final BigDecimal range,
             final boolean expectedResult) {
         // given
-        DataMatrixCell<DataMatrixResource> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataResource> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -277,5 +279,10 @@ class DataMatrixCellTest {
                 Arguments.of(new BigDecimal[]{TEN, TEN, TEN}, TEN_PLUS, false),
                 Arguments.of(new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED}, TEN, false)
         );
+    }
+
+    // TODO!!! extract
+    private static DataResource resource(DataResourceKey key) {
+        return new DataResource<>(key, null);
     }
 }

@@ -1,7 +1,7 @@
 package com.h8.nh.nhoodengine.core;
 
+import java.util.Arrays;
 import java.util.Objects;
-import java.util.Vector;
 
 /**
  * This class represents a basic data resource that is is being searched for
@@ -14,25 +14,35 @@ import java.util.Vector;
  * @param <K> a generic type of data metadata key vector.
  * @param <D> a generic type of data resource.
  */
-public final class DataResource<K, D> {
+public final class DataResource<K extends DataResourceKey, D> {
 
     /**
      * Data metadata key vector
      */
-    private final Vector<K> key;
-
-    /**
-     * Data metadata key vector
-     * @return actual metadata key value
-     */
-    public Vector<K> getKey() {
-        return key;
-    }
+    private final K key;
 
     /**
      * Data resource
      */
     private final D data;
+
+    /**
+     * Default constructor
+     * @param key metadata key value
+     * @param data data resource value
+     */
+    public DataResource(final K key, final D data) {
+        this.key = key;
+        this.data = data;
+    }
+
+    /**
+     * Data metadata key vector
+     * @return actual metadata key value
+     */
+    public K getKey() {
+        return key;
+    }
 
     /**
      * Data resource
@@ -43,22 +53,12 @@ public final class DataResource<K, D> {
     }
 
     /**
-     * Default constructor
-     * @param key metadata key value
-     * @param data data resource value
-     */
-    public DataResource(final Vector<K> key, final D data) {
-        this.key = key;
-        this.data = data;
-    }
-
-    /**
      * A static method exposing an auxiliary builder
      * @param keyClass key generic class
      * @param dataClass data generic class
      * @return An instance of a builder
      */
-    public static <K, D> DataResourceBuilder<K, D> builder(
+    public static <K extends DataResourceKey, D> DataResourceBuilder<K, D> builder(
             final Class<K> keyClass, final Class<D> dataClass) {
         return new DataResourceBuilder<>();
     }
@@ -72,7 +72,7 @@ public final class DataResource<K, D> {
             return false;
         }
         DataResource<?, ?> that = (DataResource<?, ?>) o;
-        return Objects.equals(key, that.key)
+        return Arrays.equals(this.key.unified(), that.key.unified())
                 && Objects.equals(data, that.data);
     }
 
@@ -94,8 +94,8 @@ public final class DataResource<K, D> {
      * @param <K> a generic type of data metadata key vector.
      * @param <D> a generic type of data resource.
      */
-    public static final class DataResourceBuilder<K, D> {
-        private Vector<K> key;
+    public static final class DataResourceBuilder<K extends DataResourceKey, D> {
+        private K key;
         private D data;
 
         private DataResourceBuilder() {
@@ -106,7 +106,7 @@ public final class DataResource<K, D> {
          * @param key metadata key value
          * @return builder instance
          */
-        public DataResourceBuilder<K, D> key(final Vector<K> key) {
+        public DataResourceBuilder<K, D> key(final K key) {
             this.key = key;
             return this;
         }

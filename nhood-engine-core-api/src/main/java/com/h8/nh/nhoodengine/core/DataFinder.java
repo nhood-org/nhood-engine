@@ -13,7 +13,7 @@ import java.util.List;
  * @param <K> a generic type of data metadata key vector.
  * @param <D> a generic type of data resource.
  */
-public interface DataFinder<K, D> {
+public interface DataFinder<K extends DataResourceKey, D> {
 
     /**
      * Find a list of DataResource's in accordance with given criteria

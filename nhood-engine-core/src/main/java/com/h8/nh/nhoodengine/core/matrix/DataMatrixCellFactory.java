@@ -1,12 +1,14 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
+import com.h8.nh.nhoodengine.core.DataResource;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * @param <R>
+ *
  */
-public final class DataMatrixCellFactory<R extends DataMatrixResource> {
+public final class DataMatrixCellFactory {
 
     // TODO!!! move to configuration
     private static final int SCALE = 4;
@@ -14,7 +16,7 @@ public final class DataMatrixCellFactory<R extends DataMatrixResource> {
     private DataMatrixCellFactory() {
     }
 
-    public static <R extends DataMatrixResource> DataMatrixCell<R> root(
+    public static <R extends DataResource> DataMatrixCell<R> root(
             final int size,
             final DataMatrixCellConfiguration configuration) {
         BigDecimal[] index = new BigDecimal[size];

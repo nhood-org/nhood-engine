@@ -1,6 +1,8 @@
 package com.h8.nh.nhoodengine.core;
 
+import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * This class is a wrapper of data resource returned by data fined.
@@ -9,18 +11,23 @@ import java.util.Objects;
  * @param <K> a generic type of data metadata key vector.
  * @param <D> a generic type of data resource.
  */
-public final class DataFinderResult<K, D> {
+public final class DataFinderResult<K extends DataResourceKey, D> implements Comparable<DataFinderResult<K, D>> {
+
+    /**
+     * TODO!!!
+     */
+    private final UUID uuid;
 
     /**
      * A score which resource gained during the course of evaluation
      */
-    private final double score;
+    private final BigDecimal score;
 
     /**
      * A score which resource gained during the course of evaluation
      * @return actual score value
      */
-    public double getScore() {
+    public BigDecimal getScore() {
         return score;
     }
 
@@ -42,7 +49,8 @@ public final class DataFinderResult<K, D> {
      * @param score score value
      * @param resource resource value
      */
-    public DataFinderResult(final double score, final DataResource<K, D> resource) {
+    public DataFinderResult(final BigDecimal score, final DataResource<K, D> resource) {
+        this.uuid = UUID.randomUUID();
         this.score = score;
         this.resource = resource;
     }
@@ -53,9 +61,18 @@ public final class DataFinderResult<K, D> {
      * @param dataClass data generic class
      * @return An instance of a builder
      */
-    public static <K, D> DataFinderResultBuilder<K, D> builder(
+    public static <K extends DataResourceKey, D> DataFinderResultBuilder<K, D> builder(
             final Class<K> keyClass, final Class<D> dataClass) {
         return new DataFinderResultBuilder<>();
+    }
+
+    @Override
+    public int compareTo(final DataFinderResult<K, D> o) {
+        int res = score.compareTo(o.score);
+        if (res != 0) {
+            return res;
+        }
+        return uuid.compareTo(o.uuid);
     }
 
     @Override
@@ -67,7 +84,7 @@ public final class DataFinderResult<K, D> {
             return false;
         }
         DataFinderResult<?, ?> that = (DataFinderResult<?, ?>) o;
-        return Double.compare(that.score, score) == 0
+        return that.score.compareTo(score) == 0
                 && Objects.equals(resource, that.resource);
     }
 
@@ -89,8 +106,8 @@ public final class DataFinderResult<K, D> {
      * @param <K> a generic type of data metadata key vector.
      * @param <D> a generic type of data resource.
      */
-    public static final class DataFinderResultBuilder<K, D> {
-        private double score;
+    public static final class DataFinderResultBuilder<K extends DataResourceKey, D> {
+        private BigDecimal score;
         private DataResource<K, D> resource;
 
         private DataFinderResultBuilder() {
@@ -101,7 +118,7 @@ public final class DataFinderResult<K, D> {
          * @param score score value
          * @return builder instance
          */
-        public DataFinderResultBuilder<K, D> score(final double score) {
+        public DataFinderResultBuilder<K, D> score(final BigDecimal score) {
             this.score = score;
             return this;
         }

@@ -1,5 +1,7 @@
 package com.h8.nh.nhoodengine.core.matrix;
 
+import com.h8.nh.nhoodengine.core.DataResource;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
@@ -13,7 +15,7 @@ import java.util.UUID;
 /**
  * @param <R>
  */
-public final class DataMatrixCell<R extends DataMatrixResource> {
+public final class DataMatrixCell<R extends DataResource> {
 
     // TODO!!! move to configuration
     private static final int SCALE = 4;
@@ -118,8 +120,8 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
                 .setScale(SCALE, RoundingMode.CEILING);
     }
 
-    void add(final R resource) {
-        if (!this.wrapsKey(resource.getKey())) {
+    public void add(final R resource) {
+        if (!this.wrapsKey(resource.getKey().unified())) {
             throw new IllegalStateException("Cell does not cover given key");
         }
         if (this.hasChildren()) {
@@ -133,13 +135,13 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
 
     private DataMatrixCell<R> findRelevantChild(final R resource) {
         return children.stream()
-                .filter(c -> c.wrapsKey(resource.getKey()))
+                .filter(c -> c.wrapsKey(resource.getKey().unified()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("There is no cell covering given key"));
     }
 
     private void updateStatistics(final R resource) {
-        BigDecimal[] key = resource.getKey();
+        BigDecimal[] key = resource.getKey().unified();
         for (int i = 0; i < key.length; i++) {
             statistics[i].accept(key[i].doubleValue());
         }
@@ -163,7 +165,7 @@ public final class DataMatrixCell<R extends DataMatrixResource> {
 
         this.resources
                 .stream()
-                .filter(r -> this.wrapsKey(r.getKey()))
+                .filter(r -> this.wrapsKey(r.getKey().unified()))
                 .forEach(this::add);
         this.resources.clear();
     }
