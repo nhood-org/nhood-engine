@@ -5,6 +5,7 @@ import com.h8.nh.nhoodengine.core.DataFinderCriteria;
 import com.h8.nh.nhoodengine.core.DataFinderFailedException;
 import com.h8.nh.nhoodengine.core.DataFinderResult;
 import com.h8.nh.nhoodengine.core.DataResource;
+import com.h8.nh.nhoodengine.core.DataResourceKey;
 import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
 import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -16,9 +17,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * DataFinderAbstractPerformanceTest is an abstract test class
@@ -33,11 +32,11 @@ import java.util.Vector;
  * While testing a concrete implementation of DataFinder
  * an implementer has to implement a DataFinderTestContext interface.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
 @State(Scope.Benchmark)
-public abstract class DataFinderAbstractPerformanceTest<K, D> {
+public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKey, D> {
 
     private static final int LIMIT = 50;
 
@@ -64,8 +63,8 @@ public abstract class DataFinderAbstractPerformanceTest<K, D> {
         ctx = initializeContext();
         dataFinder = ctx.initializeDataFinder();
 
-        Vector<Integer> minLimit = createLimitVector(-1 * range);
-        Vector<Integer> maxLimit = createLimitVector(range);
+        Integer[] minLimit = createLimitVector(-1 * range);
+        Integer[] maxLimit = createLimitVector(range);
 
         DataKeyGenerator
                 .generate(minLimit, maxLimit)
@@ -77,7 +76,7 @@ public abstract class DataFinderAbstractPerformanceTest<K, D> {
                 .forEach(ctx::register);
 
         System.out.println(
-                "Initialized '" + Math.pow(range, minLimit.size()) + "' data elements");
+                "Initialized '" + Math.pow(range, minLimit.length) + "' data elements");
     }
 
     @Benchmark
@@ -85,7 +84,7 @@ public abstract class DataFinderAbstractPerformanceTest<K, D> {
     public final void shouldReturnResultListOfRequestedSize()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(LIMIT)
@@ -94,7 +93,7 @@ public abstract class DataFinderAbstractPerformanceTest<K, D> {
         assert results.size() == LIMIT;
     }
 
-    private Vector<Integer> createLimitVector(final int range) {
-        return new Vector<>(Arrays.asList(range / 2, range / 2, range / 2));
+    private Integer[] createLimitVector(final int range) {
+        return new Integer[]{range / 2, range / 2, range / 2};
     }
 }

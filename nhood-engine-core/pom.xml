@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>nhood-engine-core-test</artifactId>
+    <artifactId>nhood-engine-core</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
 
     <parent>
         <artifactId>nhood-engine</artifactId>
         <groupId>com.h8.nh</groupId>
         <version>0.0.2-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>
@@ -22,22 +22,15 @@
 
         <dependency>
             <groupId>com.h8.nh</groupId>
-            <artifactId>nhood-engine-test-utils</artifactId>
+            <artifactId>nhood-engine-matrix-api</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
 
+        <!--Test-->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
-            <scope>provided</scope>
+            <groupId>com.h8.nh</groupId>
+            <artifactId>nhood-engine-core-test</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

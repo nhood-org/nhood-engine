@@ -1,33 +1,41 @@
 package com.h8.nh.nhoodengine.core;
 
+import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
- * This class is a wrapper of data resource returned by data fined.
+ * This class is a wrapper of data resource returned by data finder.
  * Data is enriched with additional stats and metrics.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
-public final class DataFinderResult<K, D> {
+public final class DataFinderResult<K extends DataResourceKey, D>
+        implements Comparable<DataFinderResult<K, D>> {
+
+    /**
+     * An internal unique identifier;
+     */
+    private final UUID uuid;
 
     /**
      * A score which resource gained during the course of evaluation
      */
-    private final double score;
-
-    /**
-     * A score which resource gained during the course of evaluation
-     * @return actual score value
-     */
-    public double getScore() {
-        return score;
-    }
+    private final BigDecimal score;
 
     /**
      * An actual data resource found
      */
     private final DataResource<K, D> resource;
+
+    /**
+     * A score which resource gained during the course of evaluation
+     * @return actual score value
+     */
+    public BigDecimal getScore() {
+        return score;
+    }
 
     /**
      * An actual data resource found
@@ -42,18 +50,30 @@ public final class DataFinderResult<K, D> {
      * @param score score value
      * @param resource resource value
      */
-    public DataFinderResult(final double score, final DataResource<K, D> resource) {
+    public DataFinderResult(final BigDecimal score, final DataResource<K, D> resource) {
+        this.uuid = UUID.randomUUID();
         this.score = score;
         this.resource = resource;
     }
 
     /**
      * A static method exposing an auxiliary builder
+     * @param keyClass key generic class
+     * @param dataClass data generic class
      * @return An instance of a builder
      */
-    public static <K, D> DataFinderResultBuilder<K, D> builder(
+    public static <K extends DataResourceKey, D> DataFinderResultBuilder<K, D> builder(
             final Class<K> keyClass, final Class<D> dataClass) {
         return new DataFinderResultBuilder<>();
+    }
+
+    @Override
+    public int compareTo(final DataFinderResult<K, D> o) {
+        int result = score.compareTo(o.score);
+        if (result != 0) {
+            return result;
+        }
+        return uuid.compareTo(o.uuid);
     }
 
     @Override
@@ -65,7 +85,7 @@ public final class DataFinderResult<K, D> {
             return false;
         }
         DataFinderResult<?, ?> that = (DataFinderResult<?, ?>) o;
-        return Double.compare(that.score, score) == 0
+        return Objects.equals(score, that.score)
                 && Objects.equals(resource, that.resource);
     }
 
@@ -84,11 +104,11 @@ public final class DataFinderResult<K, D> {
 
     /**
      * An auxiliary builder of DataFinderResult
-     * @param <K> a generic type of data metadata key vector.
+     * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
      * @param <D> a generic type of data resource.
      */
-    public static final class DataFinderResultBuilder<K, D> {
-        private double score;
+    public static final class DataFinderResultBuilder<K extends DataResourceKey, D> {
+        private BigDecimal score;
         private DataResource<K, D> resource;
 
         private DataFinderResultBuilder() {
@@ -99,7 +119,7 @@ public final class DataFinderResult<K, D> {
          * @param score score value
          * @return builder instance
          */
-        public DataFinderResultBuilder<K, D> score(final double score) {
+        public DataFinderResultBuilder<K, D> score(final BigDecimal score) {
             this.score = score;
             return this;
         }

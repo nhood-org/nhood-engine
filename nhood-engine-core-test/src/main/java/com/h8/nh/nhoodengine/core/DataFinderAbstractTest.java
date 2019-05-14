@@ -5,35 +5,52 @@ import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
 import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Vector;
 
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
+import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * DataFinderAbstractTest is an abstract test class
  * that implements DataFinderRequirements.
- *
+ * <p>
  * This class has been abstracted in order to maintain generic approach.
- *
+ * <p>
  * It is assumed that all sequences of metadata types may be mapped
  * into a sequence of integers and all relations, and geometrical features are inherited.
  * Therefore all tests are based on integer-typed vectors.
- *
+ * <p>
  * While testing a concrete implementation of DataFinder
  * an implementer has to implement a DataFinderTestContext interface.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
-public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirements {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> implements DataFinderRequirements {
 
-    private static final Vector<Integer> KEY_VECTOR_MIN_LIMIT = new Vector<>(Arrays.asList(-1000, -100, -10));
+    private static final BigDecimal DISTANCE_ZERO = BigDecimal.ZERO
+            .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
 
-    private static final Vector<Integer> KEY_VECTOR_MAX_LIMIT = new Vector<>(Arrays.asList(10, 100, 1000));
+    private static final BigDecimal DISTANCE_ONE = BigDecimal.ONE
+            .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
+
+    private static final double DIAGONAL_SQUARE = Math.sqrt(2.0);
+    private static final BigDecimal DISTANCE_DIAGONAL_SQUARE = BigDecimal.valueOf(DIAGONAL_SQUARE)
+            .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
+
+    private static final double DIAGONAL_CUBE = Math.sqrt(3.0);
+    private static final BigDecimal DISTANCE_DIAGONAL_CUBE = BigDecimal.valueOf(DIAGONAL_CUBE)
+            .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
+
+    private static final Integer[] KEY_VECTOR_MIN_LIMIT = new Integer[]{-100, -100, -10};
+
+    private static final Integer[] KEY_VECTOR_MAX_LIMIT = new Integer[]{10, 100, 100};
 
     private DataFinderTestContext<K, D> ctx;
 
@@ -48,7 +65,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
     protected abstract DataFinderTestContext<K, D> initializeContext();
 
     @BeforeEach
-    public final void setUp() {
+    final void setUp() {
+        if (ctx != null) {
+            return;
+        }
         ctx = initializeContext();
         dataFinder = ctx.initializeDataFinder();
         DataKeyGenerator
@@ -72,6 +92,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsNull() {
         Class<K> keyClass = ctx.dataKeyClass();
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
@@ -87,6 +108,7 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsEmpty() {
         Class<K> keyClass = ctx.dataKeyClass();
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
@@ -102,9 +124,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorSizeDoesNotMatch() {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0);
+        K metadata = ctx.dataKey(0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(10)
@@ -118,9 +141,10 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaLimitIsNegative() {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(-1)
@@ -134,10 +158,11 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnAnEmptyResultListWhenCriteriaLimitZero()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(0)
@@ -150,10 +175,11 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnResultListOfLimitSizeWhenCriteriaLimitIsBelowDataSetSize()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(10)
@@ -166,10 +192,11 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnWholeResultSetWhenCriteriaLimitHigherThanDataSetSize()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(Integer.MAX_VALUE)
@@ -182,13 +209,14 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(5, -50, 500);
+        K metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
-                .limit(11)
+                .limit(7)
                 .build();
 
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
@@ -196,26 +224,23 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
-                        ctx.resource(5, -50, 500),
-                        ctx.resource(4, -50, 500),
-                        ctx.resource(5, -49, 500),
-                        ctx.resource(5, -51, 500),
-                        ctx.resource(6, -50, 500),
-                        ctx.resource(5, -50, 499),
-                        ctx.resource(5, -50, 501),
-                        ctx.resource(4, -49, 500),
-                        ctx.resource(4, -51, 500),
-                        ctx.resource(6, -49, 500),
-                        ctx.resource(6, -51, 500)
+                        ctx.resource(5, -50, 50),
+                        ctx.resource(4, -50, 50),
+                        ctx.resource(5, -49, 50),
+                        ctx.resource(5, -50, 49),
+                        ctx.resource(5, -50, 51),
+                        ctx.resource(5, -51, 50),
+                        ctx.resource(6, -50, 50)
                 );
     }
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldCalculateScoresOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(5, -50, 500);
+        K metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(27)
@@ -225,45 +250,46 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
 
         assertThat(results)
                 .containsExactlyInAnyOrder(
-                        ctx.result(ctx.resource(5, -50, 500), 0.0),
+                        ctx.result(ctx.resource(5, -50, 50), DISTANCE_ZERO),
 
-                        ctx.result(ctx.resource(4, -50, 500), 1.0),
-                        ctx.result(ctx.resource(5, -49, 500), 1.0),
-                        ctx.result(ctx.resource(5, -50, 499), 1.0),
-                        ctx.result(ctx.resource(5, -50, 501), 1.0),
-                        ctx.result(ctx.resource(5, -51, 500), 1.0),
-                        ctx.result(ctx.resource(6, -50, 500), 1.0),
+                        ctx.result(ctx.resource(4, -50, 50), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -49, 50), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -50, 49), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -50, 51), DISTANCE_ONE),
+                        ctx.result(ctx.resource(5, -51, 50), DISTANCE_ONE),
+                        ctx.result(ctx.resource(6, -50, 50), DISTANCE_ONE),
 
-                        ctx.result(ctx.resource(4, -49, 500), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(4, -51, 500), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(4, -50, 499), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(4, -50, 501), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(5, -49, 499), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(5, -51, 499), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(5, -49, 501), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(5, -51, 501), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(6, -49, 500), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(6, -51, 500), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(6, -50, 499), Math.sqrt(1.0)),
-                        ctx.result(ctx.resource(6, -50, 501), Math.sqrt(1.0)),
+                        ctx.result(ctx.resource(4, -49, 50), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -51, 50), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -50, 49), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(4, -50, 51), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -49, 49), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -51, 49), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -49, 51), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(5, -51, 51), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -49, 50), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -51, 50), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -50, 49), DISTANCE_DIAGONAL_SQUARE),
+                        ctx.result(ctx.resource(6, -50, 51), DISTANCE_DIAGONAL_SQUARE),
 
-                        ctx.result(ctx.resource(4, -49, 501), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(4, -51, 501), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(6, -49, 501), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(6, -51, 501), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(4, -49, 499), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(4, -51, 499), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(6, -49, 499), Math.sqrt(2.0)),
-                        ctx.result(ctx.resource(6, -51, 499), Math.sqrt(2.0))
+                        ctx.result(ctx.resource(4, -49, 51), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(4, -51, 51), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -49, 51), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -51, 51), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(4, -49, 49), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(4, -51, 49), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -49, 49), DISTANCE_DIAGONAL_CUBE),
+                        ctx.result(ctx.resource(6, -51, 49), DISTANCE_DIAGONAL_CUBE)
                 );
     }
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldOrderClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(5, -50, 500);
+        K metadata = ctx.dataKey(5, -50, 50);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(27)
@@ -272,21 +298,22 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
         assertThat(results.subList(0, 1))
-                .extracting("score").isEqualTo(1.0);
+                .extracting("score").containsOnly(DISTANCE_ZERO);
         assertThat(results.subList(1, 7))
-                .extracting("score").containsOnly(1.0);
+                .extracting("score").containsOnly(DISTANCE_ONE);
         assertThat(results.subList(7, 19))
-                .extracting("score").containsOnly(Math.sqrt(1.0));
+                .extracting("score").containsOnly(DISTANCE_DIAGONAL_SQUARE);
         assertThat(results.subList(19, 27))
-                .extracting("score").containsOnly(Math.sqrt(2.0));
+                .extracting("score").containsOnly(DISTANCE_DIAGONAL_CUBE);
     }
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForALowestPossibleMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
+        K metadata = ctx.dataKey(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(4)
@@ -297,19 +324,20 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
-                        ctx.resource(-1000, -100, -10),
-                        ctx.resource(-1000, -100, -9),
-                        ctx.resource(-1000, -99, -10),
-                        ctx.resource(-999, -100, -10)
+                        ctx.resource(-100, -100, -10),
+                        ctx.resource(-100, -100, -9),
+                        ctx.resource(-100, -99, -10),
+                        ctx.resource(-99, -100, -10)
                 );
     }
 
     @Override
     @Test
+    @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        K metadata = ctx.dataKey(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(4)
@@ -320,19 +348,20 @@ public abstract class DataFinderAbstractTest<K, D> implements DataFinderRequirem
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
-                        ctx.resource(10, 100, 1000),
-                        ctx.resource(9, 100, 1000),
-                        ctx.resource(10, 99, 1000),
-                        ctx.resource(10, 100, 999)
+                        ctx.resource(9, 99, 99),
+                        ctx.resource(8, 99, 99),
+                        ctx.resource(9, 98, 99),
+                        ctx.resource(9, 99, 98)
                 );
     }
 
     @Override
     @Test
-    public final void shouldReturnListOfClosestResultForAAllZeroesMetadataVector()
+    @SuppressWarnings("checkstyle:magicnumber")
+    public final void shouldReturnListOfClosestResultForAllZeroesMetadataVector()
             throws DataFinderFailedException {
         Class<K> keyClass = ctx.dataKeyClass();
-        Vector<K> metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(0, 0, 0);
         DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
                 .metadata(metadata)
                 .limit(7)

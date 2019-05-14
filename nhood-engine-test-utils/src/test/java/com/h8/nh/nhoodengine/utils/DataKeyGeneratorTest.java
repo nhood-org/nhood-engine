@@ -7,7 +7,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,8 +18,8 @@ class DataKeyGeneratorTest {
     @ParameterizedTest
     @MethodSource("illegalLimitsArguments")
     void shouldThrowAnException(
-            final Vector<Integer> min,
-            final Vector<Integer> max,
+            final Integer[] min,
+            final Integer[] max,
             final String message) {
         assertThatThrownBy(() -> DataKeyGenerator.generate(min, max))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -31,11 +30,11 @@ class DataKeyGeneratorTest {
         return Stream.of(
                 Arguments.of(null, vector(0),
                         "Min limits vector must not be null"),
-                Arguments.of(new Vector<>(), vector(0),
+                Arguments.of(vector(), vector(0),
                         "Min limits vector must not be empty"),
                 Arguments.of(vector(0), null,
                         "Max limits vector must not be null"),
-                Arguments.of(vector(0), new Vector<>(),
+                Arguments.of(vector(0), vector(),
                         "Max limits vector must not be empty"),
                 Arguments.of(vector(0), vector(0, 0),
                         "Min and max limits vectors must have the same size"));
@@ -44,10 +43,10 @@ class DataKeyGeneratorTest {
     @ParameterizedTest
     @MethodSource("properLimitsArguments")
     void shouldGenerateKeysInAccordanceWithGivenLimits(
-            final Vector<Integer> min,
-            final Vector<Integer> max,
-            final List<Vector<Integer>> expected) {
-        List<Vector<Integer>> actual = DataKeyGenerator.generate(min, max)
+            final Integer[] min,
+            final Integer[] max,
+            final List<Integer[]> expected) {
+        List<Integer[]> actual = DataKeyGenerator.generate(min, max)
                 .collect(Collectors.toList());
         assertThat(actual)
                 .containsExactlyInAnyOrderElementsOf(expected);
@@ -71,7 +70,7 @@ class DataKeyGeneratorTest {
                         Arrays.asList(vector(0, 0), vector(0, 1), vector(1, 0), vector(1, 1))));
     }
 
-    private static Vector<Integer> vector(final Integer... values) {
-        return new Vector<>(Arrays.asList(values));
+    private static Integer[] vector(final Integer... values) {
+        return values;
     }
 }

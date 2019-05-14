@@ -10,10 +10,10 @@ import java.util.List;
  * structure of search results so it is possible to enhance it with additional
  * statistics and metrics.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
-public interface DataFinder<K, D> {
+public interface DataFinder<K extends DataResourceKey, D> {
 
     /**
      * Find a list of DataResource's in accordance with given criteria

@@ -1,26 +1,25 @@
 package com.h8.nh.nhoodengine.matrix;
 
 import com.h8.nh.nhoodengine.core.DataResource;
-
-import java.util.List;
-import java.util.Vector;
+import com.h8.nh.nhoodengine.core.DataResourceKey;
 
 /**
  * This interface is a main facade of nhood engine data matrix
  * management functionality.
  *
- * @param <K> a generic type of data metadata key vector.
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
-public interface DataMatrixRepository<K, D> {
+public interface DataMatrixRepository<K extends DataResourceKey, D> {
+
+    /**
+     * Returns size of metadata vector accepted within repository
+     * @return size of metadata vector
+     */
+    int getMetadataSize();
 
     /**
      * Add data resource into data matrix.
-     *
-     * This is a kind of data indexation in search engine terms.
-     *
-     * Data resource will be interpret and placed into section
-     * of matrix corresponding to its metadata vector.
      *
      * @param resource a data resource to be indexed
      *
@@ -31,36 +30,14 @@ public interface DataMatrixRepository<K, D> {
             throws DataMatrixRepositoryFailedException;
 
     /**
-     * Retrieval of list of data resource in accordance with given
-     * facet defined as vector position and value.
-     *
-     * Data resources will be retrieved form section of matrix
-     * corresponding metadata position and value.
-     *
-     * @param index metadata vector index
-     * @param value metadata vector value
-     * @return a list of data resources retrieved
-     *
-     * @throws DataMatrixRepositoryFailedException
-     * when find operation cannot be performed
-     */
-    List<DataResource> findFacet(int index, K value)
-            throws DataMatrixRepositoryFailedException;
-
-    /**
-     * Retrieval of list of data resource in accordance with given
-     * metadata vector.
-     *
-     * Data resources will be retrieved form sections of matrix
-     * corresponding to all metadata vector values and merged.
-     * A logical intersection of all lists is returned.
+     * Returns an iterator of data resources closes to the given metadata vector.
      *
      * @param metadata metadata vector
-     * @return a list of data resources retrieved
+     * @return an iterator of data resource chunks
      *
      * @throws DataMatrixRepositoryFailedException
      * when find operation cannot be performed
      */
-    List<DataResource> findAll(Vector<K> metadata)
+    DataMatrixResourceIterator<K, D> findNeighbours(K metadata)
             throws DataMatrixRepositoryFailedException;
 }

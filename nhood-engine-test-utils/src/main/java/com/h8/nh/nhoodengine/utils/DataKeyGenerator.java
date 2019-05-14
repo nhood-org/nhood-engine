@@ -1,9 +1,5 @@
 package com.h8.nh.nhoodengine.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -12,19 +8,19 @@ public final class DataKeyGenerator {
     private DataKeyGenerator() {
     }
 
-    public static Stream<Vector<Integer>> generate(
-            final Vector<Integer> min, final Vector<Integer> max) {
+    public static Stream<Integer[]> generate(
+            final Integer[] min, final Integer[] max) {
         validateLimitVectors(min, max);
         return generateKeysStream(min, max);
     }
 
     private static void validateLimitVectors(
-            final Vector<Integer> min, final Vector<Integer> max) {
+            final Integer[] min, final Integer[] max) {
         if (min == null) {
             throw new IllegalArgumentException("Min limits vector must not be null");
         }
 
-        if (min.isEmpty()) {
+        if (min.length == 0) {
             throw new IllegalArgumentException("Min limits vector must not be empty");
         }
 
@@ -32,47 +28,48 @@ public final class DataKeyGenerator {
             throw new IllegalArgumentException("Max limits vector must not be null");
         }
 
-        if (max.isEmpty()) {
+        if (max.length == 0) {
             throw new IllegalArgumentException("Max limits vector must not be empty");
         }
 
-        if (min.size() != max.size()) {
+        if (min.length != max.length) {
             throw new IllegalArgumentException("Min and max limits vectors must have the same size");
         }
     }
 
-    private static Stream<Vector<Integer>> generateKeysStream(
-            final Vector<Integer> min, final Vector<Integer> max) {
-        Stream<Vector<Integer>> keys = null;
-        for (int i = 0; i < min.size(); i++) {
-            keys = generateNextLevelKeysStream(keys, min.get(i), max.get(i));
+    private static Stream<Integer[]> generateKeysStream(
+            final Integer[] min, final Integer[] max) {
+        Stream<Integer[]> keys = null;
+        for (int i = 0; i < min.length; i++) {
+            keys = generateNextLevelKeysStream(keys, min[i], max[i]);
         }
         return keys;
     }
 
-    private static Stream<Vector<Integer>> generateNextLevelKeysStream(
-            final Stream<Vector<Integer>> previousLevelKeys, final Integer min, final Integer max) {
+    private static Stream<Integer[]> generateNextLevelKeysStream(
+            final Stream<Integer[]> previousLevelKeys, final Integer min, final Integer max) {
         if (previousLevelKeys == null) {
             return IntStream
                     .range(min, max)
-                    .mapToObj(i -> new Vector<>(Collections.singletonList(i)));
+                    .mapToObj(i -> new Integer[] {i});
         } else {
             return previousLevelKeys
                     .flatMap(v -> generateNextLevelKeysStream(v, min, max));
         }
     }
 
-    private static Stream<Vector<Integer>> generateNextLevelKeysStream(
-            final Vector<Integer> previousLevelKey, final Integer min, final Integer max) {
+    private static Stream<Integer[]> generateNextLevelKeysStream(
+            final Integer[] previousLevelKey, final Integer min, final Integer max) {
         return IntStream
                 .range(min, max)
                 .mapToObj(i -> generateNextLevelKey(previousLevelKey, i));
     }
 
-    private static Vector<Integer> generateNextLevelKey(
-            final Vector<Integer> previousLevelKey, final Integer nextValue) {
-        List<Integer> nextLevelKey = new ArrayList<>(previousLevelKey);
-        nextLevelKey.add(nextValue);
-        return new Vector<>(nextLevelKey);
+    private static Integer[] generateNextLevelKey(
+            final Integer[] previousLevelKey, final Integer nextValue) {
+        Integer[] nextLevelKey = new Integer[previousLevelKey.length + 1];
+        nextLevelKey[previousLevelKey.length] = nextValue;
+        System.arraycopy(previousLevelKey, 0, nextLevelKey, 0, previousLevelKey.length);
+        return nextLevelKey;
     }
 }
