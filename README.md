@@ -10,15 +10,16 @@ The `nhood-engine` is a core library covering key engine functionaries.
 
 Project is split into two maven submodules:
 
+- `nhood-engine-core` containing core engine implementation
 - `nhood-engine-core-api` containing core engine interfaces
 - `nhood-engine-core-test` containing core engine abstract unit tests
-- `nhood-engine-core-performance-test` containing core engine abstract performance tests
+- `nhood-engine-core-performance-test` containing core engine performance tests
 - `nhood-engine-matrix-api` containing matrix management interfaces
 - `nhood-engine-test-utils` containing test utilities
 
 To be added:
 - `nhood-engine-matrix-test` containing matrix management abstract unit tests
-- `nhood-engine-performance-test` containing matrix management abstract performance tests
+- `nhood-engine-matrix-performance-test` containing matrix management abstract performance tests
 
 ## Technology
 
@@ -43,6 +44,15 @@ In order to test the project use the following maven command:
 
 ```bash
 mvn clean test
+```
+
+## Performance Test
+
+In order to run performance test use the following maven commands:
+
+```bash
+mvn clean install
+java -jar nhood-engine-core-performance-tests/target/nhood-engine-core-performance-tests.jar
 ```
 
 ## CI/CD

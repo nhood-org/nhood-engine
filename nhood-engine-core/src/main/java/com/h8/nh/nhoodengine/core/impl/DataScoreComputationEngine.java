@@ -25,7 +25,7 @@ public final class DataScoreComputationEngine<K extends DataResourceKey, D> impl
 
     private final DataMatrixRepository<K, D> repository;
 
-    DataScoreComputationEngine(
+    public DataScoreComputationEngine(
             final DataMatrixRepository<K, D> repository) {
         this.repository = repository;
     }
