@@ -1,7 +1,6 @@
 package com.h8.nh.nhoodengine.core;
 
 
-import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
 import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -204,7 +203,7 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
 
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
-        assertThat(results).hasSize(ctx.registerDataSize());
+        assertThat(results).hasSize(ctx.registeredDataSize());
     }
 
     @Override

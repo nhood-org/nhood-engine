@@ -1,9 +1,4 @@
-package com.h8.nh.nhoodengine.utils;
-
-import com.h8.nh.nhoodengine.core.DataFinder;
-import com.h8.nh.nhoodengine.core.DataFinderResult;
-import com.h8.nh.nhoodengine.core.DataResource;
-import com.h8.nh.nhoodengine.core.DataResourceKey;
+package com.h8.nh.nhoodengine.core;
 
 import java.math.BigDecimal;
 
@@ -41,7 +36,7 @@ public interface DataFinderTestContext<K extends DataResourceKey, D> {
      *
      * @return a size of registered data.
      */
-    int registerDataSize();
+    int registeredDataSize();
 
     /**
      * Key type

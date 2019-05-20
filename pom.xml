@@ -19,7 +19,8 @@
 		<module>nhood-engine-core-test</module>
         <module>nhood-engine-matrix-api</module>
 		<module>nhood-engine-test-utils</module>
-	</modules>
+        <module>nhood-engine-matrix-test</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

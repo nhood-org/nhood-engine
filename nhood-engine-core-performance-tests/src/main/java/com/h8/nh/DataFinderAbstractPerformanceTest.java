@@ -6,7 +6,7 @@ import com.h8.nh.nhoodengine.core.DataFinderFailedException;
 import com.h8.nh.nhoodengine.core.DataFinderResult;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
+import com.h8.nh.nhoodengine.core.DataFinderTestContext;
 import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;

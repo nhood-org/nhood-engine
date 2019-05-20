@@ -12,12 +12,4 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.h8.nh</groupId>
-            <artifactId>nhood-engine-core-api</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
 </project>

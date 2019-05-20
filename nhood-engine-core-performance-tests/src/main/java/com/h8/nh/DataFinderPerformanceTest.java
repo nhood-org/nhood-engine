@@ -10,7 +10,7 @@ import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellFactory;
 import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellIterator;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
-import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
+import com.h8.nh.nhoodengine.core.DataFinderTestContext;
 
 import java.util.Arrays;
 
@@ -44,7 +44,7 @@ public class DataFinderPerformanceTest extends DataFinderAbstractPerformanceTest
         }
 
         @Override
-        public int registerDataSize() {
+        public int registeredDataSize() {
             return registered;
         }
 
