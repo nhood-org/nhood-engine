@@ -69,7 +69,7 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
         DataKeyGenerator
                 .generate(minLimit, maxLimit)
                 .map(ctx::dataKey)
-                .map(k -> DataResource.builder(ctx.dataKeyClass(), ctx.dataClass())
+                .map(k -> DataResource.<K, D>builder()
                         .key(k)
                         .data(ctx.data(k))
                         .build())
@@ -83,9 +83,8 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
     @BenchmarkMode(Mode.AverageTime)
     public final void shouldReturnResultListOfRequestedSize()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(LIMIT)
                 .build();

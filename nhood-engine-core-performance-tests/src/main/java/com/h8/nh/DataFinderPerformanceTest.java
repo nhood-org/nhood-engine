@@ -44,24 +44,25 @@ public class DataFinderPerformanceTest extends DataFinderAbstractPerformanceTest
         }
 
         @Override
-        public int registeredDataSize() {
-            return registered;
+        public DataResource<DataResourceKey, Object> getResource(
+                final DataResourceKey key) {
+            return repository.findNeighbours(key)
+                    .next()
+                    .stream()
+                    .filter(r -> Arrays.equals(key.unified(), r.getKey().unified()))
+                    .findFirst()
+                    .orElseThrow(IllegalStateException::new);
         }
 
         @Override
-        public Class<DataResourceKey> dataKeyClass() {
-            return DataResourceKey.class;
+        public int registeredDataSize() {
+            return registered;
         }
 
         @Override
         public DataResourceKey dataKey(
                 final DataResourceKey key) {
             return key;
-        }
-
-        @Override
-        public Class<Object> dataClass() {
-            return Object.class;
         }
 
         @Override

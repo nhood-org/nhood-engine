@@ -32,18 +32,19 @@ public interface DataFinderTestContext<K extends DataResourceKey, D> {
     void register(DataResource<K, D> data);
 
     /**
+     * Return registered resource.
+     *
+     * @param key a metadata vector.
+     * @return a registered resource.
+     */
+    DataResource<K, D> getResource(K key);
+
+    /**
      * Size of registered data.
      *
      * @return a size of registered data.
      */
     int registeredDataSize();
-
-    /**
-     * Key type
-     *
-     * @return a generic type of data metadata key vector.
-     */
-    Class<K> dataKeyClass();
 
     /**
      * Maps a vector of integers into a vector of metadata of generic type K.
@@ -63,13 +64,6 @@ public interface DataFinderTestContext<K extends DataResourceKey, D> {
     }
 
     /**
-     * Data type
-     *
-     * @return a generic type of data resource.
-     */
-    Class<D> dataClass();
-
-    /**
      * Maps a vector of metadata of generic type K into a corresponding data.
      *
      * @param key vector of metadata of generic type K.
@@ -83,14 +77,11 @@ public interface DataFinderTestContext<K extends DataResourceKey, D> {
 
     default DataResource<K, D> resource(Integer... values) {
         K key = dataKey(values);
-        return DataResource.builder(dataKeyClass(), dataClass())
-                .key(key)
-                .data(data(key))
-                .build();
+        return getResource(key);
     }
 
     default DataFinderResult<K, D> result(DataResource<K, D> resource, BigDecimal score) {
-        return DataFinderResult.builder(dataKeyClass(), dataClass())
+        return DataFinderResult.<K, D>builder()
                 .resource(resource)
                 .score(score)
                 .build();

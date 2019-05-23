@@ -73,7 +73,7 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
         DataKeyGenerator
                 .generate(KEY_VECTOR_MIN_LIMIT, KEY_VECTOR_MAX_LIMIT)
                 .map(ctx::dataKey)
-                .map(k -> DataResource.builder(ctx.dataKeyClass(), ctx.dataClass())
+                .map(k -> DataResource.<K, D>builder()
                         .key(k)
                         .data(ctx.data(k))
                         .build())
@@ -93,8 +93,7 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @Test
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsNull() {
-        Class<K> keyClass = ctx.dataKeyClass();
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(null)
                 .limit(10)
                 .build();
@@ -109,8 +108,7 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @Test
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsEmpty() {
-        Class<K> keyClass = ctx.dataKeyClass();
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(ctx.dataKey())
                 .limit(10)
                 .build();
@@ -125,9 +123,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @Test
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorSizeDoesNotMatch() {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(10)
                 .build();
@@ -142,9 +139,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @Test
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaLimitIsNegative() {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(-1)
                 .build();
@@ -160,9 +156,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnAnEmptyResultListWhenCriteriaLimitZero()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(0)
                 .build();
@@ -177,9 +172,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnResultListOfLimitSizeWhenCriteriaLimitIsBelowDataSetSize()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(10)
                 .build();
@@ -194,9 +188,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnWholeResultSetWhenCriteriaLimitHigherThanDataSetSize()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(Integer.MAX_VALUE)
                 .build();
@@ -211,9 +204,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(5, -50, 50);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(7)
                 .build();
@@ -238,9 +230,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldCalculateScoresOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(5, -50, 50);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(27)
                 .build();
@@ -287,9 +278,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldOrderClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(5, -50, 50);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(27)
                 .build();
@@ -311,9 +301,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForALowestPossibleMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(4)
                 .build();
@@ -335,9 +324,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(4)
                 .build();
@@ -359,9 +347,8 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAllZeroesMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(7)
                 .build();

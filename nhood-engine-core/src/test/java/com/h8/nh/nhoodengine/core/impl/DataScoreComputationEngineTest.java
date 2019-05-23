@@ -43,23 +43,23 @@ class DataScoreComputationEngineTest extends DataFinderAbstractTest<DataResource
         }
 
         @Override
+        public DataResource<DataResourceKey, Object> getResource(DataResourceKey key) {
+            return repository.findNeighbours(key)
+                    .next()
+                    .stream()
+                    .filter(r -> Arrays.equals(key.unified(), r.getKey().unified()))
+                    .findFirst()
+                    .orElseThrow(IllegalStateException::new);
+        }
+
+        @Override
         public int registeredDataSize() {
             return registered;
         }
 
         @Override
-        public Class<DataResourceKey> dataKeyClass() {
-            return DataResourceKey.class;
-        }
-
-        @Override
         public DataResourceKey dataKey(DataResourceKey key) {
             return key;
-        }
-
-        @Override
-        public Class<Object> dataClass() {
-            return Object.class;
         }
 
         @Override

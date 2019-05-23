@@ -47,10 +47,11 @@ public final class DataFinderCriteria<K extends DataResourceKey> {
 
     /**
      * A static method exposing an auxiliary builder
-     * @param keyClass key generic class
+     *
+     * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
      * @return An instance of a builder
      */
-    public static <K extends DataResourceKey> DataFinderCriteriaBuilder<K> builder(final Class<K> keyClass) {
+    public static <K extends DataResourceKey> DataFinderCriteriaBuilder<K> builder() {
         return new DataFinderCriteriaBuilder<>();
     }
 

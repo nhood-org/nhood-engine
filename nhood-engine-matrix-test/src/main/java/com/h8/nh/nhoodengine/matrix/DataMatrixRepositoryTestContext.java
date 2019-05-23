@@ -79,7 +79,7 @@ public interface DataMatrixRepositoryTestContext<K extends DataResourceKey, D> {
 
     default DataResource<K, D> resource(Integer... values) {
         K key = dataKey(values);
-        return DataResource.builder(dataKeyClass(), dataClass())
+        return DataResource.<K, D>builder()
                 .key(key)
                 .data(data(key))
                 .build();

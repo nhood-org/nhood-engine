@@ -2,7 +2,6 @@ package com.h8.nh.nhoodengine.core;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * This class is a wrapper of data resource returned by data finder.
@@ -13,11 +12,6 @@ import java.util.UUID;
  */
 public final class DataFinderResult<K extends DataResourceKey, D>
         implements Comparable<DataFinderResult<K, D>> {
-
-    /**
-     * An internal unique identifier;
-     */
-    private final UUID uuid;
 
     /**
      * A score which resource gained during the course of evaluation
@@ -51,19 +45,18 @@ public final class DataFinderResult<K extends DataResourceKey, D>
      * @param resource resource value
      */
     public DataFinderResult(final BigDecimal score, final DataResource<K, D> resource) {
-        this.uuid = UUID.randomUUID();
         this.score = score;
         this.resource = resource;
     }
 
     /**
      * A static method exposing an auxiliary builder
-     * @param keyClass key generic class
-     * @param dataClass data generic class
+     *
+     * @param <K> a type of data metadata key vector. Extends {@link DataResourceKey}.
+     * @param <D> a generic type of data resource.
      * @return An instance of a builder
      */
-    public static <K extends DataResourceKey, D> DataFinderResultBuilder<K, D> builder(
-            final Class<K> keyClass, final Class<D> dataClass) {
+    public static <K extends DataResourceKey, D> DataFinderResultBuilder<K, D> builder() {
         return new DataFinderResultBuilder<>();
     }
 
@@ -73,7 +66,7 @@ public final class DataFinderResult<K extends DataResourceKey, D>
         if (result != 0) {
             return result;
         }
-        return uuid.compareTo(o.uuid);
+        return resource.compareTo(o.resource);
     }
 
     @Override
