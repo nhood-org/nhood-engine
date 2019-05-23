@@ -1,9 +1,34 @@
 package com.h8.nh.nhoodengine.matrix;
 
 /**
- * This interface defines add basic requirements for DataMatrixRepository interface
+ * This interface defines basic requirements for DataMatrixRepository interface
  */
 public interface DataMatrixRepositoryRequirements {
 
-    void should();
+    void shouldNotAcceptResourcesWithIllegalKeySize();
+
+    void shouldNotAcceptResourcesWithNullKey();
+
+    void shouldNotAcceptResourcesWithNullResource();
+
+    void shouldAcceptSameResourceMultipleTimes()
+            throws DataMatrixRepositoryFailedException;
+
+    void shouldReturnEmptyIteratorIfEmpty()
+            throws DataMatrixRepositoryFailedException;
+
+    void shouldReturnIteratorOfAllElements()
+            throws DataMatrixRepositoryFailedException;
+
+    void shouldReturnResourceOfAGivenKeyInTheVeryFirstChunkIfExists()
+            throws DataMatrixRepositoryFailedException;
+
+    void shouldReturnNoEmptyChunks()
+            throws DataMatrixRepositoryFailedException;
+
+    void shouldProperlyCalculateUnconditionalNextIndicator()
+            throws DataMatrixRepositoryFailedException;
+
+    void shouldProperlyCalculateConditionalNextIndicator()
+            throws DataMatrixRepositoryFailedException;
 }

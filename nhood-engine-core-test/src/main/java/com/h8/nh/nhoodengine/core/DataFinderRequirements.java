@@ -1,7 +1,7 @@
 package com.h8.nh.nhoodengine.core;
 
 /**
- * This interface defines add basic requirements for DataFinder interface
+ * This interface defines basic requirements for DataFinder interface
  */
 public interface DataFinderRequirements {
 
