@@ -5,7 +5,7 @@ import com.h8.nh.nhoodengine.core.DataFinderTestContext;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
 import com.h8.nh.nhoodengine.core.impl.DataScoreComputationEngine;
-import com.h8.nh.nhoodengine.matrix.CellBasedDataMatrixRepository;
+import com.h8.nh.nhoodengine.matrix.DataMatrixCellBasedRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 
@@ -25,7 +25,7 @@ public class DataFinderPerformanceTest extends DataFinderAbstractPerformanceTest
         private int registered;
 
         TestContext() {
-            this.repository = new CellBasedDataMatrixRepository(METADATA_SIZE);
+            this.repository = new DataMatrixCellBasedRepository(METADATA_SIZE);
         }
 
         @Override
