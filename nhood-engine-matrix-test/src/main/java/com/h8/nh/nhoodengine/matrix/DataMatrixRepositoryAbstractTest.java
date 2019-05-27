@@ -3,6 +3,8 @@ package com.h8.nh.nhoodengine.matrix;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
 import org.junit.jupiter.api.BeforeEach;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * DataFinderAbstractTest is an abstract test class
  * that implements DataMatrixRepositoryRequirements.
@@ -12,7 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
  * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
-public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey, D> implements DataMatrixRepositoryRequirements {
+public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey, D>
+        implements DataMatrixRepositoryRequirements {
 
     private DataMatrixRepositoryTestContext<K, D> ctx;
 
@@ -36,58 +39,60 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
     }
 
     @Override
-    public void shouldNotAcceptResourcesWithIllegalKeySize() {
+    public final void shouldNotAcceptResourcesWithIllegalKeySize() {
+        // TODO!!!
+        assertThat(dataMatrixRepository).isNotNull();
 
     }
 
     @Override
-    public void shouldNotAcceptResourcesWithNullKey() {
+    public final void shouldNotAcceptResourcesWithNullKey() {
 
     }
 
     @Override
-    public void shouldNotAcceptResourcesWithNullResource() {
+    public final void shouldNotAcceptResourcesWithNullResource() {
 
     }
 
     @Override
-    public void shouldAcceptSameResourceMultipleTimes()
+    public final void shouldAcceptSameResourceMultipleTimes()
             throws DataMatrixRepositoryFailedException {
 
     }
 
     @Override
-    public void shouldReturnEmptyIteratorIfEmpty()
+    public final void shouldReturnEmptyIteratorIfEmpty()
             throws DataMatrixRepositoryFailedException {
 
     }
 
     @Override
-    public void shouldReturnIteratorOfAllElements()
+    public final void shouldReturnIteratorOfAllElements()
             throws DataMatrixRepositoryFailedException {
 
     }
 
     @Override
-    public void shouldReturnResourceOfAGivenKeyInTheVeryFirstChunkIfExists()
+    public final void shouldReturnResourceOfAGivenKeyInTheVeryFirstChunkIfExists()
             throws DataMatrixRepositoryFailedException {
 
     }
 
     @Override
-    public void shouldReturnNoEmptyChunks()
+    public final void shouldReturnNoEmptyChunks()
             throws DataMatrixRepositoryFailedException {
 
     }
 
     @Override
-    public void shouldProperlyCalculateUnconditionalNextIndicator()
+    public final void shouldProperlyCalculateUnconditionalNextIndicator()
             throws DataMatrixRepositoryFailedException {
 
     }
 
     @Override
-    public void shouldProperlyCalculateConditionalNextIndicator()
+    public final void shouldProperlyCalculateConditionalNextIndicator()
             throws DataMatrixRepositoryFailedException {
 
     }
