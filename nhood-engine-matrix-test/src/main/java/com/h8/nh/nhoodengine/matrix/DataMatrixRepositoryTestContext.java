@@ -25,7 +25,7 @@ public interface DataMatrixRepositoryTestContext<K extends DataResourceKey, D> {
      *
      * @return an instance of DataMatrixRepository.
      */
-    DataMatrixRepository<K, D> initializeResource();
+    DataMatrixRepository<K, D> initializerRepository();
 
     /**
      * Size of registered data.
