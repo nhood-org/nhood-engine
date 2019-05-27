@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.core.matrix;
+package com.h8.nh.nhoodengine.matrix.model;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import static com.h8.nh.nhoodengine.core.utils.DataResourceUtils.resource;
+import static com.h8.nh.nhoodengine.matrix.utils.DataResourceUtils.resource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DataMatrixCellIteratorTest {

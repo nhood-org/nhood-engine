@@ -38,6 +38,8 @@ import java.util.List;
 @State(Scope.Benchmark)
 public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKey, D> {
 
+    static final int METADATA_SIZE = 3;
+
     private static final int LIMIT = 50;
 
     @Param({"50", "100", "200", "500"})

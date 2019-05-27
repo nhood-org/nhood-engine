@@ -33,6 +33,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> implements DataFinderRequirements {
 
+    protected static final int METADATA_SIZE = 3;
+
     private static final BigDecimal DISTANCE_ZERO = BigDecimal.ZERO
             .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
 

@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.core.matrix;
+package com.h8.nh.nhoodengine.matrix.model;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import org.assertj.core.data.Offset;

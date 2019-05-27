@@ -2,15 +2,13 @@ package com.h8.nh.nhoodengine.core.impl;
 
 import com.h8.nh.nhoodengine.core.DataFinder;
 import com.h8.nh.nhoodengine.core.DataFinderAbstractTest;
+import com.h8.nh.nhoodengine.core.DataFinderTestContext;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCell;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellConfiguration;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellFactory;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellIterator;
+import com.h8.nh.nhoodengine.matrix.CellBasedDataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
-import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
-import com.h8.nh.nhoodengine.core.DataFinderTestContext;
+import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
+import org.assertj.core.api.Assertions;
 
 import java.util.Arrays;
 
@@ -23,12 +21,12 @@ class DataScoreComputationEngineTest extends DataFinderAbstractTest<DataResource
 
     private static class TestContext implements DataFinderTestContext<DataResourceKey, Object> {
 
-        private TestContextRepository repository;
+        private DataMatrixRepository<DataResourceKey, Object> repository;
 
         private int registered;
 
         TestContext() {
-            this.repository = new TestContextRepository();
+            this.repository = new CellBasedDataMatrixRepository(METADATA_SIZE);
         }
 
         @Override
@@ -38,18 +36,27 @@ class DataScoreComputationEngineTest extends DataFinderAbstractTest<DataResource
 
         @Override
         public void register(DataResource<DataResourceKey, Object> data) {
-            repository.add(data);
-            registered++;
+            try {
+                repository.add(data);
+                registered++;
+            } catch (DataMatrixRepositoryFailedException e) {
+                Assertions.fail("Unexpected exception thrown: " + e.getMessage(), e);
+            }
         }
 
         @Override
         public DataResource<DataResourceKey, Object> getResource(DataResourceKey key) {
-            return repository.findNeighbours(key)
-                    .next()
-                    .stream()
-                    .filter(r -> Arrays.equals(key.unified(), r.getKey().unified()))
-                    .findFirst()
-                    .orElseThrow(IllegalStateException::new);
+            try {
+                return repository.findNeighbours(key)
+                        .next()
+                        .stream()
+                        .filter(r -> Arrays.equals(key.unified(), r.getKey().unified()))
+                        .findFirst()
+                        .orElseThrow(IllegalStateException::new);
+            } catch (DataMatrixRepositoryFailedException e) {
+                Assertions.fail("Unexpected exception thrown: " + e.getMessage(), e);
+                return null;
+            }
         }
 
         @Override
@@ -65,31 +72,6 @@ class DataScoreComputationEngineTest extends DataFinderAbstractTest<DataResource
         @Override
         public Object data(DataResourceKey key) {
             return Arrays.toString(key.unified());
-        }
-    }
-
-    private static class TestContextRepository implements DataMatrixRepository<DataResourceKey, Object> {
-
-        private final DataMatrixCell<DataResource<DataResourceKey, Object>> cell;
-
-        TestContextRepository() {
-            DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder().build();
-            this.cell = DataMatrixCellFactory.root(3, configuration);
-        }
-
-        @Override
-        public int getMetadataSize() {
-            return 3;
-        }
-
-        @Override
-        public void add(DataResource<DataResourceKey, Object> resource) {
-            cell.add(resource);
-        }
-
-        @Override
-        public DataMatrixResourceIterator<DataResourceKey, Object> findNeighbours(DataResourceKey metadata) {
-            return DataMatrixCellIterator.startWith(metadata.unified(), cell);
         }
     }
 }
