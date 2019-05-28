@@ -11,7 +11,10 @@ public interface DataMatrixRepositoryRequirements {
 
     void shouldNotAcceptResourcesWithNullResource();
 
-    void shouldAcceptSameResourceMultipleTimes()
+    void shouldAcceptNotDuplicateSameResourceWhenAddedMultipleTimes()
+            throws DataMatrixRepositoryFailedException;
+
+    void shouldAcceptTwoResourcesWithTheSameKey()
             throws DataMatrixRepositoryFailedException;
 
     void shouldReturnEmptyIteratorIfEmpty()

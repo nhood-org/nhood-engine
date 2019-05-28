@@ -1,17 +1,19 @@
-package com.h8.nh.nhoodengine.matrix;
+package com.h8.nh.nhoodengine.matrix.impl;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.matrix.model.DataMatrixCell;
-import com.h8.nh.nhoodengine.matrix.model.DataMatrixCellConfiguration;
-import com.h8.nh.nhoodengine.matrix.model.DataMatrixCellFactory;
-import com.h8.nh.nhoodengine.matrix.model.DataMatrixCellIterator;
+import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
+import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
+import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCell;
+import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCellConfiguration;
+import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCellFactory;
+import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCellIterator;
 
-public final class DataMatrixCellBasedRepository implements DataMatrixRepository<DataResourceKey, Object> {
+public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D> implements DataMatrixRepository<K, D> {
 
     private final int metadataSize;
 
-    private final DataMatrixCell<DataResource<DataResourceKey, Object>> cell;
+    private final DataMatrixCell<DataResource<K, D>> cell;
 
     public DataMatrixCellBasedRepository(
             final int metadataSize) {
@@ -31,13 +33,12 @@ public final class DataMatrixCellBasedRepository implements DataMatrixRepository
     }
 
     @Override
-    public void add(
-            final DataResource<DataResourceKey, Object> resource) {
+    public void add(final DataResource<K, D> resource) {
         cell.add(resource);
     }
 
     @Override
-    public DataMatrixResourceIterator<DataResourceKey, Object> findNeighbours(
+    public DataMatrixResourceIterator<K, D> findNeighbours(
             final DataResourceKey metadata) {
         return DataMatrixCellIterator.startWith(metadata.unified(), cell);
     }

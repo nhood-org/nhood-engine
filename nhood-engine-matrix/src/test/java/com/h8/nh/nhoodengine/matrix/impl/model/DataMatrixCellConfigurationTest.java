@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.matrix.model;
+package com.h8.nh.nhoodengine.matrix.impl.model;
 
 import org.junit.jupiter.api.Test;
 

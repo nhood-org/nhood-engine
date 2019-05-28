@@ -54,6 +54,7 @@ public interface DataFinderTestContext<K extends DataResourceKey, D> {
      */
     K dataKey(K key);
 
+    @SuppressWarnings("unchecked")
     default K dataKey(Integer... values) {
         BigDecimal[] unified = new BigDecimal[values.length];
         for (int i = 0; i < values.length; i++) {

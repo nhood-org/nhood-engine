@@ -5,7 +5,7 @@ import com.h8.nh.nhoodengine.core.DataFinderAbstractTest;
 import com.h8.nh.nhoodengine.core.DataFinderTestContext;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.matrix.DataMatrixCellBasedRepository;
+import com.h8.nh.nhoodengine.matrix.impl.DataMatrixCellBasedRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 import org.assertj.core.api.Assertions;
@@ -26,7 +26,7 @@ class DataScoreComputationEngineTest extends DataFinderAbstractTest<DataResource
         private int registered;
 
         TestContext() {
-            this.repository = new DataMatrixCellBasedRepository(METADATA_SIZE);
+            this.repository = new DataMatrixCellBasedRepository<>(METADATA_SIZE);
         }
 
         @Override

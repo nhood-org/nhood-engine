@@ -28,20 +28,6 @@ public interface DataMatrixRepositoryTestContext<K extends DataResourceKey, D> {
     DataMatrixRepository<K, D> initializerRepository();
 
     /**
-     * Size of registered data.
-     *
-     * @return a size of registered data.
-     */
-    int registeredDataSize();
-
-    /**
-     * Key type
-     *
-     * @return a generic type of data metadata key vector.
-     */
-    Class<K> dataKeyClass();
-
-    /**
      * Maps a vector of integers into a vector of metadata of generic type K.
      *
      * @param key a vector of integers.
@@ -49,6 +35,7 @@ public interface DataMatrixRepositoryTestContext<K extends DataResourceKey, D> {
      */
     K dataKey(K key);
 
+    @SuppressWarnings("unchecked")
     default K dataKey(Integer... values) {
         BigDecimal[] unified = new BigDecimal[values.length];
         for (int i = 0; i < values.length; i++) {
@@ -57,13 +44,6 @@ public interface DataMatrixRepositoryTestContext<K extends DataResourceKey, D> {
         DataResourceKey key = () -> unified;
         return dataKey((K) key);
     }
-
-    /**
-     * Data type
-     *
-     * @return a generic type of data resource.
-     */
-    Class<D> dataClass();
 
     /**
      * Maps a vector of metadata of generic type K into a corresponding data.
