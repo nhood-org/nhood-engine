@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.core.matrix;
+package com.h8.nh.nhoodengine.matrix.impl.model;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 
@@ -76,7 +76,7 @@ public final class DataMatrixCell<R extends DataResource> {
         return !resources.isEmpty();
     }
 
-    public Set<R> getResources() {
+    Set<R> getResources() {
         return Collections.unmodifiableSet(resources);
     }
 

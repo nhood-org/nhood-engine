@@ -27,8 +27,21 @@
 
         <dependency>
             <groupId>com.h8.nh</groupId>
+            <artifactId>nhood-engine-core-test</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h8.nh</groupId>
             <artifactId>nhood-engine-test-utils</artifactId>
             <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h8.nh</groupId>
+            <artifactId>nhood-engine-matrix</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

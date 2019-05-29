@@ -1,16 +1,13 @@
 package com.h8.nh;
 
 import com.h8.nh.nhoodengine.core.DataFinder;
+import com.h8.nh.nhoodengine.core.DataFinderTestContext;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
 import com.h8.nh.nhoodengine.core.impl.DataScoreComputationEngine;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCell;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellConfiguration;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellFactory;
-import com.h8.nh.nhoodengine.core.matrix.DataMatrixCellIterator;
+import com.h8.nh.nhoodengine.matrix.impl.DataMatrixCellBasedRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
-import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
-import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
+import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 
 import java.util.Arrays;
 
@@ -23,12 +20,12 @@ public class DataFinderPerformanceTest extends DataFinderAbstractPerformanceTest
 
     private static class TestContext implements DataFinderTestContext<DataResourceKey, Object> {
 
-        private TestContextRepository repository;
+        private DataMatrixRepository<DataResourceKey, Object> repository;
 
         private int registered;
 
         TestContext() {
-            this.repository = new TestContextRepository();
+            this.repository = new DataMatrixCellBasedRepository<>(METADATA_SIZE);
         }
 
         @Override
@@ -37,20 +34,32 @@ public class DataFinderPerformanceTest extends DataFinderAbstractPerformanceTest
         }
 
         @Override
-        public void register(
-                final DataResource<DataResourceKey, Object> data) {
-            repository.add(data);
-            registered++;
+        public void register(final DataResource<DataResourceKey, Object> data) {
+            try {
+                repository.add(data);
+                registered++;
+            } catch (DataMatrixRepositoryFailedException e) {
+                throw new IllegalStateException("Unexpected exception thrown: " + e.getMessage(), e);
+            }
         }
 
         @Override
-        public int registerDataSize() {
+        public DataResource<DataResourceKey, Object> getResource(final DataResourceKey key) {
+            try {
+                return repository.findNeighbours(key)
+                        .next()
+                        .stream()
+                        .filter(r -> Arrays.equals(key.unified(), r.getKey().unified()))
+                        .findFirst()
+                        .orElseThrow(IllegalStateException::new);
+            } catch (DataMatrixRepositoryFailedException e) {
+                throw new IllegalStateException("Unexpected exception thrown: " + e.getMessage(), e);
+            }
+        }
+
+        @Override
+        public int registeredDataSize() {
             return registered;
-        }
-
-        @Override
-        public Class<DataResourceKey> dataKeyClass() {
-            return DataResourceKey.class;
         }
 
         @Override
@@ -60,43 +69,9 @@ public class DataFinderPerformanceTest extends DataFinderAbstractPerformanceTest
         }
 
         @Override
-        public Class<Object> dataClass() {
-            return Object.class;
-        }
-
-        @Override
         public Object data(
                 final DataResourceKey key) {
             return Arrays.toString(key.unified());
-        }
-    }
-
-    private static class TestContextRepository implements DataMatrixRepository<DataResourceKey, Object> {
-
-        private static final int METADATA_SIZE = 3;
-
-        private final DataMatrixCell<DataResource<DataResourceKey, Object>> cell;
-
-        TestContextRepository() {
-            DataMatrixCellConfiguration configuration = DataMatrixCellConfiguration.builder().build();
-            this.cell = DataMatrixCellFactory.root(METADATA_SIZE, configuration);
-        }
-
-        @Override
-        public int getMetadataSize() {
-            return METADATA_SIZE;
-        }
-
-        @Override
-        public void add(
-                final DataResource<DataResourceKey, Object> resource) {
-            cell.add(resource);
-        }
-
-        @Override
-        public DataMatrixResourceIterator<DataResourceKey, Object> findNeighbours(
-                final DataResourceKey metadata) {
-            return DataMatrixCellIterator.startWith(metadata.unified(), cell);
         }
     }
 }

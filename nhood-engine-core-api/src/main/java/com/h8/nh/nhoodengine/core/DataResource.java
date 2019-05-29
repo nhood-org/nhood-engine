@@ -1,7 +1,7 @@
 package com.h8.nh.nhoodengine.core;
 
-import java.util.Arrays;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * This class represents a basic data resource that is is being searched for
@@ -14,7 +14,13 @@ import java.util.Objects;
  * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
-public final class DataResource<K extends DataResourceKey, D> {
+public final class DataResource<K extends DataResourceKey, D>
+        implements Comparable<DataResource<K, D>> {
+
+    /**
+     * An internal unique identifier;
+     */
+    private final UUID uuid;
 
     /**
      * Data metadata key vector
@@ -32,6 +38,7 @@ public final class DataResource<K extends DataResourceKey, D> {
      * @param data data resource value
      */
     public DataResource(final K key, final D data) {
+        this.uuid = UUID.randomUUID();
         this.key = key;
         this.data = data;
     }
@@ -54,13 +61,18 @@ public final class DataResource<K extends DataResourceKey, D> {
 
     /**
      * A static method exposing an auxiliary builder
-     * @param keyClass key generic class
-     * @param dataClass data generic class
+     *
+     * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
+     * @param <D> a generic type of data resource.
      * @return An instance of a builder
      */
-    public static <K extends DataResourceKey, D> DataResourceBuilder<K, D> builder(
-            final Class<K> keyClass, final Class<D> dataClass) {
+    public static <K extends DataResourceKey, D> DataResourceBuilder<K, D> builder() {
         return new DataResourceBuilder<>();
+    }
+
+    @Override
+    public int compareTo(final DataResource<K, D> o) {
+        return this.uuid.compareTo(o.uuid);
     }
 
     @Override
@@ -72,19 +84,19 @@ public final class DataResource<K extends DataResourceKey, D> {
             return false;
         }
         DataResource<?, ?> that = (DataResource<?, ?>) o;
-        return Arrays.equals(this.key.unified(), that.key.unified())
-                && Objects.equals(data, that.data);
+        return uuid.equals(that.uuid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, data);
+        return Objects.hash(uuid);
     }
 
     @Override
     public String toString() {
         return "DataResource{"
-                + "key=" + key
+                + "uuid=" + uuid
+                + ", key=" + key
                 + ", data=" + data
                 + '}';
     }

@@ -6,7 +6,7 @@ import com.h8.nh.nhoodengine.core.DataFinderFailedException;
 import com.h8.nh.nhoodengine.core.DataFinderResult;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
+import com.h8.nh.nhoodengine.core.DataFinderTestContext;
 import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -37,6 +37,8 @@ import java.util.List;
  */
 @State(Scope.Benchmark)
 public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKey, D> {
+
+    static final int METADATA_SIZE = 3;
 
     private static final int LIMIT = 50;
 
@@ -69,7 +71,7 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
         DataKeyGenerator
                 .generate(minLimit, maxLimit)
                 .map(ctx::dataKey)
-                .map(k -> DataResource.builder(ctx.dataKeyClass(), ctx.dataClass())
+                .map(k -> DataResource.<K, D>builder()
                         .key(k)
                         .data(ctx.data(k))
                         .build())
@@ -83,9 +85,8 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
     @BenchmarkMode(Mode.AverageTime)
     public final void shouldReturnResultListOfRequestedSize()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(LIMIT)
                 .build();

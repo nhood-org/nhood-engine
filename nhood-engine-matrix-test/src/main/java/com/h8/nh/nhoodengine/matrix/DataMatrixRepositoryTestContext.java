@@ -1,16 +1,14 @@
-package com.h8.nh.nhoodengine.utils;
+package com.h8.nh.nhoodengine.matrix;
 
-import com.h8.nh.nhoodengine.core.DataFinder;
-import com.h8.nh.nhoodengine.core.DataFinderResult;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
 
 import java.math.BigDecimal;
 
 /**
- * DataFinderTestContext is an interface which defines
+ * DataMatrixRepositoryTestContext is an interface which defines
  * a couple of initialization and mapping utilities methods
- * used within an abstract test suites of DataFinder.
+ * used within an abstract test suites of DataMatrixRepository.
  * <p>
  * It is assumed that all sequences of metadata types may be mapped
  * into a sequence of integers and all relations, and geometrical features are inherited.
@@ -19,36 +17,15 @@ import java.math.BigDecimal;
  * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
  * @param <D> a generic type of data resource.
  */
-public interface DataFinderTestContext<K extends DataResourceKey, D> {
+public interface DataMatrixRepositoryTestContext<K extends DataResourceKey, D> {
 
     /**
-     * Creates a new instance of DataFinder which is a subject of testing.
+     * Creates a new instance of DataMatrixRepository which is a subject of testing.
      * This instance is initialized once before execution of all tests in the test class.
      *
-     * @return an instance of DataFinder.
+     * @return an instance of DataMatrixRepository.
      */
-    DataFinder<K, D> initializeDataFinder();
-
-    /**
-     * Registers a data as a findable resource.
-     *
-     * @param data data to be registered.
-     */
-    void register(DataResource<K, D> data);
-
-    /**
-     * Size of registered data.
-     *
-     * @return a size of registered data.
-     */
-    int registerDataSize();
-
-    /**
-     * Key type
-     *
-     * @return a generic type of data metadata key vector.
-     */
-    Class<K> dataKeyClass();
+    DataMatrixRepository<K, D> initializerRepository();
 
     /**
      * Maps a vector of integers into a vector of metadata of generic type K.
@@ -58,6 +35,7 @@ public interface DataFinderTestContext<K extends DataResourceKey, D> {
      */
     K dataKey(K key);
 
+    @SuppressWarnings("unchecked")
     default K dataKey(Integer... values) {
         BigDecimal[] unified = new BigDecimal[values.length];
         for (int i = 0; i < values.length; i++) {
@@ -66,13 +44,6 @@ public interface DataFinderTestContext<K extends DataResourceKey, D> {
         DataResourceKey key = () -> unified;
         return dataKey((K) key);
     }
-
-    /**
-     * Data type
-     *
-     * @return a generic type of data resource.
-     */
-    Class<D> dataClass();
 
     /**
      * Maps a vector of metadata of generic type K into a corresponding data.
@@ -88,16 +59,9 @@ public interface DataFinderTestContext<K extends DataResourceKey, D> {
 
     default DataResource<K, D> resource(Integer... values) {
         K key = dataKey(values);
-        return DataResource.builder(dataKeyClass(), dataClass())
+        return DataResource.<K, D>builder()
                 .key(key)
                 .data(data(key))
-                .build();
-    }
-
-    default DataFinderResult<K, D> result(DataResource<K, D> resource, BigDecimal score) {
-        return DataFinderResult.builder(dataKeyClass(), dataClass())
-                .resource(resource)
-                .score(score)
                 .build();
     }
 }

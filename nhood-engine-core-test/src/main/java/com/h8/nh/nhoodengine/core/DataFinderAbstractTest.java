@@ -1,7 +1,6 @@
 package com.h8.nh.nhoodengine.core;
 
 
-import com.h8.nh.nhoodengine.utils.DataFinderTestContext;
 import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +32,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> implements DataFinderRequirements {
+
+    protected static final int METADATA_SIZE = 3;
 
     private static final BigDecimal DISTANCE_ZERO = BigDecimal.ZERO
             .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
@@ -74,7 +75,7 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
         DataKeyGenerator
                 .generate(KEY_VECTOR_MIN_LIMIT, KEY_VECTOR_MAX_LIMIT)
                 .map(ctx::dataKey)
-                .map(k -> DataResource.builder(ctx.dataKeyClass(), ctx.dataClass())
+                .map(k -> DataResource.<K, D>builder()
                         .key(k)
                         .data(ctx.data(k))
                         .build())
@@ -84,6 +85,7 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @Override
     @Test
     public final void shouldThrowAnExceptionWhenCriteriaIsNull() {
+        // when / then
         assertThatThrownBy(() -> dataFinder.find(null))
                 .isInstanceOf(DataFinderFailedException.class)
                 .hasMessage("DataFinderCriteria may not be null")
@@ -94,12 +96,13 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @Test
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsNull() {
-        Class<K> keyClass = ctx.dataKeyClass();
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        // given
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(null)
                 .limit(10)
                 .build();
 
+        // when / then
         assertThatThrownBy(() -> dataFinder.find(criteria))
                 .isInstanceOf(DataFinderFailedException.class)
                 .hasMessage("DataFinderCriteria metadata may not be null")
@@ -110,12 +113,13 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @Test
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorIsEmpty() {
-        Class<K> keyClass = ctx.dataKeyClass();
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        // given
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(ctx.dataKey())
                 .limit(10)
                 .build();
 
+        // when / then
         assertThatThrownBy(() -> dataFinder.find(criteria))
                 .isInstanceOf(DataFinderFailedException.class)
                 .hasMessage("DataFinderCriteria metadata may not be empty")
@@ -126,13 +130,14 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @Test
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaMetadataVectorSizeDoesNotMatch() {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(10)
                 .build();
 
+        // when / then
         assertThatThrownBy(() -> dataFinder.find(criteria))
                 .isInstanceOf(DataFinderFailedException.class)
                 .hasMessage("DataFinderCriteria metadata size does not match data in repository")
@@ -143,13 +148,14 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @Test
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldThrowAnExceptionWhenCriteriaLimitIsNegative() {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(-1)
                 .build();
 
+        // when / then
         assertThatThrownBy(() -> dataFinder.find(criteria))
                 .isInstanceOf(DataFinderFailedException.class)
                 .hasMessage("DataFinderCriteria limit may not be negative")
@@ -161,15 +167,17 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnAnEmptyResultListWhenCriteriaLimitZero()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(0)
                 .build();
 
+        // when
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
+        // then
         assertThat(results).isEmpty();
     }
 
@@ -178,15 +186,17 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnResultListOfLimitSizeWhenCriteriaLimitIsBelowDataSetSize()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(10)
                 .build();
 
+        // when
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
+        // then
         assertThat(results).hasSize(criteria.getLimit());
     }
 
@@ -195,16 +205,18 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnWholeResultSetWhenCriteriaLimitHigherThanDataSetSize()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(Integer.MAX_VALUE)
                 .build();
 
+        // when
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
-        assertThat(results).hasSize(ctx.registerDataSize());
+        // then
+        assertThat(results).hasSize(ctx.registeredDataSize());
     }
 
     @Override
@@ -212,15 +224,17 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(5, -50, 50);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(7)
                 .build();
 
+        // when
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
+        // then
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
@@ -239,15 +253,17 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldCalculateScoresOfClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(5, -50, 50);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(27)
                 .build();
 
+        // when
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
+        // then
         assertThat(results)
                 .containsExactlyInAnyOrder(
                         ctx.result(ctx.resource(5, -50, 50), DISTANCE_ZERO),
@@ -288,15 +304,17 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldOrderClosestResultForAGivenMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(5, -50, 50);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(27)
                 .build();
 
+        // when
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
+        // then
         assertThat(results.subList(0, 1))
                 .extracting("score").containsOnly(DISTANCE_ZERO);
         assertThat(results.subList(1, 7))
@@ -312,15 +330,17 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForALowestPossibleMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(4)
                 .build();
 
+        // when
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
+        // then
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
@@ -336,15 +356,17 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAHighestPossibleMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(4)
                 .build();
 
+        // when
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
+        // then
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(
@@ -360,15 +382,17 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
     @SuppressWarnings("checkstyle:magicnumber")
     public final void shouldReturnListOfClosestResultForAllZeroesMetadataVector()
             throws DataFinderFailedException {
-        Class<K> keyClass = ctx.dataKeyClass();
+        // given
         K metadata = ctx.dataKey(0, 0, 0);
-        DataFinderCriteria<K> criteria = DataFinderCriteria.builder(keyClass)
+        DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(7)
                 .build();
 
+        // when
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
 
+        // then
         assertThat(results)
                 .extracting("resource")
                 .containsExactlyInAnyOrder(

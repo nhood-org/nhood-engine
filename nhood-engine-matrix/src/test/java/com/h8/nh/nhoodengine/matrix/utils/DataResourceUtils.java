@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.core.utils;
+package com.h8.nh.nhoodengine.matrix.utils;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;

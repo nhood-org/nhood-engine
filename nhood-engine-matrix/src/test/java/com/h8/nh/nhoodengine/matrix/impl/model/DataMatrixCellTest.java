@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.core.matrix;
+package com.h8.nh.nhoodengine.matrix.impl.model;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import org.assertj.core.data.Offset;
@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import static com.h8.nh.nhoodengine.core.utils.DataResourceUtils.resource;
+import static com.h8.nh.nhoodengine.matrix.utils.DataResourceUtils.resource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
