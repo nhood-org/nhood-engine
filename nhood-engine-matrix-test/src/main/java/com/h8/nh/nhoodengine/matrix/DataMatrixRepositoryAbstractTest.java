@@ -74,6 +74,16 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
 
     @Override
     @Test
+    public final void shouldNotAcceptNullResources() {
+        // given / when / then
+        assertThatThrownBy(() -> dataMatrixRepository.add(null))
+                .isInstanceOf(DataMatrixRepositoryFailedException.class)
+                .hasMessage("Data resource may not be null")
+                .hasNoCause();
+    }
+
+    @Override
+    @Test
     public final void shouldNotAcceptResourcesWithIllegalKeySize() {
         // given
         K metadata = ctx.dataKey(0, 0);
@@ -162,7 +172,7 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
                 dataMatrixRepository.findNeighbours(r1.getKey());
 
         assertThat(iterator.hasNext()).isTrue();
-        assertThat(iterator.next()).containsExactly(r1, r2);
+        assertThat(iterator.next()).containsExactlyInAnyOrder(r1, r2);
         assertThat(iterator.hasNext()).isFalse();
     }
 
