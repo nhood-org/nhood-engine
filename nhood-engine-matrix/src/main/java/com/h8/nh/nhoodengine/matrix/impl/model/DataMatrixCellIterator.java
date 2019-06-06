@@ -17,6 +17,8 @@ public final class DataMatrixCellIterator<K extends DataResourceKey, D>
     private final Iterator<DataMatrixCell<DataResource<K, D>>> cellIterator;
 
     private DataMatrixCellIterator<K, D> nestedCellIterator;
+
+    private DataMatrixCell<DataResource<K, D>> current;
     private DataMatrixCell<DataResource<K, D>> next;
 
     private DataMatrixCellIterator(
@@ -38,7 +40,8 @@ public final class DataMatrixCellIterator<K extends DataResourceKey, D>
     }
 
     public Set<DataResource<K, D>> next() {
-        return nextCell().getResources();
+        current = nextCell();
+        return current.getResources();
     }
 
     public boolean hasNext() {
@@ -47,8 +50,9 @@ public final class DataMatrixCellIterator<K extends DataResourceKey, D>
 
     public boolean hasNextWithinRange(final BigDecimal range) {
         return hasNext()
+                && !currentWrapsAllPointsAroundTheEntryPointWithinRange(range)
                 && (distanceFromEntryPointToNextIsWithinRange(range)
-                || !parentOfNextWrapsAllPointsAroundTheEntryPointWithinRange(range));
+                || parentOfNextWrapsAllPointsAroundTheEntryPointWithinRange(range));
     }
 
     private DataMatrixCell<DataResource<K, D>> nextCell() {
@@ -57,6 +61,10 @@ public final class DataMatrixCellIterator<K extends DataResourceKey, D>
             next = advance();
         } while (next != null && !next.hasResources());
         return result;
+    }
+
+    private boolean currentWrapsAllPointsAroundTheEntryPointWithinRange(final BigDecimal range) {
+        return current != null && current.wrapsKey(entryPoint, range);
     }
 
     private boolean distanceFromEntryPointToNextIsWithinRange(final BigDecimal range) {

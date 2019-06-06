@@ -13,7 +13,7 @@ public interface DataMatrixRepositoryRequirements {
 
     void shouldNotAcceptResourcesWithNullResource();
 
-    void shouldAcceptNotDuplicateSameResourceWhenAddedMultipleTimes()
+    void shouldAcceptSameResourceWhenAddedMultipleTimes()
             throws DataMatrixRepositoryFailedException;
 
     void shouldAcceptTwoResourcesWithTheSameKey()

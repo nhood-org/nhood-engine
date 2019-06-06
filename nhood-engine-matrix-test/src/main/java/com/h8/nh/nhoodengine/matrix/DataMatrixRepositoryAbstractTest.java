@@ -135,7 +135,7 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
 
     @Override
     @Test
-    public final void shouldAcceptNotDuplicateSameResourceWhenAddedMultipleTimes()
+    public final void shouldAcceptSameResourceWhenAddedMultipleTimes()
             throws DataMatrixRepositoryFailedException {
         // given
         DataResource<K, D> resource = ctx.resource(0, 0, 0);
@@ -293,16 +293,11 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
         int retrievedCounter = 0;
         while (iterator.hasNext()) {
             retrievedCounter += iterator.next().size();
+            boolean shouldContainMore = resources.size() > retrievedCounter;
             assertThat(iterator.hasNextWithinRange(DISTANCE_ZERO))
                     .isEqualTo(false);
-
             assertThat(iterator.hasNextWithinRange(
                     DISTANCE_DIAGONAL_CUBE.multiply(BigDecimal.valueOf(20))))
-                    .isEqualTo(false);
-
-            boolean shouldContainMore = resources.size() > retrievedCounter;
-            assertThat(iterator.hasNextWithinRange(
-                    DISTANCE_DIAGONAL_CUBE.multiply(BigDecimal.valueOf(20).subtract(BigDecimal.ONE))))
                     .isEqualTo(shouldContainMore);
         }
     }

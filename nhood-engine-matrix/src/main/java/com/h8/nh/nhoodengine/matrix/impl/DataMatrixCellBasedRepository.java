@@ -11,10 +11,10 @@ import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCellFactory;
 import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCellIterator;
 
 /**
- * TODO!!!
+ * This is a default implementation {@link DataMatrixRepository} interface based on {@link DataMatrixCell}.
  *
- * @param <K>
- * @param <D>
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
+ * @param <D> a generic type of data resource.
  */
 public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
         implements DataMatrixRepository<K, D> {
