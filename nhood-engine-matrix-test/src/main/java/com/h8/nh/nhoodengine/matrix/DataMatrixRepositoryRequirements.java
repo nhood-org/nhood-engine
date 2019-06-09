@@ -5,13 +5,15 @@ package com.h8.nh.nhoodengine.matrix;
  */
 public interface DataMatrixRepositoryRequirements {
 
+    void shouldNotAcceptNullResources();
+
     void shouldNotAcceptResourcesWithIllegalKeySize();
 
     void shouldNotAcceptResourcesWithNullKey();
 
     void shouldNotAcceptResourcesWithNullResource();
 
-    void shouldAcceptNotDuplicateSameResourceWhenAddedMultipleTimes()
+    void shouldAcceptSameResourceWhenAddedMultipleTimes()
             throws DataMatrixRepositoryFailedException;
 
     void shouldAcceptTwoResourcesWithTheSameKey()

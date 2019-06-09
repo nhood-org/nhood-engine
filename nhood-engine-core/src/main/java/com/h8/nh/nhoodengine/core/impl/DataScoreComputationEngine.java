@@ -21,6 +21,12 @@ import java.util.stream.Collectors;
 import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
 import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCALE;
 
+/**
+ * This is a default implementation {@link DataFinder} interface based on {@link DataMatrixRepository}.
+ *
+ * @param <K> a generic type of data metadata key vector. Extends {@link DataResourceKey}.
+ * @param <D> a generic type of data resource.
+ */
 public final class DataScoreComputationEngine<K extends DataResourceKey, D> implements DataFinder<K, D> {
 
     private final DataMatrixRepository<K, D> repository;
@@ -124,8 +130,7 @@ public final class DataScoreComputationEngine<K extends DataResourceKey, D> impl
             final TreeSet<DataFinderResult<K, D>> sorted,
             final DataFinderCriteria<K> criteria) {
         if (limitReached(sorted, criteria)) {
-            return false;
-//            return iterator.hasNextWithinRange(sorted.last().getScore());
+            return iterator.hasNextWithinRange(sorted.last().getScore());
         } else {
             return iterator.hasNext();
         }
