@@ -10,6 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ResourcesAddWorker<K extends DataResourceKey, D> implements Runnable {
 
+    public static final String THREAD_NAME = "add-resources-worker";
+
     private final DataMatrixRepository<K, D> repository;
 
     private final List<DataResource<K, D>> resources;

@@ -11,6 +11,8 @@ import java.util.List;
 
 public final class ResourcesResolveAllWorker<K extends DataResourceKey, D> implements Runnable {
 
+    public static final String THREAD_NAME = "resolve-resources-worker";
+
     private final DataMatrixRepository<K, D> repository;
 
     private final K metadata;

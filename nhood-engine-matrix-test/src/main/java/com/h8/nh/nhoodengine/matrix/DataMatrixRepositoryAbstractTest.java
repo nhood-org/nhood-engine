@@ -3,24 +3,18 @@ package com.h8.nh.nhoodengine.matrix;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
 import com.h8.nh.nhoodengine.matrix.workers.ResourcesAddWorker;
-import com.h8.nh.nhoodengine.matrix.workers.ResourcesResolveAllWorker;
 import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
 import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCALE;
-import static java.util.stream.Collectors.groupingBy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -42,9 +36,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey, D>
-        implements DataMatrixRepositoryRequirements, DataMatrixRepositoryThreadSafeRequirements {
+        implements DataMatrixRepositoryRequirements {
 
-    protected static final int METADATA_SIZE = 3;
+    private static final int METADATA_SIZE = 3;
 
     private static final BigDecimal DISTANCE_ZERO = BigDecimal.ZERO
             .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
@@ -56,12 +50,6 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
     private static final Integer[] KEY_VECTOR_MIN_LIMIT = new Integer[]{-20, -20, -20};
 
     private static final Integer[] KEY_VECTOR_MAX_LIMIT = new Integer[]{10, 10, 10};
-
-    private static final int RESOURCE_CHUNK_SIZE = 1000;
-
-    private static final int THREAD_POOL_SIZE = 5;
-
-    private static final int THREAD_POOL_TERMINATION_CHECK_INTERVAL_MILLISECONDS = 1000;
 
     private DataMatrixRepositoryTestContext<K, D> ctx;
 
@@ -312,177 +300,6 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
                     DISTANCE_DIAGONAL_CUBE.multiply(BigDecimal.valueOf(20))))
                     .isEqualTo(shouldContainMore);
         }
-    }
-
-    @Override
-    @Test
-    public final void shouldNotLoseResourcesWhenThoseAreAddedConcurrently()
-            throws DataMatrixRepositoryFailedException, InterruptedException {
-        // given
-        List<DataResource<K, D>> resources = generateResources();
-        K key = ctx.dataKey(0, 0, 0);
-
-        // when
-        AtomicInteger chunkCounter = new AtomicInteger();
-
-        List<ResourcesAddWorker<K, D>> addResourceWorkers = resources.stream()
-                .collect(groupingBy(x -> chunkCounter.getAndIncrement() / RESOURCE_CHUNK_SIZE)).values()
-                .stream()
-                .map(chunk -> ResourcesAddWorker.of(dataMatrixRepository, chunk))
-                .collect(Collectors.toList());
-
-        ExecutorService addResourcesExecutor = Executors.newFixedThreadPool(
-                THREAD_POOL_SIZE, r -> new Thread(r, "add-resources-worker"));
-
-        addResourceWorkers.forEach(addResourcesExecutor::execute);
-        addResourcesExecutor.shutdown();
-
-        while (!addResourcesExecutor.isTerminated()) {
-            System.out.println("Waiting for all workers to finish");
-            Thread.sleep(THREAD_POOL_TERMINATION_CHECK_INTERVAL_MILLISECONDS);
-        }
-
-        // then
-        assertThat(
-                addResourceWorkers.stream()
-                        .map(ResourcesAddWorker::hasErrors)
-                        .collect(Collectors.toList()))
-                .containsOnly(false);
-
-        // when
-        DataMatrixResourceIterator<K, D> iterator =
-                dataMatrixRepository.findNeighbours(key);
-
-        // then
-        List<DataResource<K, D>> retrievedResources = new ArrayList<>();
-        while (iterator.hasNext()) {
-            retrievedResources.addAll(iterator.next());
-        }
-
-        assertThat(retrievedResources.size()).isEqualTo(resources.size());
-    }
-
-    // TODO!!!
-    @Override
-    @Disabled
-    @Test
-    public final void shouldNotLoseResourcesWhenThoseAreAddedAndResolvedConcurrently()
-            throws DataMatrixRepositoryFailedException, InterruptedException {
-        // given
-        List<DataResource<K, D>> resources = generateResources();
-        K key = ctx.dataKey(0, 0, 0);
-
-        // when
-        AtomicInteger chunkCounter = new AtomicInteger();
-
-        List<ResourcesAddWorker<K, D>> addResourceWorkers = resources.stream()
-                .collect(groupingBy(x -> chunkCounter.getAndIncrement() / RESOURCE_CHUNK_SIZE)).values()
-                .stream()
-                .map(chunk -> ResourcesAddWorker.of(dataMatrixRepository, chunk))
-                .collect(Collectors.toList());
-        List<ResourcesResolveAllWorker<K, D>> resolveResourceWorkers = new ArrayList<>();
-
-        ExecutorService addResourcesExecutor = Executors.newFixedThreadPool(
-                THREAD_POOL_SIZE, r -> new Thread(r, "add-resources-worker"));
-        ExecutorService resolveResourcesExecutor = Executors.newFixedThreadPool(
-                THREAD_POOL_SIZE, r -> new Thread(r, "resolve-resources-worker"));
-
-        addResourceWorkers.forEach(w -> {
-            ResourcesResolveAllWorker<K, D> resolveAllWorker =
-                    ResourcesResolveAllWorker.of(dataMatrixRepository, key);
-            resolveResourceWorkers.add(resolveAllWorker);
-            resolveResourcesExecutor.execute(resolveAllWorker);
-            addResourcesExecutor.execute(w);
-        });
-
-        addResourcesExecutor.shutdown();
-        resolveResourcesExecutor.shutdown();
-
-        while (!addResourcesExecutor.isTerminated()
-                || !resolveResourcesExecutor.isTerminated()) {
-            System.out.println("Waiting for all workers to finish");
-            Thread.sleep(THREAD_POOL_TERMINATION_CHECK_INTERVAL_MILLISECONDS);
-        }
-
-        // then
-        assertThat(
-                addResourceWorkers.stream()
-                        .map(ResourcesAddWorker::hasErrors)
-                        .collect(Collectors.toList()))
-                .containsOnly(false);
-        assertThat(
-                resolveResourceWorkers.stream()
-                        .map(ResourcesResolveAllWorker::hasErrors)
-                        .collect(Collectors.toList()))
-                .containsOnly(false);
-
-        // when
-        DataMatrixResourceIterator<K, D> iterator =
-                dataMatrixRepository.findNeighbours(key);
-
-        // then
-        List<DataResource<K, D>> retrievedResources = new ArrayList<>();
-        while (iterator.hasNext()) {
-            retrievedResources.addAll(iterator.next());
-        }
-
-        assertThat(retrievedResources.size()).isEqualTo(resources.size());
-    }
-
-    // TODO!!!
-    @Override
-    @Disabled
-    @Test
-    public final void shouldResolveAllAlreadyAddedResources()
-            throws InterruptedException {
-        // given
-        List<DataResource<K, D>> resources = generateResources();
-        K key = ctx.dataKey(0, 0, 0);
-
-        // when
-        AtomicInteger chunkCounter = new AtomicInteger();
-        AtomicInteger resourceCounter = new AtomicInteger();
-
-        List<ResourcesAddWorker<K, D>> addResourceWorkers = resources.stream()
-                .collect(groupingBy(x -> chunkCounter.getAndIncrement() / RESOURCE_CHUNK_SIZE)).values()
-                .stream()
-                .map(chunk -> ResourcesAddWorker.of(dataMatrixRepository, chunk, resourceCounter))
-                .collect(Collectors.toList());
-        List<ResourcesResolveAllWorker<K, D>> resolveResourceWorkers = new ArrayList<>();
-
-        ExecutorService addResourcesExecutor = Executors.newFixedThreadPool(
-                THREAD_POOL_SIZE, r -> new Thread(r, "add-resources-worker"));
-        ExecutorService resolveResourcesExecutor = Executors.newFixedThreadPool(
-                THREAD_POOL_SIZE, r -> new Thread(r, "resolve-resources-worker"));
-
-        addResourceWorkers.forEach(w -> {
-            ResourcesResolveAllWorker<K, D> resolveAllWorker =
-                    ResourcesResolveAllWorker.of(dataMatrixRepository, key, resourceCounter.get());
-            resolveResourceWorkers.add(resolveAllWorker);
-            resolveResourcesExecutor.execute(resolveAllWorker);
-            addResourcesExecutor.execute(w);
-        });
-
-        addResourcesExecutor.shutdown();
-        resolveResourcesExecutor.shutdown();
-
-        while (!addResourcesExecutor.isTerminated()
-                || !resolveResourcesExecutor.isTerminated()) {
-            System.out.println("Waiting for all workers to finish");
-            Thread.sleep(THREAD_POOL_TERMINATION_CHECK_INTERVAL_MILLISECONDS);
-        }
-
-        // then
-        assertThat(
-                addResourceWorkers.stream()
-                        .map(ResourcesAddWorker::hasErrors)
-                        .collect(Collectors.toList()))
-                .containsOnly(false);
-        assertThat(
-                resolveResourceWorkers.stream()
-                        .map(ResourcesResolveAllWorker::hasErrors)
-                        .collect(Collectors.toList()))
-                .containsOnly(false);
     }
 
     private List<DataResource<K, D>> generateResources() {
