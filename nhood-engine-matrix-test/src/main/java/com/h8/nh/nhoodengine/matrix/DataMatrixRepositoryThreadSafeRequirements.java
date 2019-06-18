@@ -5,9 +5,12 @@ package com.h8.nh.nhoodengine.matrix;
  */
 public interface DataMatrixRepositoryThreadSafeRequirements {
 
-    void shouldNotLoseResourcesWhenThoseAreAddedConcurrently();
+    void shouldNotLoseResourcesWhenThoseAreAddedConcurrently()
+            throws DataMatrixRepositoryFailedException, InterruptedException;
 
-    void shouldNotLoseResourcesWhenThoseAreAddedAndResolvedConcurrently();
+    void shouldNotLoseResourcesWhenThoseAreAddedAndResolvedConcurrently()
+            throws DataMatrixRepositoryFailedException, InterruptedException;
 
-    void shouldResolveAllAlreadyAddedResources();
+    void shouldResolveAllAlreadyAddedResources()
+            throws DataMatrixRepositoryFailedException, InterruptedException;
 }

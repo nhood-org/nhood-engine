@@ -116,7 +116,7 @@ public final class DataMatrixCell<R extends DataResource> {
                 .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
     }
 
-    public void add(final R resource) {
+    public synchronized void add(final R resource) {
         if (!this.wrapsKey(resource.getKey().unified())) {
             throw new IllegalStateException("Cell does not cover given key");
         }
