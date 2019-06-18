@@ -53,7 +53,7 @@ public final class ResourcesResolveAllWorker<K extends DataResourceKey, D> imple
                     + " : Retrieved data of size: " + resources.size());
             hasErrors = resources.size() < expectedSize;
         } catch (Exception e) {
-            System.out.println(Thread.currentThread().getName()
+            System.err.println(Thread.currentThread().getName()
                     + " : Could not resolve data from matrix repository because of"
                     + " an exception: " + e.getClass().getSimpleName() + " : " + e.getMessage());
 

@@ -49,7 +49,7 @@ public abstract class DataMatrixRepositoryAbstractThreadSafeTest<K extends DataR
 
     private static final int THREAD_POOL_TERMINATION_CHECK_INTERVAL_MILLISECONDS = 1000;
 
-    private DataMatrixRepositoryTestContext<K, D> ctx;
+    private DataMatrixRepositoryTestContext<K, D> ctx = null;
 
     private DataMatrixRepository<K, D> dataMatrixRepository = null;
 

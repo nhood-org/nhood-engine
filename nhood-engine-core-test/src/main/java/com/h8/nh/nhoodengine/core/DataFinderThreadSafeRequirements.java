@@ -5,7 +5,9 @@ package com.h8.nh.nhoodengine.core;
  */
 public interface DataFinderThreadSafeRequirements {
 
-    void shouldHandleMultipleConcurrentSearches();
+    void shouldHandleMultipleConcurrentSearches()
+            throws InterruptedException;
 
-    void shouldHandleMultipleConcurrentSearchesAndDataGrowth();
+    void shouldHandleMultipleConcurrentSearchesAndDataGrowth()
+            throws InterruptedException;
 }

@@ -31,9 +31,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @param <D> a generic type of data resource.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> implements DataFinderRequirements {
-
-    protected static final int METADATA_SIZE = 3;
+public abstract class DataFinderAbstractTest<K extends DataResourceKey, D>
+        implements DataFinderRequirements {
 
     private static final BigDecimal DISTANCE_ZERO = BigDecimal.ZERO
             .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
@@ -53,9 +52,9 @@ public abstract class DataFinderAbstractTest<K extends DataResourceKey, D> imple
 
     private static final Integer[] KEY_VECTOR_MAX_LIMIT = new Integer[]{10, 100, 100};
 
-    private DataFinderTestContext<K, D> ctx;
+    private DataFinderTestContext<K, D> ctx = null;
 
-    private DataFinder<K, D> dataFinder;
+    private DataFinder<K, D> dataFinder = null;
 
     /**
      * Creates a new instance of DataFinderTestContext which is ctx for the whole test suite.

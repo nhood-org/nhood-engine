@@ -52,7 +52,7 @@ public final class ResourcesAddWorker<K extends DataResourceKey, D> implements R
             resources.forEach(this::populateResource);
             resourceCounter.addAndGet(resources.size());
         } catch (Exception e) {
-            System.out.println(Thread.currentThread().getName()
+            System.err.println(Thread.currentThread().getName()
                     + " : Could not populate data matrix repository because of"
                     + " an exception: " + e.getClass().getSimpleName() + " : " + e.getMessage());
 

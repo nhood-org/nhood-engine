@@ -51,9 +51,9 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
 
     private static final Integer[] KEY_VECTOR_MAX_LIMIT = new Integer[]{10, 10, 10};
 
-    private DataMatrixRepositoryTestContext<K, D> ctx;
+    private DataMatrixRepositoryTestContext<K, D> ctx = null;
 
-    private DataMatrixRepository<K, D> dataMatrixRepository;
+    private DataMatrixRepository<K, D> dataMatrixRepository = null;
 
     /**
      * Creates a new instance of DataMatrixRepositoryTestContext which is ctx for the whole test suite.
