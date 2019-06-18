@@ -24,7 +24,7 @@ public final class DataMatrixCell<R extends DataResource> {
 
     private final DataMatrixCell<R> parent;
     private final Set<DataMatrixCell<R>> children;
-    private final Set<R> resources;
+    private final HashSet<R> resources;
 
     private final DataMatrixCellConfiguration configuration;
 
@@ -76,8 +76,11 @@ public final class DataMatrixCell<R extends DataResource> {
         return !resources.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     Set<R> getResources() {
-        return Collections.unmodifiableSet(resources);
+        synchronized (this) {
+            return (Set<R>) resources.clone();
+        }
     }
 
     boolean wrapsKey(final BigDecimal[] key) {
@@ -116,16 +119,22 @@ public final class DataMatrixCell<R extends DataResource> {
                 .setScale(UNIFIED_BIG_DECIMAL_SCALE, UNIFIED_BIG_DECIMAL_ROUNDING_MODE);
     }
 
-    public synchronized void add(final R resource) {
+    public void add(final R resource) {
         if (!this.wrapsKey(resource.getKey().unified())) {
             throw new IllegalStateException("Cell does not cover given key");
         }
         if (this.hasChildren()) {
             findRelevantChild(resource).add(resource);
-        } else {
-            resources.add(resource);
-            updateStatistics(resource);
-            split();
+            return;
+        }
+        synchronized (this) {
+            if (this.hasChildren()) {
+                findRelevantChild(resource).add(resource);
+            } else {
+                resources.add(resource);
+                updateStatistics(resource);
+                split();
+            }
         }
     }
 
