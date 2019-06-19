@@ -15,7 +15,7 @@ public class DataFinderPerformanceTest extends DataFinderAbstractPerformanceTest
 
     @Override
     protected final DataFinderTestContext<DataResourceKey, Object> initializeContext() {
-        return new TestContext();
+        return new TestContext(this.getMetadataSize());
     }
 
     private static class TestContext implements DataFinderTestContext<DataResourceKey, Object> {
@@ -24,8 +24,8 @@ public class DataFinderPerformanceTest extends DataFinderAbstractPerformanceTest
 
         private int registered;
 
-        TestContext() {
-            this.repository = new DataMatrixCellBasedRepository<>(METADATA_SIZE);
+        TestContext(final int metadataSize) {
+            this.repository = new DataMatrixCellBasedRepository<>(metadataSize);
         }
 
         @Override

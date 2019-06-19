@@ -4,10 +4,10 @@ import com.h8.nh.nhoodengine.core.DataFinder;
 import com.h8.nh.nhoodengine.core.DataFinderCriteria;
 import com.h8.nh.nhoodengine.core.DataFinderFailedException;
 import com.h8.nh.nhoodengine.core.DataFinderResult;
+import com.h8.nh.nhoodengine.core.DataFinderTestContext;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.core.DataFinderTestContext;
-import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
+import com.h8.nh.nhoodengine.utils.FileUtils;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -17,6 +17,8 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 
+import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,12 +40,15 @@ import java.util.List;
 @State(Scope.Benchmark)
 public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKey, D> {
 
-    static final int METADATA_SIZE = 3;
-
     private static final int LIMIT = 50;
 
-    @Param({"50", "100", "200", "500"})
-    private int range;
+    @Param({"10000", "100000", "1000000"})
+    private int dataSetSize;
+
+    @Param({"8", "16", "32"})
+    private int metadataSize;
+
+    private SecureRandom random = new SecureRandom();
 
     private DataFinderTestContext<K, D> ctx;
 
@@ -57,6 +62,14 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
      */
     protected abstract DataFinderTestContext<K, D> initializeContext();
 
+    final int getDataSetSize() {
+        return dataSetSize;
+    }
+
+    final int getMetadataSize() {
+        return metadataSize;
+    }
+
     @Setup(Level.Trial)
     public final void prepare() {
         System.out.println(
@@ -65,27 +78,25 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
         ctx = initializeContext();
         dataFinder = ctx.initializeDataFinder();
 
-        Integer[] minLimit = createLimitVector(-1 * range);
-        Integer[] maxLimit = createLimitVector(range);
+        long memoryUsage = readUsedMemory();
 
-        DataKeyGenerator
-                .generate(minLimit, maxLimit)
-                .map(ctx::dataKey)
-                .map(k -> DataResource.<K, D>builder()
-                        .key(k)
-                        .data(ctx.data(k))
-                        .build())
-                .forEach(ctx::register);
+        for (int i = 0; i < dataSetSize; i++) {
+            ctx.register(generateRandomData());
+        }
+
+        memoryUsage = readUsedMemory() - memoryUsage;
 
         System.out.println(
-                "Initialized '" + Math.pow(range, minLimit.length) + "' data elements");
+                "Initialized " + ctx.registeredDataSize() + " data elements");
+        System.out.println(
+                "Initialized data of size: " + FileUtils.humanReadableByteCount(memoryUsage));
     }
 
     @Benchmark
     @BenchmarkMode(Mode.AverageTime)
     public final void shouldReturnResultListOfRequestedSize()
             throws DataFinderFailedException {
-        K metadata = ctx.dataKey(0, 0, 0);
+        K metadata = ctx.dataKey(generateRandomMetadata());
         DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
                 .limit(LIMIT)
@@ -94,7 +105,26 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
         assert results.size() == LIMIT;
     }
 
-    private Integer[] createLimitVector(final int range) {
-        return new Integer[]{range / 2, range / 2, range / 2};
+    private DataResource<K, D> generateRandomData() {
+        K metadata = ctx.dataKey(generateRandomMetadata());
+        return DataResource.<K, D>builder()
+                .key(metadata)
+                .data(ctx.data(metadata))
+                .build();
+    }
+
+    private Integer[] generateRandomMetadata() {
+        Integer[] v = new Integer[metadataSize];
+        Arrays.fill(v, generateRandomInteger());
+        return v;
+    }
+
+    private Integer generateRandomInteger() {
+        return random.nextInt(Integer.MAX_VALUE) - (Integer.MAX_VALUE / 2);
+    }
+
+    private long readUsedMemory() {
+        Runtime rt = Runtime.getRuntime();
+        return rt.totalMemory() - rt.freeMemory();
     }
 }
