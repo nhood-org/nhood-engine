@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>nhood-engine-core-performance-tests</artifactId>
+    <artifactId>nhood-engine-core-performance</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -86,7 +86,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>nhood-engine-core-performance-tests</finalName>
+                            <finalName>nhood-engine-core-performance</finalName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>org.openjdk.jmh.Main</mainClass>

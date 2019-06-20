@@ -94,7 +94,7 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
 
     @Benchmark
     @BenchmarkMode(Mode.AverageTime)
-    public final void shouldReturnResultListOfRequestedSize()
+    public final void shouldFindDataRelevantToRandomMetadataKey()
             throws DataFinderFailedException {
         K metadata = ctx.dataKey(generateRandomMetadata());
         DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
