@@ -57,6 +57,12 @@ cd nhood-engine-core-performance
 java -Xmx8G -jar target/nhood-engine-core-performance.jar | tee target/performance_$(date +%s).results
 ```
 
+```bash
+mvn clean install
+cd nhood-engine-matrix-performance
+java -Xmx8G -jar target/nhood-engine-matrix-performance.jar | tee target/performance_$(date +%s).results
+```
+
 Previous performance test results may be found here:
 - [nhood-engine-core-performance/performance.results](nhood-engine-core-performance/performance.results)
 
