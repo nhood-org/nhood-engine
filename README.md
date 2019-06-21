@@ -65,6 +65,7 @@ java -Xmx8G -jar target/nhood-engine-matrix-performance.jar | tee target/perform
 
 Previous performance test results may be found here:
 - [nhood-engine-core-performance/performance.results](nhood-engine-core-performance/performance.results)
+- [nhood-engine-matrix-performance/performance.results](nhood-engine-matrix-performance/performance.results)
 
 ## CI/CD
 
