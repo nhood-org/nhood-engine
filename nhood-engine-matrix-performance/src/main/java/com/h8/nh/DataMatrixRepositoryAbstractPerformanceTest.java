@@ -40,9 +40,9 @@ import java.util.List;
 @State(Scope.Benchmark)
 public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends DataResourceKey, D> {
 
-    private static final int RESOURCE_CHUNK_SIZE = 1000;
+    private static final int RESOURCE_CHUNK_SIZE = 10000;
 
-    private static final int RESOURCE_CRAWL_DEPTH = 100;
+    private static final int RESOURCE_CRAWL_DEPTH = 1000;
 
     @Param({"10000", "100000", "1000000"})
     private int dataSetSize;
