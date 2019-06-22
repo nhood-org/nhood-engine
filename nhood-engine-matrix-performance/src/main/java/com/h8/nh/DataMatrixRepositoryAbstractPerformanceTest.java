@@ -40,7 +40,9 @@ import java.util.List;
 @State(Scope.Benchmark)
 public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends DataResourceKey, D> {
 
-    private static final int RESOURCE_CHUNK_SIZE = 10000;
+    private static final int RESOURCE_RANDOM_DATA_POOL_SIZE = 10000;
+
+    private static final int RESOURCE_RANDOM_METADATA_POOL_SIZE = 100;
 
     private static final int RESOURCE_CRAWL_DEPTH = 1000;
 
@@ -56,7 +58,9 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
 
     private DataMatrixRepository<K, D> dataMatrixRepository = null;
 
-    private List<DataResource<K, D>> testData;
+    private List<DataResource<K, D>> randomDataPool;
+
+    private Integer[][] randomMetadataPool;
 
     /**
      * Creates a new instance of DataMatrixRepositoryTestContext which is ctx for the whole test suite.
@@ -84,11 +88,7 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
         dataMatrixRepository = ctx.initializerRepository();
 
         long memoryUsage = readUsedMemory();
-
-        for (int i = 0; i < dataSetSize; i++) {
-            dataMatrixRepository.add(generateRandomData());
-        }
-
+        generateInitialRepositoryData();
         memoryUsage = readUsedMemory() - memoryUsage;
 
         System.out.println(
@@ -96,17 +96,15 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
         System.out.println(
                 "Initialized data of size: " + FileUtils.humanReadableByteCount(memoryUsage));
 
-        testData = new ArrayList<>();
-        for (int i = 0; i < RESOURCE_CHUNK_SIZE; i++) {
-            testData.add(generateRandomData());
-        }
+        generateRandomDataPool();
+        generateRandomMetadataPool();
     }
 
     @Benchmark
     @BenchmarkMode(Mode.AverageTime)
     public final void addRandomResources()
             throws DataMatrixRepositoryFailedException {
-        for (DataResource<K, D> r : testData) {
+        for (DataResource<K, D> r : randomDataPool) {
             dataMatrixRepository.add(r);
         }
     }
@@ -115,7 +113,8 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     @BenchmarkMode(Mode.AverageTime)
     public final void resolveNeighboursOfRandomMetadataKey()
             throws DataMatrixRepositoryFailedException {
-        K metadata = ctx.dataKey(generateRandomMetadata());
+        int idx = random.nextInt(RESOURCE_RANDOM_METADATA_POOL_SIZE);
+        K metadata = ctx.dataKey(randomMetadataPool[idx]);
         DataMatrixResourceIterator<K, D> iterator = dataMatrixRepository.findNeighbours(metadata);
         assert iterator.hasNext();
     }
@@ -124,13 +123,35 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     @BenchmarkMode(Mode.AverageTime)
     public final void resolveAndCrawlNeighboursOfRandomMetadataKey()
             throws DataMatrixRepositoryFailedException {
-        K metadata = ctx.dataKey(generateRandomMetadata());
+        int idx = random.nextInt(RESOURCE_RANDOM_METADATA_POOL_SIZE);
+        K metadata = ctx.dataKey(randomMetadataPool[idx]);
         DataMatrixResourceIterator<K, D> iterator = dataMatrixRepository.findNeighbours(metadata);
         for (int i = 0; i < RESOURCE_CRAWL_DEPTH; i++) {
             if (!iterator.hasNext()) {
                 break;
             }
             assert iterator.next() != null;
+        }
+    }
+
+    private void generateInitialRepositoryData()
+            throws DataMatrixRepositoryFailedException {
+        for (int i = 0; i < dataSetSize; i++) {
+            dataMatrixRepository.add(generateRandomData());
+        }
+    }
+
+    private void generateRandomDataPool() {
+        randomDataPool = new ArrayList<>();
+        for (int i = 0; i < RESOURCE_RANDOM_DATA_POOL_SIZE; i++) {
+            randomDataPool.add(generateRandomData());
+        }
+    }
+
+    private void generateRandomMetadataPool() {
+        randomMetadataPool = new Integer[RESOURCE_RANDOM_METADATA_POOL_SIZE][metadataSize];
+        for (int i = 0; i < RESOURCE_RANDOM_METADATA_POOL_SIZE; i++) {
+            randomMetadataPool[i] = generateRandomMetadata();
         }
     }
 

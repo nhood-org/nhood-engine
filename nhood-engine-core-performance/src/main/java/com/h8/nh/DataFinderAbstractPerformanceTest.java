@@ -40,7 +40,9 @@ import java.util.List;
 @State(Scope.Benchmark)
 public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKey, D> {
 
-    private static final int LIMIT = 50;
+    private static final int DATA_FINDER_LIMIT = 50;
+
+    private static final int RESOURCE_RANDOM_METADATA_POOL_SIZE = 100;
 
     @Param({"10000", "100000", "1000000"})
     private int dataSetSize;
@@ -53,6 +55,8 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
     private DataFinderTestContext<K, D> ctx;
 
     private DataFinder<K, D> dataFinder;
+
+    private Integer[][] randomMetadataPool;
 
     /**
      * Creates a new instance of DataFinderTestContext which is ctx for the whole test suite.
@@ -79,30 +83,42 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
         dataFinder = ctx.initializeDataFinder();
 
         long memoryUsage = readUsedMemory();
-
-        for (int i = 0; i < dataSetSize; i++) {
-            ctx.register(generateRandomData());
-        }
-
+        generateInitialRepositoryData();
         memoryUsage = readUsedMemory() - memoryUsage;
 
         System.out.println(
                 "Initialized " + ctx.registeredDataSize() + " data elements");
         System.out.println(
                 "Initialized data of size: " + FileUtils.humanReadableByteCount(memoryUsage));
+
+        generateRandomMetadataPool();
     }
 
     @Benchmark
     @BenchmarkMode(Mode.AverageTime)
     public final void findDataRelevantToRandomMetadataKey()
             throws DataFinderFailedException {
-        K metadata = ctx.dataKey(generateRandomMetadata());
+        int idx = random.nextInt(RESOURCE_RANDOM_METADATA_POOL_SIZE);
+        K metadata = ctx.dataKey(randomMetadataPool[idx]);
         DataFinderCriteria<K> criteria = DataFinderCriteria.<K>builder()
                 .metadata(metadata)
-                .limit(LIMIT)
+                .limit(DATA_FINDER_LIMIT)
                 .build();
         List<DataFinderResult<K, D>> results = dataFinder.find(criteria);
-        assert results.size() == LIMIT;
+        assert results.size() == DATA_FINDER_LIMIT;
+    }
+
+    private void generateInitialRepositoryData() {
+        for (int i = 0; i < dataSetSize; i++) {
+            ctx.register(generateRandomData());
+        }
+    }
+
+    private void generateRandomMetadataPool() {
+        randomMetadataPool = new Integer[RESOURCE_RANDOM_METADATA_POOL_SIZE][metadataSize];
+        for (int i = 0; i < RESOURCE_RANDOM_METADATA_POOL_SIZE; i++) {
+            randomMetadataPool[i] = generateRandomMetadata();
+        }
     }
 
     private DataResource<K, D> generateRandomData() {
