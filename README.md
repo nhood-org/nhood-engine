@@ -13,7 +13,7 @@ Project is split into two maven submodules:
 - `nhood-engine-core` containing core engine implementation
 - `nhood-engine-core-api` containing core engine interfaces
 - `nhood-engine-core-test` containing core engine abstract unit tests
-- `nhood-engine-core-performance-test` containing core engine performance tests
+- `nhood-engine-core-performance` containing core engine performance tests
 - `nhood-engine-matrix` containing matrix management implementation
 - `nhood-engine-matrix-api` containing matrix management interfaces
 - `nhood-engine-matrix-test` containing matrix management abstract unit tests
@@ -53,8 +53,19 @@ In order to run performance test use the following maven commands:
 
 ```bash
 mvn clean install
-java -jar nhood-engine-core-performance-tests/target/nhood-engine-core-performance-tests.jar
+cd nhood-engine-core-performance
+java -Xmx8G -jar target/nhood-engine-core-performance.jar | tee target/performance_$(date +%s).results
 ```
+
+```bash
+mvn clean install
+cd nhood-engine-matrix-performance
+java -Xmx8G -jar target/nhood-engine-matrix-performance.jar | tee target/performance_$(date +%s).results
+```
+
+Previous performance test results may be found here:
+- [nhood-engine-core-performance/performance.results](nhood-engine-core-performance/performance.results)
+- [nhood-engine-matrix-performance/performance.results](nhood-engine-matrix-performance/performance.results)
 
 ## CI/CD
 

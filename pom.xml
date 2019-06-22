@@ -15,10 +15,11 @@
 	<modules>
 		<module>nhood-engine-core</module>
 		<module>nhood-engine-core-api</module>
-		<module>nhood-engine-core-performance-tests</module>
+		<module>nhood-engine-core-performance</module>
 		<module>nhood-engine-core-test</module>
 		<module>nhood-engine-matrix</module>
         <module>nhood-engine-matrix-api</module>
+		<module>nhood-engine-matrix-performance</module>
 		<module>nhood-engine-matrix-test</module>
 		<module>nhood-engine-test-utils</module>
     </modules>

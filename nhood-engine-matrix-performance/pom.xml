@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>nhood-engine-core-performance-tests</artifactId>
+    <artifactId>nhood-engine-matrix-performance</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -15,25 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.h8.nh</groupId>
-            <artifactId>nhood-engine-core-api</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h8.nh</groupId>
-            <artifactId>nhood-engine-core</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h8.nh</groupId>
-            <artifactId>nhood-engine-core-test</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h8.nh</groupId>
-            <artifactId>nhood-engine-test-utils</artifactId>
+            <artifactId>nhood-engine-matrix-api</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
 
@@ -41,7 +23,19 @@
             <groupId>com.h8.nh</groupId>
             <artifactId>nhood-engine-matrix</artifactId>
             <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h8.nh</groupId>
+            <artifactId>nhood-engine-matrix-test</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h8.nh</groupId>
+            <artifactId>nhood-engine-test-utils</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -86,7 +80,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>nhood-engine-core-performance-tests</finalName>
+                            <finalName>nhood-engine-matrix-performance</finalName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>org.openjdk.jmh.Main</mainClass>
