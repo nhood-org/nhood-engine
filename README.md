@@ -17,10 +17,8 @@ Project is split into two maven submodules:
 - `nhood-engine-matrix` containing matrix management implementation
 - `nhood-engine-matrix-api` containing matrix management interfaces
 - `nhood-engine-matrix-test` containing matrix management abstract unit tests
+- `nhood-engine-matrix-performance` containing core engine performance tests
 - `nhood-engine-test-utils` containing test utilities
-
-To be added:
-- `nhood-engine-matrix-performance-test` containing matrix management abstract performance tests
 
 ## Technology
 
@@ -90,5 +88,5 @@ curl -u <CIRCLE_CI_USER_TOKEN> \
 
 ## License
 
-`nhood-data-url-svc` is released under the MIT license:
+`nhood-engine` is released under the MIT license:
 - https://opensource.org/licenses/MIT
