@@ -4,3 +4,5 @@
 
 *.releaseBackup
 release.properties
+
+*.DS_Store

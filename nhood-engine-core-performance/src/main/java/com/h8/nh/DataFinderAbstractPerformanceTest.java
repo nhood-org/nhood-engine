@@ -7,7 +7,9 @@ import com.h8.nh.nhoodengine.core.DataFinderResult;
 import com.h8.nh.nhoodengine.core.DataFinderTestContext;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.utils.FileUtils;
+import com.h8.nh.nhoodengine.utils.measurement.node.ExecutionTimeMeasurement;
+import com.h8.nh.nhoodengine.utils.measurement.node.HeapMemoryMeasurement;
+import com.h8.nh.nhoodengine.utils.measurement.MeasurementChain;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -82,14 +84,13 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
         ctx = initializeContext();
         dataFinder = ctx.initializeDataFinder();
 
-        long memoryUsage = readUsedMemory();
-        generateInitialRepositoryData();
-        memoryUsage = readUsedMemory() - memoryUsage;
+        MeasurementChain.of(this::generateInitialRepositoryData)
+                .measure(ExecutionTimeMeasurement.getInstance())
+                .measure(HeapMemoryMeasurement.getInstance())
+                .run();
 
         System.out.println(
-                "Initialized " + ctx.registeredDataSize() + " data elements");
-        System.out.println(
-                "Initialized data of size: " + FileUtils.humanReadableByteCount(memoryUsage));
+                "Measurement::Data size:    " + ctx.registeredDataSize());
 
         generateRandomMetadataPool();
     }
@@ -137,10 +138,5 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
 
     private Integer generateRandomInteger() {
         return random.nextInt(Integer.MAX_VALUE) - (Integer.MAX_VALUE / 2);
-    }
-
-    private long readUsedMemory() {
-        Runtime rt = Runtime.getRuntime();
-        return rt.totalMemory() - rt.freeMemory();
     }
 }

@@ -6,7 +6,9 @@ import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryTestContext;
 import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
-import com.h8.nh.nhoodengine.utils.FileUtils;
+import com.h8.nh.nhoodengine.utils.measurement.node.ExecutionTimeMeasurement;
+import com.h8.nh.nhoodengine.utils.measurement.node.HeapMemoryMeasurement;
+import com.h8.nh.nhoodengine.utils.measurement.MeasurementChain;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -79,22 +81,20 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     }
 
     @Setup(Level.Trial)
-    public final void prepare()
-            throws DataMatrixRepositoryFailedException {
+    public final void prepare() {
         System.out.println(
                 "Initializing context");
 
         ctx = initializeContext();
         dataMatrixRepository = ctx.initializerRepository();
 
-        long memoryUsage = readUsedMemory();
-        generateInitialRepositoryData();
-        memoryUsage = readUsedMemory() - memoryUsage;
+        MeasurementChain.of(this::generateInitialRepositoryData)
+                .measure(ExecutionTimeMeasurement.getInstance())
+                .measure(HeapMemoryMeasurement.getInstance())
+                .run();
 
         System.out.println(
-                "Initialized " + dataSetSize + " data elements");
-        System.out.println(
-                "Initialized data of size: " + FileUtils.humanReadableByteCount(memoryUsage));
+                "Measurement::Data size:    " + dataSetSize);
 
         generateRandomDataPool();
         generateRandomMetadataPool();
@@ -134,10 +134,13 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
         }
     }
 
-    private void generateInitialRepositoryData()
-            throws DataMatrixRepositoryFailedException {
-        for (int i = 0; i < dataSetSize; i++) {
-            dataMatrixRepository.add(generateRandomData());
+    private void generateInitialRepositoryData() {
+        try {
+            for (int i = 0; i < dataSetSize; i++) {
+                dataMatrixRepository.add(generateRandomData());
+            }
+        } catch (DataMatrixRepositoryFailedException e) {
+            throw new IllegalStateException("Could not initialize data", e);
         }
     }
 
@@ -171,10 +174,5 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
 
     private Integer generateRandomInteger() {
         return random.nextInt(Integer.MAX_VALUE) - (Integer.MAX_VALUE / 2);
-    }
-
-    private long readUsedMemory() {
-        Runtime rt = Runtime.getRuntime();
-        return rt.totalMemory() - rt.freeMemory();
     }
 }
