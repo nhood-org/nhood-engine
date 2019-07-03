@@ -1,13 +1,13 @@
-package com.h8.nh.nhoodengine.example.cities;
+package com.h8.nh.nhoodengine.example.worldcities;
 
 import com.h8.nh.nhoodengine.core.DataFinder;
 import com.h8.nh.nhoodengine.core.DataFinderCriteria;
 import com.h8.nh.nhoodengine.core.DataFinderFailedException;
 import com.h8.nh.nhoodengine.core.DataFinderResult;
 import com.h8.nh.nhoodengine.core.impl.DataScoreComputationEngine;
-import com.h8.nh.nhoodengine.example.cities.model.WorldCity;
-import com.h8.nh.nhoodengine.example.cities.model.WorldCityDataLoader;
-import com.h8.nh.nhoodengine.example.cities.model.WorldCityMetadata;
+import com.h8.nh.nhoodengine.example.worldcities.model.WorldCity;
+import com.h8.nh.nhoodengine.example.worldcities.model.WorldCityDataLoader;
+import com.h8.nh.nhoodengine.example.worldcities.model.WorldCityMetadata;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 import com.h8.nh.nhoodengine.matrix.impl.DataMatrixCellBasedRepository;

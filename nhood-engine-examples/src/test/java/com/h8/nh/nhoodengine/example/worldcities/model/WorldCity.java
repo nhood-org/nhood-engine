@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.example.cities.model;
+package com.h8.nh.nhoodengine.example.worldcities.model;
 
 import java.util.Objects;
 

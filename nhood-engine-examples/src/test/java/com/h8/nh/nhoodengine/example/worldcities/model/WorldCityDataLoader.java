@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.example.cities.model;
+package com.h8.nh.nhoodengine.example.worldcities.model;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 public final class WorldCityDataLoader {
 
     private static final String WORLD_CITIES_RESOURCE_FILE
-            = "simplemaps/worldcities/basic_1.5/worldcities.csv";
+            = "worldcities/worldcities.csv";
 
     private static final String WORLD_CITIES_DELIMITER
             = ",";
