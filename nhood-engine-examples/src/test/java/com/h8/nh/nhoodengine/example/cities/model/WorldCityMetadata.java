@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.example.cities;
+package com.h8.nh.nhoodengine.example.cities.model;
 
 import com.h8.nh.nhoodengine.core.DataResourceKey;
 
@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public final class WorldCityMetadata implements DataResourceKey {
 
-    static final int METADATA_SIZE = 2;
+    public static final int METADATA_SIZE = 2;
 
     private static final int COORDINATE_MULTIPLICAND = 1000;
 

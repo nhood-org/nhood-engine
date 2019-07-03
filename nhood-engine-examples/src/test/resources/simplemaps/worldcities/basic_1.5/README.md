@@ -1,0 +1,1 @@
+Database has been downloaded from https://simplemaps.com/data/world-cities in accordance with the Creative Commons Attribution 4.0 License.

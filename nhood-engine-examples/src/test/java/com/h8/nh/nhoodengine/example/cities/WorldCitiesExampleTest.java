@@ -5,6 +5,9 @@ import com.h8.nh.nhoodengine.core.DataFinderCriteria;
 import com.h8.nh.nhoodengine.core.DataFinderFailedException;
 import com.h8.nh.nhoodengine.core.DataFinderResult;
 import com.h8.nh.nhoodengine.core.impl.DataScoreComputationEngine;
+import com.h8.nh.nhoodengine.example.cities.model.WorldCity;
+import com.h8.nh.nhoodengine.example.cities.model.WorldCityDataLoader;
+import com.h8.nh.nhoodengine.example.cities.model.WorldCityMetadata;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 import com.h8.nh.nhoodengine.matrix.impl.DataMatrixCellBasedRepository;
@@ -27,11 +30,11 @@ class WorldCitiesExampleTest {
     @Test
     void runExample()
             throws DataFinderFailedException, DataMatrixRepositoryFailedException {
-        DataMatrixRepository<WorldCityMetadata, String> repository =
+        DataMatrixRepository<WorldCityMetadata, WorldCity> repository =
                 new DataMatrixCellBasedRepository<>(WorldCityMetadata.METADATA_SIZE);
         new WorldCityDataLoader(repository).load();
 
-        DataFinder<WorldCityMetadata, String> finder =
+        DataFinder<WorldCityMetadata, WorldCity> finder =
                 new DataScoreComputationEngine<>(repository);
 
         int WORLD_CITIES_LIMIT = 30;
@@ -63,8 +66,10 @@ class WorldCitiesExampleTest {
                 .run();
     }
 
-    private void printResult(final DataFinderResult<WorldCityMetadata, String> result) {
-        System.out.println(
-                "City: " + result.getResource().getData() + "; Score: " + result.getScore());
+    private void printResult(final DataFinderResult<WorldCityMetadata, WorldCity> result) {
+        System.out.println(""
+                + "City: " + result.getResource().getData().getName() + "; "
+                + "Country: " + result.getResource().getData().getCountry() + "; "
+                + "Score: " + result.getScore());
     }
 }
