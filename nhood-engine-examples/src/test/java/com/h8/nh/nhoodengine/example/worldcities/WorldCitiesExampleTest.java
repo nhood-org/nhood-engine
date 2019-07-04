@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
  * (database has been downloaded from simplemaps.com)
  * <p>
  * DataFinder is used to resolve 30 of cities
- * closest to Cracow by its geographical coordinates.
+ * closest to Cracow considering its geographical coordinates.
  */
 class WorldCitiesExampleTest {
 
