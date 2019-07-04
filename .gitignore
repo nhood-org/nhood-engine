@@ -1,6 +1,9 @@
-**/target/*
+**/target
+**/bin
+
 *.iml
 .idea
+.project
 
 *.releaseBackup
 release.properties
