@@ -8,11 +8,9 @@ import java.util.Objects;
 public final class WorldCityMetadata implements DataResourceKey {
 
     public static final int METADATA_SIZE = 2;
-
     private static final int COORDINATE_MULTIPLICAND = 1000;
 
     private final double latitude;
-
     private final double longitude;
 
     private WorldCityMetadata(

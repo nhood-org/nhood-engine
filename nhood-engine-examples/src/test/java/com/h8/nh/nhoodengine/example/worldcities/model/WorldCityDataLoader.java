@@ -1,18 +1,16 @@
 package com.h8.nh.nhoodengine.example.worldcities.model;
 
 import com.h8.nh.nhoodengine.core.DataResource;
+import com.h8.nh.nhoodengine.example.utils.GenericDataLoader;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
-import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
-public final class WorldCityDataLoader {
+public final class WorldCityDataLoader extends GenericDataLoader<WorldCityMetadata, WorldCity> {
 
     private static final String WORLD_CITIES_RESOURCE_FILE = "worldcities/worldcities.csv";
-    private static final String WORLD_CITIES_DELIMITER = ",";
+    private static final String WORLD_CITIES_RESOURCE_FILE_DELIMITER = ",";
 
     private static final String ROW_HEADER_CITY_NAME = "CITY";
     private static final String ROW_HEADER_CITY_LATITUDE = "LAT";
@@ -24,39 +22,23 @@ public final class WorldCityDataLoader {
     private int cityNameIdx;
     private int countryNameIdx;
 
-    private final DataMatrixRepository<WorldCityMetadata, WorldCity> repository;
-
     public WorldCityDataLoader(
             final DataMatrixRepository<WorldCityMetadata, WorldCity> repository) {
-        this.repository = repository;
+        super(repository);
     }
 
-    public void load()
-            throws DataMatrixRepositoryFailedException {
-        InputStream in = Thread.currentThread()
-                .getContextClassLoader()
-                .getResourceAsStream(WORLD_CITIES_RESOURCE_FILE);
-
-        if (in == null) {
-            throw new IllegalStateException("Could not load resource file");
-        }
-
-        try(Scanner scanner = new Scanner(in)) {
-
-            if (!scanner.hasNextLine()) {
-                throw new IllegalStateException("Resource file is empty");
-            }
-            mapHeaders(scanner.nextLine().split(WORLD_CITIES_DELIMITER));
-
-            while (scanner.hasNextLine()) {
-                String[] row = scanner.nextLine().split(WORLD_CITIES_DELIMITER);
-                DataResource<WorldCityMetadata, WorldCity> resource = mapRow(row);
-                repository.add(resource);
-            }
-        }
+    @Override
+    protected String getResourceFile() {
+        return WORLD_CITIES_RESOURCE_FILE;
     }
 
-    private void mapHeaders(final String[] headersRow) {
+    @Override
+    protected String getResourceFileDelimiter() {
+        return WORLD_CITIES_RESOURCE_FILE_DELIMITER;
+    }
+
+    @Override
+    protected void mapHeaders(final String[] headersRow) {
         Map<String, Integer> headerIndices = new HashMap<>();
 
         for (int i = 0; i < headersRow.length; i++) {
@@ -70,7 +52,8 @@ public final class WorldCityDataLoader {
         countryNameIdx = headerIndices.get(ROW_HEADER_COUNTRY_NAME);
     }
 
-    private DataResource<WorldCityMetadata, WorldCity> mapRow(final String[] row) {
+    @Override
+    protected DataResource<WorldCityMetadata, WorldCity> mapRow(final String[] row) {
         double latitude = mapDoubleValue(row[latitudeIdx]);
         double longitude = mapDoubleValue(row[longitudeIdx]);
 
@@ -81,14 +64,5 @@ public final class WorldCityDataLoader {
                         .key(WorldCityMetadata.of(latitude, longitude))
                         .data(WorldCity.of(cityName, countryName))
                         .build();
-    }
-
-    private double mapDoubleValue(final String value) {
-        String s = mapStringValue(value);
-        return Double.valueOf(s);
-    }
-
-    private String mapStringValue(final String value) {
-        return value.replace("\"", "");
     }
 }

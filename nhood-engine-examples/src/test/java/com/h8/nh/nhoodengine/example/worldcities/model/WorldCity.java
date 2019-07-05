@@ -5,7 +5,6 @@ import java.util.Objects;
 public final class WorldCity {
 
     private final String name;
-
     private final String country;
 
     private WorldCity(
