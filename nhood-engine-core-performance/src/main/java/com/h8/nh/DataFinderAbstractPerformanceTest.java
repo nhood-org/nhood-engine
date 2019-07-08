@@ -84,7 +84,7 @@ public abstract class DataFinderAbstractPerformanceTest<K extends DataResourceKe
         ctx = initializeContext();
         dataFinder = ctx.initializeDataFinder();
 
-        MeasurementChain.of(this::generateInitialRepositoryData)
+        MeasurementChain.of("Data preparation", this::generateInitialRepositoryData)
                 .measure(ExecutionTimeMeasurement.getInstance())
                 .measure(HeapMemoryMeasurement.getInstance())
                 .run();

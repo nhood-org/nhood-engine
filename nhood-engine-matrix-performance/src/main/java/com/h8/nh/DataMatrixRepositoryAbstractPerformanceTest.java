@@ -88,7 +88,7 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
         ctx = initializeContext();
         dataMatrixRepository = ctx.initializerRepository();
 
-        MeasurementChain.of(this::generateInitialRepositoryData)
+        MeasurementChain.of("Data preparation", this::generateInitialRepositoryData)
                 .measure(ExecutionTimeMeasurement.getInstance())
                 .measure(HeapMemoryMeasurement.getInstance())
                 .run();

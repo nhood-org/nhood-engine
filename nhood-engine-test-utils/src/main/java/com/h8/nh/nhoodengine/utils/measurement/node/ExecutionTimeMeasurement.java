@@ -1,5 +1,6 @@
 package com.h8.nh.nhoodengine.utils.measurement.node;
 
+import com.h8.nh.nhoodengine.utils.measurement.MeasurementChain;
 import com.h8.nh.nhoodengine.utils.measurement.MeasurementChainNode;
 
 import java.time.Duration;
@@ -18,13 +19,12 @@ public final class ExecutionTimeMeasurement implements MeasurementChainNode {
     }
 
     @Override
-    public Runnable append(final Runnable runnable) {
+    public Runnable append(final MeasurementChain chain, final Runnable runnable) {
         return () -> {
             LocalTime start = LocalTime.now();
             runnable.run();
             LocalTime end = LocalTime.now();
-            System.out.println(
-                    "Measurement::Time:         " + Duration.between(start, end));
+            chain.out("Time", Duration.between(start, end));
         };
     }
 }

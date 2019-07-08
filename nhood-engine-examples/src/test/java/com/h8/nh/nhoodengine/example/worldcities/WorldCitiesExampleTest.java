@@ -60,7 +60,7 @@ class WorldCitiesExampleTest {
                 throw new IllegalStateException("Could not run example because of an exception", e);
             }
         };
-        MeasurementChain.of(example)
+        MeasurementChain.of("Example Execution", example)
                 .measure(ExecutionTimeMeasurement.getInstance())
                 .measure(HeapMemoryMeasurement.getInstance())
                 .run();

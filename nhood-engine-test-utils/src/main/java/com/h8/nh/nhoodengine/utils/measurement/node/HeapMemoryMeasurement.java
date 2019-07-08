@@ -1,5 +1,6 @@
 package com.h8.nh.nhoodengine.utils.measurement.node;
 
+import com.h8.nh.nhoodengine.utils.measurement.MeasurementChain;
 import com.h8.nh.nhoodengine.utils.measurement.MeasurementChainNode;
 
 public final class HeapMemoryMeasurement implements MeasurementChainNode {
@@ -17,13 +18,12 @@ public final class HeapMemoryMeasurement implements MeasurementChainNode {
     }
 
     @Override
-    public Runnable append(final Runnable runnable) {
+    public Runnable append(final MeasurementChain chain, final Runnable runnable) {
         return () -> {
             long memoryUsage = readUsedMemory();
             runnable.run();
             memoryUsage = readUsedMemory() - memoryUsage;
-            System.out.println(
-                    "Measurement::Heap Memory:  " + humanReadableByteCount(memoryUsage));
+            chain.out("Heap Memory", humanReadableByteCount(memoryUsage));
         };
     }
 
