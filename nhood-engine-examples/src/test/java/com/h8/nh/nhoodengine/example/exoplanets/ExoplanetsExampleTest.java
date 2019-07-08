@@ -22,6 +22,8 @@ import org.junit.jupiter.api.Test;
  * There is a set of all known exoplanets loaded to the repository.
  * (Database by PHL's Exoplanet Catalog of the Planetary Habitability Laboratory @ UPR Arecibo)
  * <p>
+ * In order to eliminate an influence of value scale differences a feature scaling has been applied.
+ * <p>
  * DataFinder is used to resolve a planet
  * with the characteristics similar to the earth characteristics.
  * The example should return Kepler-452b which is quoted an Earth 2.0 or Earth's Cousin.
@@ -47,6 +49,8 @@ class ExoplanetsExampleTest {
                 .periastron(0.983d)
                 .apastron(1.016d)
                 .flux(1.0d)
+                .starMass(1.0d)
+                .starRadius(1.0d)
                 .starDistance(1.0d)
                 .starLuminosity(1.0d)
                 .build();

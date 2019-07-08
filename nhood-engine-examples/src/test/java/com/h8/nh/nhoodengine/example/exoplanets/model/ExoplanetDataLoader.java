@@ -13,13 +13,15 @@ public final class ExoplanetDataLoader extends GenericDataLoader<ExoplanetMetada
     private static final String EXOPLANET_RESOURCE_FILE_DELIMITER = ",";
 
     private static final String ROW_HEADER_PLANET_NAME = "P_NAME";
-    private static final String ROW_HEADER_PLANET_MASS = "P_MASS";
+    private static final String ROW_HEADER_PLANET_MASS = "P_MASS_EST";
     private static final String ROW_HEADER_PLANET_RADIUS = "P_RADIUS_EST";
     private static final String ROW_HEADER_PLANET_PERIOD = "P_PERIOD";
     private static final String ROW_HEADER_PLANET_TEMP = "P_TEMP_EQUIL";
     private static final String ROW_HEADER_PLANET_PERIASTRON = "P_PERIASTRON";
     private static final String ROW_HEADER_PLANET_APASTRON = "P_APASTRON";
     private static final String ROW_HEADER_PLANET_FLUX = "P_FLUX";
+    private static final String ROW_HEADER_STAR_MASS = "S_MASS";
+    private static final String ROW_HEADER_STAR_RADIUS = "S_RADIUS";
     private static final String ROW_HEADER_STAR_DISTANCE = "P_DISTANCE_EFF";
     private static final String ROW_HEADER_STAR_LUMINOSITY = "S_LUMINOSITY";
 
@@ -31,6 +33,8 @@ public final class ExoplanetDataLoader extends GenericDataLoader<ExoplanetMetada
     private int planetPeriastronIdx;
     private int planetApastronIdx;
     private int planetFluxIdx;
+    private int starMassIdx;
+    private int starRadiusIdx;
     private int starDistanceIdx;
     private int starLuminosityIdx;
 
@@ -66,6 +70,8 @@ public final class ExoplanetDataLoader extends GenericDataLoader<ExoplanetMetada
         planetPeriastronIdx = headerIndices.get(ROW_HEADER_PLANET_PERIASTRON);
         planetApastronIdx = headerIndices.get(ROW_HEADER_PLANET_APASTRON);
         planetFluxIdx = headerIndices.get(ROW_HEADER_PLANET_FLUX);
+        starMassIdx = headerIndices.get(ROW_HEADER_STAR_MASS);
+        starRadiusIdx = headerIndices.get(ROW_HEADER_STAR_RADIUS);
         starDistanceIdx = headerIndices.get(ROW_HEADER_STAR_DISTANCE);
         starLuminosityIdx = headerIndices.get(ROW_HEADER_STAR_LUMINOSITY);
     }
@@ -80,6 +86,8 @@ public final class ExoplanetDataLoader extends GenericDataLoader<ExoplanetMetada
                 .periastron(mapDoubleValue(row[planetPeriastronIdx]))
                 .apastron(mapDoubleValue(row[planetApastronIdx]))
                 .flux(mapDoubleValue(row[planetFluxIdx]))
+                .starMass(mapDoubleValue(row[starMassIdx]))
+                .starRadius(mapDoubleValue(row[starRadiusIdx]))
                 .starDistance(mapDoubleValue(row[starDistanceIdx]))
                 .starLuminosity(mapDoubleValue(row[starLuminosityIdx]))
                 .build();
