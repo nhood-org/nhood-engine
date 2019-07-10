@@ -21,6 +21,15 @@ Project is split into two maven submodules:
 - `nhood-engine-matrix-performance` containing core engine performance tests
 - `nhood-engine-test-utils` containing test utilities
 
+## Usage examples
+
+There is a couple of examples implemented as ready-to-run unit tests. You can it in `nhood-engine-examples` module.
+
+Currently, the following use-cases are covered:
+
+- DataFinder is used to resolve 30 of cities closest to Cracow considering its geographical coordinates.
+- DataFinder is used to resolve a planet with the characteristics similar to the characteristics of the Earth.
+
 ## Technology
 
 Library is based on pure Java 8 with minimal possible amount of dependencies.
