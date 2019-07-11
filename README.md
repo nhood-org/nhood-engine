@@ -23,7 +23,7 @@ Project is split into two maven submodules:
 
 ## Usage examples
 
-There is a couple of examples implemented as ready-to-run unit tests. You can it in `nhood-engine-examples` module.
+There is a couple of examples implemented as ready-to-run unit tests. You can find those in `nhood-engine-examples` module.
 
 Currently, the following use-cases are covered:
 
