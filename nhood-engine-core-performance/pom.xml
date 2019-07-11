@@ -10,6 +10,7 @@
         <artifactId>nhood-engine</artifactId>
         <groupId>com.h8.nh</groupId>
         <version>0.0.2-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>
@@ -79,6 +80,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>${shade.plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
