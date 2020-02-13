@@ -17,7 +17,7 @@ jobs:
     <<: *defaults-env
     steps:
     - checkout
-    - run: mvn clean install
+    - run: mvn -s .circleci.settings.xml clean install
     - store_test_results:
         path: target/surefire-reports
 
@@ -27,13 +27,13 @@ jobs:
     <<: *defaults-env
     steps:
     - checkout
-    - run: mvn clean install
+    - run: mvn -s .circleci.settings.xml clean install
 
   deploy:
     <<: *defaults
     steps:
     - checkout
-    - run: mvn -s .circleci.settings.xml deploy -Dmaven.test.skip=true
+    - run: mvn -s .circleci.settings.xml deploy -DskipTests
 
   release:
     <<: *defaults
@@ -41,7 +41,7 @@ jobs:
     - checkout
     - run: git config --global user.email "$GITHUB_EMAIL"
     - run: git config --global user.name "$GITHUB_USERNAME"
-    - run: mvn -s .circleci.settings.xml -B release:prepare -Dmaven.test.skip=true
+    - run: mvn -s .circleci.settings.xml -B release:prepare -Darguments="-DskipTests"
 
 workflows:
   version: 2

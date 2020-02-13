@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <artifactId>nhood-engine</artifactId>
+	<artifactId>nhood-engine</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>com.h8.nh</groupId>
 		<artifactId>nhood-parent-bom</artifactId>
-		<version>0.1.0</version>
+		<version>0.2.0</version>
 	</parent>
 
 	<modules>
@@ -19,11 +20,11 @@
 		<module>nhood-engine-core-test</module>
 		<module>nhood-engine-examples</module>
 		<module>nhood-engine-matrix</module>
-        <module>nhood-engine-matrix-api</module>
+		<module>nhood-engine-matrix-api</module>
 		<module>nhood-engine-matrix-performance</module>
 		<module>nhood-engine-matrix-test</module>
 		<module>nhood-engine-test-utils</module>
-    </modules>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -34,24 +35,20 @@
 		<shade.plugin.version>3.2.0</shade.plugin.version>
 
 		<!--Test-->
-		<jmh.version>1.21</jmh.version>
+		<jmh.version>1.23</jmh.version>
 	</properties>
 
-  	<scm>
- 		<connection>scm:git:https://github.com/nhood-org/nhood-engine.git</connection>
- 		<url>http://github.com/nhood-org/nhood-engine</url>
- 		<developerConnection>scm:git:https://github.com/nhood-org/nhood-engine</developerConnection>
- 	  	<tag>HEAD</tag>
-  	</scm>
+	<scm>
+		<connection>scm:git:https://github.com/nhood-org/nhood-engine.git</connection>
+		<url>http://github.com/nhood-org/nhood-engine</url>
+		<developerConnection>scm:git:https://github.com/nhood-org/nhood-engine</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 
 	<repositories>
 		<repository>
-			<id>nhood-mvn-repo</id>
-			<url>https://raw.githubusercontent.com/nhood-org/nhood-repository/mvn-repo/</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/nhood-org/repository</url>
 		</repository>
 	</repositories>
 
