@@ -53,7 +53,7 @@ public abstract class GenericDataLoader<K extends DataResourceKey, D> {
         if ("".equals(s)) {
             return Double.MIN_VALUE;
         } else {
-            return Double.valueOf(s);
+            return Double.parseDouble(s);
         }
     }
 
