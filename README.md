@@ -29,6 +29,7 @@ Currently, the following use-cases are covered:
 
 - DataFinder is used to resolve 30 of cities closest to Cracow considering its geographical coordinates.
 - DataFinder is used to resolve a planet with the characteristics similar to the characteristics of the Earth.
+- DataFinder is used to resolve 10 of songs similar to the given one according to its metadata vectors.
 
 ## Technology
 
