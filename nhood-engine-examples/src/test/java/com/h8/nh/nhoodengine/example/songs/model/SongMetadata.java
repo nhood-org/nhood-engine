@@ -7,8 +7,8 @@ import java.util.Arrays;
 
 public final class SongMetadata implements DataResourceKey {
 
-    public static final int METADATA_SIZE = 15;
-    private static final int COORDINATE_MULTIPLICAND = 1000;
+    public static final int METADATA_SIZE = 10;
+    private static final int COORDINATE_MULTIPLICAND = 1;
 
     private final double[] metadata;
 
@@ -37,12 +37,11 @@ public final class SongMetadata implements DataResourceKey {
         m[7] = BigDecimal.valueOf(metadata[7] * COORDINATE_MULTIPLICAND);
         m[8] = BigDecimal.valueOf(metadata[8] * COORDINATE_MULTIPLICAND);
         m[9] = BigDecimal.valueOf(metadata[9] * COORDINATE_MULTIPLICAND);
-        m[10] = BigDecimal.valueOf(metadata[10] * COORDINATE_MULTIPLICAND);
-        m[11] = BigDecimal.valueOf(metadata[11] * COORDINATE_MULTIPLICAND);
-        m[12] = BigDecimal.valueOf(metadata[12] * COORDINATE_MULTIPLICAND);
-        m[13] = BigDecimal.valueOf(metadata[13] * COORDINATE_MULTIPLICAND);
-        m[14] = BigDecimal.valueOf(metadata[14] * COORDINATE_MULTIPLICAND);
         return m;
+    }
+
+    public boolean isZeroVector() {
+        return Arrays.stream(metadata).allMatch(d -> d == 0.0d);
     }
 
     @Override
