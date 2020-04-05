@@ -40,22 +40,17 @@ class SongsExampleTest {
                 new DataScoreComputationEngine<>(repository);
 
         int SONGS_LIMIT = 10;
-        double[] THE_PRODIGY_BREATHE_VECTOR = new double[] {
-                -0.030577,
-                0.016771,
-                0.029144,
-                -0.023435,
-                0.010138,
-                -0.012117,
-                0.001421,
-                -0.022131,
-                0.017497,
-                -0.019251,
-                -0.027995,
-                -0.005093,
-                -0.005339,
-                0.009573,
-                0.021635
+        double[] THE_PRODIGY_BREATHE_VECTOR = new double[]{
+                193.2216594648,
+                270.2663400872,
+                365.4783524283,
+                613.3806819591,
+                369.0870999666,
+                223.8209770800,
+                358.9450120825,
+                125.9842852265,
+                182.3609437575,
+                32.0263064546
         };
 
         DataFinderCriteria<SongMetadata> criteria =

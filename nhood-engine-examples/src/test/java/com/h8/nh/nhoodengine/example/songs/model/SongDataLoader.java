@@ -5,71 +5,21 @@ import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public final class SongDataLoader {
-    private static final String SONGS_RESOURCE_FILE = "songs/tracks.csv";
-    private static final String SONGS_RESOURCE_FILE_DELIMITER = ", ";
-    private static final String SONGS_METADATA_RESOURCE_FILE = "songs/vectors.csv";
-    private static final String SONGS_METADATA_RESOURCE_FILE_DELIMITER = " ";
+    private static final String SONGS_METADATA_RESOURCE_FILE = "songs/vectors.out.csv";
+    private static final String SONGS_METADATA_RESOURCE_FILE_DELIMITER = ":\\|:";
 
-    private final Map<String, SongComposite> songs;
     private final DataMatrixRepository<SongMetadata, Song> repository;
 
     public SongDataLoader(
             final DataMatrixRepository<SongMetadata, Song> repository) {
-        this.songs = new HashMap<>();
         this.repository = repository;
     }
 
     public void load()
             throws DataMatrixRepositoryFailedException {
-        loadSongs();
-        loadSongsMetadata();
-
-        for (SongComposite c : songs.values()) {
-            if (c.songMetadata == null) {
-                continue;
-            }
-
-            DataResource<SongMetadata, Song> resource = DataResource.<SongMetadata, Song>builder()
-                    .key(c.songMetadata)
-                    .data(c.song)
-                    .build();
-
-            repository.add(resource);
-        }
-    }
-
-    private void loadSongs() {
-        InputStream in = Thread.currentThread()
-                .getContextClassLoader()
-                .getResourceAsStream(SONGS_RESOURCE_FILE);
-
-        if (in == null) {
-            throw new IllegalStateException("Could not load resource file");
-        }
-
-        try (Scanner scanner = new Scanner(in)) {
-            if (!scanner.hasNextLine()) {
-                throw new IllegalStateException("Resource file is empty");
-            }
-
-            while (scanner.hasNextLine()) {
-                String[] row = scanner.nextLine().split(SONGS_RESOURCE_FILE_DELIMITER);
-
-                SongComposite c = new SongComposite();
-                c.song = Song.of(row[0], row[1], row[2]);
-                c.songMetadata = null;
-
-                songs.put(c.song.getId(), c);
-            }
-        }
-    }
-
-    private void loadSongsMetadata() {
         InputStream in = Thread.currentThread()
                 .getContextClassLoader()
                 .getResourceAsStream(SONGS_METADATA_RESOURCE_FILE);
@@ -86,11 +36,8 @@ public final class SongDataLoader {
             while (scanner.hasNextLine()) {
                 String[] row = scanner.nextLine().split(SONGS_METADATA_RESOURCE_FILE_DELIMITER);
 
-                String id = row[0];
-                SongMetadata m = SongMetadata.of(
+                SongMetadata songMetadata = SongMetadata.of(
                         new double[]{
-                                mapDoubleValue(row[1]),
-                                mapDoubleValue(row[2]),
                                 mapDoubleValue(row[3]),
                                 mapDoubleValue(row[4]),
                                 mapDoubleValue(row[5]),
@@ -101,16 +48,24 @@ public final class SongDataLoader {
                                 mapDoubleValue(row[10]),
                                 mapDoubleValue(row[11]),
                                 mapDoubleValue(row[12]),
-                                mapDoubleValue(row[13]),
-                                mapDoubleValue(row[14]),
-                                mapDoubleValue(row[15]),
                         });
 
-                if (songs.containsKey(id)) {
-                    SongComposite c = songs.get(id);
-                    c.songMetadata = m;
-                    songs.put(id, c);
+                if (songMetadata.isZeroVector()) {
+                    continue;
                 }
+
+                Song song = Song.of(
+                        row[0],
+                        row[1],
+                        row[2]
+                );
+
+                DataResource<SongMetadata, Song> resource = DataResource.<SongMetadata, Song>builder()
+                        .key(songMetadata)
+                        .data(song)
+                        .build();
+
+                repository.add(resource);
             }
         }
     }
