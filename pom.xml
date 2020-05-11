@@ -17,7 +17,6 @@
 		<module>nhood-engine-core-api</module>
 		<module>nhood-engine-core-performance</module>
 		<module>nhood-engine-core-test</module>
-		<module>nhood-engine-examples</module>
 		<module>nhood-engine-matrix</module>
 		<module>nhood-engine-matrix-api</module>
 		<module>nhood-engine-matrix-performance</module>
