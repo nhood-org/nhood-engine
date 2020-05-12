@@ -4,9 +4,9 @@
 
 # Engine
 
-Service is part of [nhood](https://github.com/nhood-org/nhood-docs) project. 
+Service is part of [nhood](https://github.com/nhood-org/nhood-docs) project.
 
-The `nhood-engine` is a core library covering key engine functionaries. 
+The `nhood-engine` is a core library covering key engine functionaries.
 
 Project is split into two maven submodules:
 
@@ -14,7 +14,6 @@ Project is split into two maven submodules:
 - `nhood-engine-core-api` containing core engine interfaces
 - `nhood-engine-core-test` containing core engine abstract unit tests
 - `nhood-engine-core-performance` containing core engine performance tests
-- `nhood-engine-examples` containing library usage examples
 - `nhood-engine-matrix` containing matrix management implementation
 - `nhood-engine-matrix-api` containing matrix management interfaces
 - `nhood-engine-matrix-test` containing matrix management abstract unit tests
@@ -23,13 +22,8 @@ Project is split into two maven submodules:
 
 ## Usage examples
 
-There is a couple of examples implemented as ready-to-run unit tests. You can find those in `nhood-engine-examples` module.
-
-Currently, the following use-cases are covered:
-
-- DataFinder is used to resolve 30 of cities closest to Cracow considering its geographical coordinates.
-- DataFinder is used to resolve a planet with the characteristics similar to the characteristics of the Earth.
-- DataFinder is used to resolve 10 of songs similar to the given one according to its metadata vectors.
+There are a couple of examples implemented as ready-to-run unit tests. 
+You can find those in [nhood-examples](https://github.com/nhood-org/nhood-examples) repository.
 
 ## Technology
 
