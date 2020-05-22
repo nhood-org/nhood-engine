@@ -5,10 +5,6 @@ import com.h8.nh.nhoodengine.core.DataResourceKey;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
-import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCell;
-import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCellConfiguration;
-import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCellFactory;
-import com.h8.nh.nhoodengine.matrix.impl.model.DataMatrixCellIterator;
 
 /**
  * This is a default implementation {@link DataMatrixRepository} interface based on {@link DataMatrixCell}.
