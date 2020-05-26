@@ -1,5 +1,6 @@
-package com.h8.nh.nhoodengine.matrix.impl.model;
+package com.h8.nh.nhoodengine.matrix.impl;
 
+import com.h8.nh.nhoodengine.matrix.impl.DataMatrixCellConfiguration;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

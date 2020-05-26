@@ -16,7 +16,7 @@ public final class DataScoreComputationEngineTestContext
 
     private static final int METADATA_SIZE = 3;
 
-    private DataMatrixRepository<DataResourceKey, Object> repository;
+    private final DataMatrixRepository<DataResourceKey, Object> repository;
 
     private int registered;
 

@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.matrix.impl.model;
+package com.h8.nh.nhoodengine.matrix.impl;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 
@@ -14,7 +14,7 @@ import java.util.UUID;
 import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
 import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCALE;
 
-public final class DataMatrixCell<R extends DataResource> {
+final class DataMatrixCell<R extends DataResource<?, ?>> {
 
     private final UUID uuid = UUID.randomUUID();
 

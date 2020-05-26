@@ -1,4 +1,4 @@
-package com.h8.nh.nhoodengine.matrix.impl.model;
+package com.h8.nh.nhoodengine.matrix.impl;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 
-public final class DataMatrixCellIterator<K extends DataResourceKey, D>
+final class DataMatrixCellIterator<K extends DataResourceKey, D>
         implements DataMatrixResourceIterator<K, D> {
 
     private final BigDecimal[] entryPoint;

@@ -1,16 +1,16 @@
-package com.h8.nh.nhoodengine.core.utils;
+package com.h8.nh.nhoodengine.core.impl;
 
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-public final class BoundedTreeSet<E> extends TreeSet<E> {
+final class BoundedTreeSet<E> extends TreeSet<E> {
 
     private static final long serialVersionUID = 64L;
 
     private final int limit;
 
-    public BoundedTreeSet(final int limit, final Comparator<? super E> comparator) {
+    BoundedTreeSet(final int limit, final Comparator<? super E> comparator) {
         super(comparator);
         this.limit = limit;
     }
