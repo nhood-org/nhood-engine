@@ -1,5 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/maven-0.0.3-blue.svg?maxAge=2592000)](https://github.com/nhood-org/repository/packages/127632)
+[![Version](https://img.shields.io/badge/maven-0.0.4-blue.svg?maxAge=2592000)](https://github.com/nhood-org/repository/packages/127632)
 [![CircleCI](https://circleci.com/gh/nhood-org/nhood-engine.svg?style=shield)](https://circleci.com/gh/nhood-org/nhood-engine)
 
 # Engine
