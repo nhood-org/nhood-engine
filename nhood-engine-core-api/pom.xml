@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>nhood-engine-core-api</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
 
     <parent>
         <artifactId>nhood-engine</artifactId>
         <groupId>com.h8.nh</groupId>
-        <version>0.0.4-SNAPSHOT</version>
+        <version>0.0.4</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
