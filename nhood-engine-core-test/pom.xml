@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>nhood-engine-core-test</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
 
     <parent>
         <artifactId>nhood-engine</artifactId>
         <groupId>com.h8.nh</groupId>
-        <version>0.0.4</version>
+        <version>0.0.5-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -16,13 +16,13 @@
         <dependency>
             <groupId>com.h8.nh</groupId>
             <artifactId>nhood-engine-core-api</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.5-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.h8.nh</groupId>
             <artifactId>nhood-engine-test-utils</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.5-SNAPSHOT</version>
         </dependency>
 
         <dependency>

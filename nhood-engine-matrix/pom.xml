@@ -7,28 +7,28 @@
     <parent>
         <artifactId>nhood-engine</artifactId>
         <groupId>com.h8.nh</groupId>
-        <version>0.0.4</version>
+        <version>0.0.5-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>com.h8.nh</groupId>
             <artifactId>nhood-engine-matrix-api</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.5-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.h8.nh</groupId>
             <artifactId>nhood-engine-core-api</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.5-SNAPSHOT</version>
         </dependency>
 
         <!--Test-->
         <dependency>
             <groupId>com.h8.nh</groupId>
             <artifactId>nhood-engine-matrix-test</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.5-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
