@@ -34,36 +34,17 @@ Library is based on pure Java 8 with minimal possible amount of dependencies.
 - Java 8
 - Maven
 
-## Build
+## Build, test, run
 
-In order to build the project use the following maven command:
-
-```bash
-mvn clean install
-```
-
-## Test
-
-In order to test the project use the following maven command:
-
-```bash
-mvn clean test
-```
+Use pre-defined Makefile tasks
 
 ## Performance Test
 
 In order to run performance test use the following maven commands:
 
 ```bash
-mvn clean install
-cd nhood-engine-core-performance
-java -Xmx8G -jar target/nhood-engine-core-performance.jar | tee target/performance_$(date +%s).results
-```
-
-```bash
-mvn clean install
-cd nhood-engine-matrix-performance
-java -Xmx8G -jar target/nhood-engine-matrix-performance.jar | tee target/performance_$(date +%s).results
+make run-core-performance-tests
+make run-matrix-performance-tests
 ```
 
 Previous performance test results may be found here:
@@ -83,12 +64,11 @@ Configuration of CI is implemented in `.circleci` and  `.circleci.setting.xml`.
 
 ## Versioning
 
-In order to release version, send the following API request to circleCI:
+In order to release version of maven artifacts, send an API request to circleCI with the following command:
 
 ```bash
-curl -u $CIRCLE_CI_USER_TOKEN: \
-    -d build_parameters[CIRCLE_JOB]=release \
-    https://circleci.com/api/v1.1/project/github/nhood-org/nhood-engine/tree/master
+export CIRCLE_CI_USER_TOKEN=<CIRCLE_CI_USER_TOKEN>
+make trigger-circle-ci-maven-release
 ```
 
 ## License
