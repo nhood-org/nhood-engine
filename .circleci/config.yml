@@ -17,9 +17,16 @@ jobs:
     <<: *defaults-env
     steps:
     - checkout
-    - run: mvn -s .circleci.settings.xml clean install
+    - restore_cache:
+        keys:
+          - m2-cache-v0.1
+    - run: make build-ci
     - store_test_results:
         path: target/surefire-reports
+    - save_cache:
+        key: m2-cache-v0.1
+        paths:
+          - "$HOME/.m2"
 
   build-jdk11:
     docker:
@@ -27,31 +34,38 @@ jobs:
     <<: *defaults-env
     steps:
     - checkout
-    - run: mvn -s .circleci.settings.xml clean install
+    - restore_cache:
+        keys:
+        - m2-cache-v0.1
+    - run: make build-ci
+    - store_test_results:
+        path: target/surefire-reports
+    - save_cache:
+        key: m2-cache-v0.1
+        paths:
+        - "$HOME/.m2"
 
   deploy:
     <<: *defaults
     steps:
     - checkout
-    - run: mvn -s .circleci.settings.xml deploy -DskipTests
+    - run: make deploy-ci
 
   release:
     <<: *defaults
     steps:
     - checkout
-    - run: git config --global user.email "$GITHUB_EMAIL"
-    - run: git config --global user.name "$GITHUB_USERNAME"
-    - run: mvn -s .circleci.settings.xml -B release:prepare -Darguments="-DskipTests"
+    - run: make release-ci
 
 workflows:
   version: 2
   build-deploy:
     jobs:
-      - build
-      - build-jdk11
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
+    - build
+    - build-jdk11
+    - deploy:
+        requires:
+        - build
+        filters:
+          branches:
+            only: master
