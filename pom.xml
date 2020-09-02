@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>nhood-engine</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.5</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -41,7 +41,7 @@
 		<connection>scm:git:https://github.com/nhood-org/nhood-engine.git</connection>
 		<url>http://github.com/nhood-org/nhood-engine</url>
 		<developerConnection>scm:git:https://github.com/nhood-org/nhood-engine</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v0.0.5</tag>
 	</scm>
 
 	<repositories>
