@@ -1,4 +1,4 @@
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -13,40 +13,60 @@
 # Run progress: 0,00% complete, ETA 03:45:00
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
-0,010 s/op
+Measurement:Data preparation::Time - PT0.304884S
+Measurement:Data preparation::Heap Memory - 8,0 MiB
+Measurement::Data size:    10000
+0,013 s/op
 # Warmup Iteration   2: 0,010 s/op
-# Warmup Iteration   3: 0,010 s/op
+# Warmup Iteration   3: 0,009 s/op
 # Warmup Iteration   4: 0,008 s/op
 # Warmup Iteration   5: 0,009 s/op
-Iteration   1: 0,010 s/op
-Iteration   2: 0,011 s/op
-Iteration   3: 0,008 s/op
-Iteration   4: 0,008 s/op
-Iteration   5: 0,008 s/op
+Iteration   1: 0,011 s/op
+Iteration   2: 0,010 s/op
+Iteration   3: 0,009 s/op
+Iteration   4: 0,011 s/op
+Iteration   5: 0,010 s/op
 
-# Run progress: 0,74% complete, ETA 03:45:01
+# Run progress: 0,74% complete, ETA 03:46:19
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
-0,007 s/op
-# Warmup Iteration   2: 0,006 s/op
-# Warmup Iteration   3: 0,007 s/op
-# Warmup Iteration   4: 0,007 s/op
-# Warmup Iteration   5: 0,006 s/op
-Iteration   1: 0,006 s/op
-Iteration   2: 0,006 s/op
-Iteration   3: 0,006 s/op
-Iteration   4: 0,006 s/op
-Iteration   5: 0,006 s/op
+Measurement:Data preparation::Time - PT0.204053S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
+0,011 s/op
+# Warmup Iteration   2: 0,013 s/op
+# Warmup Iteration   3: 0,012 s/op
+# Warmup Iteration   4: 0,011 s/op
+# Warmup Iteration   5: 0,011 s/op
+Iteration   1: 0,011 s/op
+Iteration   2: 0,010 s/op
+Iteration   3: 0,009 s/op
+Iteration   4: 0,009 s/op
+Iteration   5: 0,010 s/op
 
-# Run progress: 1,48% complete, ETA 03:43:19
+# Run progress: 1,48% complete, ETA 03:44:11
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.25696S
+Measurement:Data preparation::Heap Memory - 8,0 MiB
+Measurement::Data size:    10000
+0,011 s/op
+# Warmup Iteration   2: 0,014 s/op
+# Warmup Iteration   3: 0,010 s/op
+# Warmup Iteration   4: 0,015 s/op
+# Warmup Iteration   5: 0,008 s/op
+Iteration   1: 0,007 s/op
+Iteration   2: 0,008 s/op
+Iteration   3: 0,007 s/op
+Iteration   4: 0,008 s/op
+Iteration   5: 0,007 s/op
+
+# Run progress: 2,22% complete, ETA 03:42:36
+# Fork: 4 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.136596S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 0,007 s/op
 # Warmup Iteration   2: 0,007 s/op
 # Warmup Iteration   3: 0,007 s/op
@@ -58,27 +78,12 @@ Iteration   3: 0,007 s/op
 Iteration   4: 0,007 s/op
 Iteration   5: 0,007 s/op
 
-# Run progress: 2,22% complete, ETA 03:41:37
-# Fork: 4 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
-0,006 s/op
-# Warmup Iteration   2: 0,006 s/op
-# Warmup Iteration   3: 0,006 s/op
-# Warmup Iteration   4: 0,006 s/op
-# Warmup Iteration   5: 0,006 s/op
-Iteration   1: 0,006 s/op
-Iteration   2: 0,006 s/op
-Iteration   3: 0,006 s/op
-Iteration   4: 0,006 s/op
-Iteration   5: 0,006 s/op
-
-# Run progress: 2,96% complete, ETA 03:39:56
+# Run progress: 2,96% complete, ETA 03:40:38
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.152182S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 0,008 s/op
 # Warmup Iteration   2: 0,008 s/op
 # Warmup Iteration   3: 0,008 s/op
@@ -92,12 +97,12 @@ Iteration   5: 0,008 s/op
 
 
 Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
-  0,007 ±(99.9%) 0,001 s/op [Average]
-  (min, avg, max) = (0,006, 0,007, 0,011), stdev = 0,001
-  CI (99.9%): [0,006, 0,008] (assumes normal distribution)
+  0,008 ±(99.9%) 0,001 s/op [Average]
+  (min, avg, max) = (0,007, 0,008, 0,011), stdev = 0,001
+  CI (99.9%): [0,007, 0,010] (assumes normal distribution)
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -109,209 +114,46 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
 # Parameters: (dataSetSize = 10000, metadataSize = 16)
 
-# Run progress: 3,70% complete, ETA 03:38:15
+# Run progress: 3,70% complete, ETA 03:38:48
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,9 MiB
-0,011 s/op
-# Warmup Iteration   2: 0,011 s/op
-# Warmup Iteration   3: 0,011 s/op
-# Warmup Iteration   4: 0,011 s/op
-# Warmup Iteration   5: 0,011 s/op
-Iteration   1: 0,011 s/op
-Iteration   2: 0,011 s/op
-Iteration   3: 0,011 s/op
-Iteration   4: 0,011 s/op
-Iteration   5: 0,011 s/op
-
-# Run progress: 4,44% complete, ETA 03:36:36
-# Fork: 2 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,3 MiB
-0,011 s/op
-# Warmup Iteration   2: 0,011 s/op
-# Warmup Iteration   3: 0,011 s/op
-# Warmup Iteration   4: 0,011 s/op
-# Warmup Iteration   5: 0,011 s/op
-Iteration   1: 0,011 s/op
-Iteration   2: 0,011 s/op
-Iteration   3: 0,011 s/op
-Iteration   4: 0,011 s/op
-Iteration   5: 0,011 s/op
-
-# Run progress: 5,19% complete, ETA 03:34:56
-# Fork: 3 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,5 MiB
-0,015 s/op
-# Warmup Iteration   2: 0,015 s/op
+Measurement:Data preparation::Time - PT0.168317S
+Measurement:Data preparation::Heap Memory - 17,3 MiB
+Measurement::Data size:    10000
+0,012 s/op
+# Warmup Iteration   2: 0,012 s/op
 # Warmup Iteration   3: 0,015 s/op
-# Warmup Iteration   4: 0,015 s/op
-# Warmup Iteration   5: 0,015 s/op
-Iteration   1: 0,015 s/op
-Iteration   2: 0,015 s/op
-Iteration   3: 0,015 s/op
-Iteration   4: 0,015 s/op
-Iteration   5: 0,015 s/op
-
-# Run progress: 5,93% complete, ETA 03:33:16
-# Fork: 4 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,8 MiB
-0,014 s/op
-# Warmup Iteration   2: 0,014 s/op
-# Warmup Iteration   3: 0,014 s/op
-# Warmup Iteration   4: 0,014 s/op
-# Warmup Iteration   5: 0,014 s/op
-Iteration   1: 0,014 s/op
-Iteration   2: 0,014 s/op
-Iteration   3: 0,014 s/op
-Iteration   4: 0,014 s/op
-Iteration   5: 0,014 s/op
-
-# Run progress: 6,67% complete, ETA 03:31:36
-# Fork: 5 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,3 MiB
-0,011 s/op
-# Warmup Iteration   2: 0,011 s/op
-# Warmup Iteration   3: 0,011 s/op
-# Warmup Iteration   4: 0,011 s/op
-# Warmup Iteration   5: 0,011 s/op
-Iteration   1: 0,011 s/op
+# Warmup Iteration   4: 0,019 s/op
+# Warmup Iteration   5: 0,012 s/op
+Iteration   1: 0,017 s/op
 Iteration   2: 0,011 s/op
 Iteration   3: 0,011 s/op
 Iteration   4: 0,011 s/op
 Iteration   5: 0,011 s/op
 
-
-Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
-  0,012 ±(99.9%) 0,001 s/op [Average]
-  (min, avg, max) = (0,011, 0,012, 0,015), stdev = 0,002
-  CI (99.9%): [0,011, 0,013] (assumes normal distribution)
-
-
-# JMH version: 1.21
-# VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
-# VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
-# VM options: -Xmx8G
-# Warmup: 5 iterations, 10 s each
-# Measurement: 5 iterations, 10 s each
-# Timeout: 10 min per iteration
-# Threads: 1 thread, will synchronize iterations
-# Benchmark mode: Average time, time/op
-# Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
-# Parameters: (dataSetSize = 10000, metadataSize = 32)
-
-# Run progress: 7,41% complete, ETA 03:29:55
-# Fork: 1 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 34,1 MiB
-0,026 s/op
-# Warmup Iteration   2: 0,026 s/op
-# Warmup Iteration   3: 0,026 s/op
-# Warmup Iteration   4: 0,026 s/op
-# Warmup Iteration   5: 0,026 s/op
-Iteration   1: 0,026 s/op
-Iteration   2: 0,026 s/op
-Iteration   3: 0,026 s/op
-Iteration   4: 0,026 s/op
-Iteration   5: 0,026 s/op
-
-# Run progress: 8,15% complete, ETA 03:28:16
+# Run progress: 4,44% complete, ETA 03:37:03
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 34,1 MiB
-0,020 s/op
-# Warmup Iteration   2: 0,019 s/op
-# Warmup Iteration   3: 0,019 s/op
-# Warmup Iteration   4: 0,019 s/op
-# Warmup Iteration   5: 0,019 s/op
-Iteration   1: 0,019 s/op
-Iteration   2: 0,019 s/op
-Iteration   3: 0,019 s/op
-Iteration   4: 0,019 s/op
-Iteration   5: 0,020 s/op
+Measurement:Data preparation::Time - PT0.163581S
+Measurement:Data preparation::Heap Memory - 17,0 MiB
+Measurement::Data size:    10000
+0,012 s/op
+# Warmup Iteration   2: 0,012 s/op
+# Warmup Iteration   3: 0,012 s/op
+# Warmup Iteration   4: 0,011 s/op
+# Warmup Iteration   5: 0,013 s/op
+Iteration   1: 0,012 s/op
+Iteration   2: 0,012 s/op
+Iteration   3: 0,012 s/op
+Iteration   4: 0,012 s/op
+Iteration   5: 0,012 s/op
 
-# Run progress: 8,89% complete, ETA 03:26:36
+# Run progress: 5,19% complete, ETA 03:35:37
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 32,7 MiB
-0,020 s/op
-# Warmup Iteration   2: 0,020 s/op
-# Warmup Iteration   3: 0,020 s/op
-# Warmup Iteration   4: 0,020 s/op
-# Warmup Iteration   5: 0,020 s/op
-Iteration   1: 0,020 s/op
-Iteration   2: 0,020 s/op
-Iteration   3: 0,020 s/op
-Iteration   4: 0,020 s/op
-Iteration   5: 0,020 s/op
-
-# Run progress: 9,63% complete, ETA 03:24:56
-# Fork: 4 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 33,1 MiB
-0,020 s/op
-# Warmup Iteration   2: 0,019 s/op
-# Warmup Iteration   3: 0,019 s/op
-# Warmup Iteration   4: 0,019 s/op
-# Warmup Iteration   5: 0,019 s/op
-Iteration   1: 0,019 s/op
-Iteration   2: 0,019 s/op
-Iteration   3: 0,020 s/op
-Iteration   4: 0,019 s/op
-Iteration   5: 0,019 s/op
-
-# Run progress: 10,37% complete, ETA 03:23:16
-# Fork: 5 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 34,5 MiB
-0,020 s/op
-# Warmup Iteration   2: 0,019 s/op
-# Warmup Iteration   3: 0,019 s/op
-# Warmup Iteration   4: 0,019 s/op
-# Warmup Iteration   5: 0,019 s/op
-Iteration   1: 0,019 s/op
-Iteration   2: 0,019 s/op
-Iteration   3: 0,019 s/op
-Iteration   4: 0,019 s/op
-Iteration   5: 0,019 s/op
-
-
-Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
-  0,021 ±(99.9%) 0,002 s/op [Average]
-  (min, avg, max) = (0,019, 0,021, 0,026), stdev = 0,003
-  CI (99.9%): [0,019, 0,023] (assumes normal distribution)
-
-
-# JMH version: 1.21
-# VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
-# VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
-# VM options: -Xmx8G
-# Warmup: 5 iterations, 10 s each
-# Measurement: 5 iterations, 10 s each
-# Timeout: 10 min per iteration
-# Threads: 1 thread, will synchronize iterations
-# Benchmark mode: Average time, time/op
-# Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
-# Parameters: (dataSetSize = 100000, metadataSize = 8)
-
-# Run progress: 11,11% complete, ETA 03:21:36
-# Fork: 1 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 112,7 MiB
+Measurement:Data preparation::Time - PT0.176343S
+Measurement:Data preparation::Heap Memory - 17,2 MiB
+Measurement::Data size:    10000
 0,012 s/op
 # Warmup Iteration   2: 0,012 s/op
 # Warmup Iteration   3: 0,012 s/op
@@ -323,177 +165,48 @@ Iteration   3: 0,012 s/op
 Iteration   4: 0,012 s/op
 Iteration   5: 0,012 s/op
 
-# Run progress: 11,85% complete, ETA 03:19:59
-# Fork: 2 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 119,2 MiB
-0,013 s/op
-# Warmup Iteration   2: 0,013 s/op
-# Warmup Iteration   3: 0,013 s/op
-# Warmup Iteration   4: 0,013 s/op
-# Warmup Iteration   5: 0,013 s/op
-Iteration   1: 0,013 s/op
-Iteration   2: 0,013 s/op
-Iteration   3: 0,013 s/op
-Iteration   4: 0,013 s/op
-Iteration   5: 0,013 s/op
-
-# Run progress: 12,59% complete, ETA 03:18:21
-# Fork: 3 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 113,8 MiB
-0,012 s/op
-# Warmup Iteration   2: 0,011 s/op
-# Warmup Iteration   3: 0,011 s/op
-# Warmup Iteration   4: 0,011 s/op
-# Warmup Iteration   5: 0,011 s/op
-Iteration   1: 0,011 s/op
-Iteration   2: 0,011 s/op
-Iteration   3: 0,011 s/op
-Iteration   4: 0,011 s/op
-Iteration   5: 0,011 s/op
-
-# Run progress: 13,33% complete, ETA 03:16:43
+# Run progress: 5,93% complete, ETA 03:33:52
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 115,7 MiB
-0,011 s/op
-# Warmup Iteration   2: 0,011 s/op
-# Warmup Iteration   3: 0,011 s/op
-# Warmup Iteration   4: 0,011 s/op
-# Warmup Iteration   5: 0,011 s/op
-Iteration   1: 0,011 s/op
-Iteration   2: 0,011 s/op
-Iteration   3: 0,011 s/op
-Iteration   4: 0,011 s/op
-Iteration   5: 0,011 s/op
-
-# Run progress: 14,07% complete, ETA 03:15:05
-# Fork: 5 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 116,6 MiB
-0,011 s/op
-# Warmup Iteration   2: 0,011 s/op
-# Warmup Iteration   3: 0,011 s/op
-# Warmup Iteration   4: 0,011 s/op
-# Warmup Iteration   5: 0,011 s/op
-Iteration   1: 0,011 s/op
-Iteration   2: 0,011 s/op
-Iteration   3: 0,011 s/op
-Iteration   4: 0,011 s/op
-Iteration   5: 0,011 s/op
-
-
-Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
-  0,011 ±(99.9%) 0,001 s/op [Average]
-  (min, avg, max) = (0,011, 0,011, 0,013), stdev = 0,001
-  CI (99.9%): [0,011, 0,012] (assumes normal distribution)
-
-
-# JMH version: 1.21
-# VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
-# VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
-# VM options: -Xmx8G
-# Warmup: 5 iterations, 10 s each
-# Measurement: 5 iterations, 10 s each
-# Timeout: 10 min per iteration
-# Threads: 1 thread, will synchronize iterations
-# Benchmark mode: Average time, time/op
-# Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
-# Parameters: (dataSetSize = 100000, metadataSize = 16)
-
-# Run progress: 14,81% complete, ETA 03:13:26
-# Fork: 1 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 218,1 MiB
-0,018 s/op
-# Warmup Iteration   2: 0,017 s/op
-# Warmup Iteration   3: 0,017 s/op
-# Warmup Iteration   4: 0,017 s/op
-# Warmup Iteration   5: 0,017 s/op
-Iteration   1: 0,017 s/op
-Iteration   2: 0,017 s/op
-Iteration   3: 0,017 s/op
-Iteration   4: 0,017 s/op
-Iteration   5: 0,017 s/op
-
-# Run progress: 15,56% complete, ETA 03:11:49
-# Fork: 2 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 215,8 MiB
+Measurement:Data preparation::Time - PT0.168838S
+Measurement:Data preparation::Heap Memory - 17,3 MiB
+Measurement::Data size:    10000
 0,017 s/op
-# Warmup Iteration   2: 0,017 s/op
-# Warmup Iteration   3: 0,017 s/op
-# Warmup Iteration   4: 0,017 s/op
-# Warmup Iteration   5: 0,017 s/op
+# Warmup Iteration   2: 0,016 s/op
+# Warmup Iteration   3: 0,016 s/op
+# Warmup Iteration   4: 0,016 s/op
+# Warmup Iteration   5: 0,016 s/op
 Iteration   1: 0,017 s/op
 Iteration   2: 0,017 s/op
 Iteration   3: 0,017 s/op
-Iteration   4: 0,017 s/op
-Iteration   5: 0,017 s/op
+Iteration   4: 0,016 s/op
+Iteration   5: 0,016 s/op
 
-# Run progress: 16,30% complete, ETA 03:10:10
-# Fork: 3 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 217,1 MiB
-0,018 s/op
-# Warmup Iteration   2: 0,017 s/op
-# Warmup Iteration   3: 0,017 s/op
-# Warmup Iteration   4: 0,017 s/op
-# Warmup Iteration   5: 0,017 s/op
-Iteration   1: 0,017 s/op
-Iteration   2: 0,017 s/op
-Iteration   3: 0,017 s/op
-Iteration   4: 0,017 s/op
-Iteration   5: 0,017 s/op
-
-# Run progress: 17,04% complete, ETA 03:08:32
-# Fork: 4 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 219,7 MiB
-0,017 s/op
-# Warmup Iteration   2: 0,017 s/op
-# Warmup Iteration   3: 0,017 s/op
-# Warmup Iteration   4: 0,017 s/op
-# Warmup Iteration   5: 0,017 s/op
-Iteration   1: 0,017 s/op
-Iteration   2: 0,017 s/op
-Iteration   3: 0,017 s/op
-Iteration   4: 0,017 s/op
-Iteration   5: 0,017 s/op
-
-# Run progress: 17,78% complete, ETA 03:06:54
+# Run progress: 6,67% complete, ETA 03:32:07
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 217,1 MiB
-0,019 s/op
-# Warmup Iteration   2: 0,018 s/op
-# Warmup Iteration   3: 0,018 s/op
-# Warmup Iteration   4: 0,018 s/op
-# Warmup Iteration   5: 0,018 s/op
-Iteration   1: 0,018 s/op
-Iteration   2: 0,018 s/op
-Iteration   3: 0,018 s/op
-Iteration   4: 0,018 s/op
-Iteration   5: 0,018 s/op
+Measurement:Data preparation::Time - PT0.184508S
+Measurement:Data preparation::Heap Memory - 17,0 MiB
+Measurement::Data size:    10000
+0,016 s/op
+# Warmup Iteration   2: 0,016 s/op
+# Warmup Iteration   3: 0,016 s/op
+# Warmup Iteration   4: 0,016 s/op
+# Warmup Iteration   5: 0,016 s/op
+Iteration   1: 0,016 s/op
+Iteration   2: 0,016 s/op
+Iteration   3: 0,016 s/op
+Iteration   4: 0,016 s/op
+Iteration   5: 0,016 s/op
 
 
 Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
-  0,017 ±(99.9%) 0,001 s/op [Average]
-  (min, avg, max) = (0,017, 0,017, 0,018), stdev = 0,001
-  CI (99.9%): [0,017, 0,018] (assumes normal distribution)
+  0,014 ±(99.9%) 0,002 s/op [Average]
+  (min, avg, max) = (0,011, 0,014, 0,017), stdev = 0,002
+  CI (99.9%): [0,012, 0,015] (assumes normal distribution)
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -503,195 +216,101 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
 # Threads: 1 thread, will synchronize iterations
 # Benchmark mode: Average time, time/op
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
-# Parameters: (dataSetSize = 100000, metadataSize = 32)
+# Parameters: (dataSetSize = 10000, metadataSize = 32)
 
-# Run progress: 18,52% complete, ETA 03:05:15
+# Run progress: 7,41% complete, ETA 03:30:24
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 377,1 MiB
-0,031 s/op
-# Warmup Iteration   2: 0,031 s/op
-# Warmup Iteration   3: 0,030 s/op
-# Warmup Iteration   4: 0,029 s/op
-# Warmup Iteration   5: 0,029 s/op
-Iteration   1: 0,030 s/op
-Iteration   2: 0,029 s/op
-Iteration   3: 0,029 s/op
-Iteration   4: 0,029 s/op
-Iteration   5: 0,030 s/op
-
-# Run progress: 19,26% complete, ETA 03:03:38
-# Fork: 2 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 376,1 MiB
-0,032 s/op
-# Warmup Iteration   2: 0,031 s/op
-# Warmup Iteration   3: 0,030 s/op
-# Warmup Iteration   4: 0,030 s/op
-# Warmup Iteration   5: 0,030 s/op
-Iteration   1: 0,030 s/op
-Iteration   2: 0,030 s/op
-Iteration   3: 0,030 s/op
-Iteration   4: 0,030 s/op
-Iteration   5: 0,030 s/op
-
-# Run progress: 20,00% complete, ETA 03:02:01
-# Fork: 3 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 380,1 MiB
-0,031 s/op
-# Warmup Iteration   2: 0,031 s/op
-# Warmup Iteration   3: 0,029 s/op
-# Warmup Iteration   4: 0,030 s/op
-# Warmup Iteration   5: 0,030 s/op
-Iteration   1: 0,030 s/op
-Iteration   2: 0,030 s/op
-Iteration   3: 0,029 s/op
-Iteration   4: 0,030 s/op
-Iteration   5: 0,030 s/op
-
-# Run progress: 20,74% complete, ETA 03:00:23
-# Fork: 4 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 379,1 MiB
-0,031 s/op
-# Warmup Iteration   2: 0,031 s/op
-# Warmup Iteration   3: 0,030 s/op
-# Warmup Iteration   4: 0,030 s/op
-# Warmup Iteration   5: 0,030 s/op
-Iteration   1: 0,030 s/op
-Iteration   2: 0,030 s/op
-Iteration   3: 0,030 s/op
-Iteration   4: 0,030 s/op
-Iteration   5: 0,030 s/op
-
-# Run progress: 21,48% complete, ETA 02:58:45
-# Fork: 5 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 380,1 MiB
-0,032 s/op
-# Warmup Iteration   2: 0,031 s/op
-# Warmup Iteration   3: 0,030 s/op
-# Warmup Iteration   4: 0,029 s/op
-# Warmup Iteration   5: 0,029 s/op
-Iteration   1: 0,029 s/op
-Iteration   2: 0,029 s/op
-Iteration   3: 0,029 s/op
-Iteration   4: 0,029 s/op
-Iteration   5: 0,029 s/op
-
-
-Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
-  0,030 ±(99.9%) 0,001 s/op [Average]
-  (min, avg, max) = (0,029, 0,030, 0,030), stdev = 0,001
-  CI (99.9%): [0,029, 0,030] (assumes normal distribution)
-
-
-# JMH version: 1.21
-# VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
-# VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
-# VM options: -Xmx8G
-# Warmup: 5 iterations, 10 s each
-# Measurement: 5 iterations, 10 s each
-# Timeout: 10 min per iteration
-# Threads: 1 thread, will synchronize iterations
-# Benchmark mode: Average time, time/op
-# Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
-# Parameters: (dataSetSize = 1000000, metadataSize = 8)
-
-# Run progress: 22,22% complete, ETA 02:57:07
-# Fork: 1 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
-0,026 s/op
-# Warmup Iteration   2: 0,024 s/op
-# Warmup Iteration   3: 0,024 s/op
-# Warmup Iteration   4: 0,024 s/op
-# Warmup Iteration   5: 0,024 s/op
-Iteration   1: 0,024 s/op
-Iteration   2: 0,024 s/op
-Iteration   3: 0,024 s/op
-Iteration   4: 0,024 s/op
-Iteration   5: 0,024 s/op
-
-# Run progress: 22,96% complete, ETA 02:55:43
-# Fork: 2 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
-0,023 s/op
+Measurement:Data preparation::Time - PT0.217026S
+Measurement:Data preparation::Heap Memory - 34,7 MiB
+Measurement::Data size:    10000
+0,021 s/op
 # Warmup Iteration   2: 0,021 s/op
 # Warmup Iteration   3: 0,021 s/op
 # Warmup Iteration   4: 0,021 s/op
-# Warmup Iteration   5: 0,020 s/op
+# Warmup Iteration   5: 0,021 s/op
 Iteration   1: 0,021 s/op
 Iteration   2: 0,021 s/op
 Iteration   3: 0,021 s/op
 Iteration   4: 0,021 s/op
 Iteration   5: 0,021 s/op
 
-# Run progress: 23,70% complete, ETA 02:54:18
+# Run progress: 8,15% complete, ETA 03:28:42
+# Fork: 2 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.207779S
+Measurement:Data preparation::Heap Memory - 35,7 MiB
+Measurement::Data size:    10000
+0,022 s/op
+# Warmup Iteration   2: 0,021 s/op
+# Warmup Iteration   3: 0,024 s/op
+# Warmup Iteration   4: 0,032 s/op
+# Warmup Iteration   5: 0,022 s/op
+Iteration   1: 0,022 s/op
+Iteration   2: 0,022 s/op
+Iteration   3: 0,021 s/op
+Iteration   4: 0,021 s/op
+Iteration   5: 0,021 s/op
+
+# Run progress: 8,89% complete, ETA 03:27:01
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
-0,022 s/op
-# Warmup Iteration   2: 0,020 s/op
-# Warmup Iteration   3: 0,020 s/op
-# Warmup Iteration   4: 0,020 s/op
-# Warmup Iteration   5: 0,020 s/op
-Iteration   1: 0,020 s/op
-Iteration   2: 0,020 s/op
-Iteration   3: 0,020 s/op
-Iteration   4: 0,020 s/op
-Iteration   5: 0,020 s/op
+Measurement:Data preparation::Time - PT0.220154S
+Measurement:Data preparation::Heap Memory - 35,4 MiB
+Measurement::Data size:    10000
+0,029 s/op
+# Warmup Iteration   2: 0,029 s/op
+# Warmup Iteration   3: 0,029 s/op
+# Warmup Iteration   4: 0,028 s/op
+# Warmup Iteration   5: 0,029 s/op
+Iteration   1: 0,029 s/op
+Iteration   2: 0,029 s/op
+Iteration   3: 0,029 s/op
+Iteration   4: 0,029 s/op
+Iteration   5: 0,029 s/op
 
-# Run progress: 24,44% complete, ETA 02:52:51
+# Run progress: 9,63% complete, ETA 03:25:20
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,3 GiB
-0,022 s/op
-# Warmup Iteration   2: 0,020 s/op
-# Warmup Iteration   3: 0,020 s/op
-# Warmup Iteration   4: 0,020 s/op
-# Warmup Iteration   5: 0,020 s/op
-Iteration   1: 0,020 s/op
-Iteration   2: 0,020 s/op
-Iteration   3: 0,020 s/op
-Iteration   4: 0,021 s/op
-Iteration   5: 0,020 s/op
+Measurement:Data preparation::Time - PT0.211724S
+Measurement:Data preparation::Heap Memory - 35,0 MiB
+Measurement::Data size:    10000
+0,029 s/op
+# Warmup Iteration   2: 0,028 s/op
+# Warmup Iteration   3: 0,028 s/op
+# Warmup Iteration   4: 0,028 s/op
+# Warmup Iteration   5: 0,028 s/op
+Iteration   1: 0,028 s/op
+Iteration   2: 0,028 s/op
+Iteration   3: 0,028 s/op
+Iteration   4: 0,028 s/op
+Iteration   5: 0,028 s/op
 
-# Run progress: 25,19% complete, ETA 02:51:23
+# Run progress: 10,37% complete, ETA 03:23:38
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
+Measurement:Data preparation::Time - PT0.203547S
+Measurement:Data preparation::Heap Memory - 35,1 MiB
+Measurement::Data size:    10000
 0,022 s/op
-# Warmup Iteration   2: 0,020 s/op
-# Warmup Iteration   3: 0,020 s/op
-# Warmup Iteration   4: 0,020 s/op
-# Warmup Iteration   5: 0,020 s/op
-Iteration   1: 0,020 s/op
-Iteration   2: 0,020 s/op
-Iteration   3: 0,020 s/op
-Iteration   4: 0,020 s/op
-Iteration   5: 0,020 s/op
+# Warmup Iteration   2: 0,021 s/op
+# Warmup Iteration   3: 0,021 s/op
+# Warmup Iteration   4: 0,022 s/op
+# Warmup Iteration   5: 0,022 s/op
+Iteration   1: 0,022 s/op
+Iteration   2: 0,021 s/op
+Iteration   3: 0,022 s/op
+Iteration   4: 0,022 s/op
+Iteration   5: 0,022 s/op
 
 
 Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
-  0,021 ±(99.9%) 0,001 s/op [Average]
-  (min, avg, max) = (0,020, 0,021, 0,024), stdev = 0,001
-  CI (99.9%): [0,020, 0,022] (assumes normal distribution)
+  0,024 ±(99.9%) 0,003 s/op [Average]
+  (min, avg, max) = (0,021, 0,024, 0,029), stdev = 0,003
+  CI (99.9%): [0,022, 0,027] (assumes normal distribution)
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -701,96 +320,517 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
 # Threads: 1 thread, will synchronize iterations
 # Benchmark mode: Average time, time/op
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
-# Parameters: (dataSetSize = 1000000, metadataSize = 16)
+# Parameters: (dataSetSize = 100000, metadataSize = 8)
 
-# Run progress: 25,93% complete, ETA 02:49:53
+# Run progress: 11,11% complete, ETA 03:21:57
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,9 GiB
-0,039 s/op
-# Warmup Iteration   2: 0,040 s/op
+Measurement:Data preparation::Time - PT0.656163S
+Measurement:Data preparation::Heap Memory - 115,1 MiB
+Measurement::Data size:    100000
+0,016 s/op
+# Warmup Iteration   2: 0,015 s/op
+# Warmup Iteration   3: 0,016 s/op
+# Warmup Iteration   4: 0,015 s/op
+# Warmup Iteration   5: 0,015 s/op
+Iteration   1: 0,015 s/op
+Iteration   2: 0,015 s/op
+Iteration   3: 0,015 s/op
+Iteration   4: 0,015 s/op
+Iteration   5: 0,015 s/op
+
+# Run progress: 11,85% complete, ETA 03:20:18
+# Fork: 2 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.640336S
+Measurement:Data preparation::Heap Memory - 117,7 MiB
+Measurement::Data size:    100000
+0,013 s/op
+# Warmup Iteration   2: 0,012 s/op
+# Warmup Iteration   3: 0,012 s/op
+# Warmup Iteration   4: 0,012 s/op
+# Warmup Iteration   5: 0,012 s/op
+Iteration   1: 0,012 s/op
+Iteration   2: 0,012 s/op
+Iteration   3: 0,012 s/op
+Iteration   4: 0,012 s/op
+Iteration   5: 0,012 s/op
+
+# Run progress: 12,59% complete, ETA 03:18:39
+# Fork: 3 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.636566S
+Measurement:Data preparation::Heap Memory - 118,8 MiB
+Measurement::Data size:    100000
+0,013 s/op
+# Warmup Iteration   2: 0,012 s/op
+# Warmup Iteration   3: 0,012 s/op
+# Warmup Iteration   4: 0,012 s/op
+# Warmup Iteration   5: 0,012 s/op
+Iteration   1: 0,012 s/op
+Iteration   2: 0,012 s/op
+Iteration   3: 0,012 s/op
+Iteration   4: 0,012 s/op
+Iteration   5: 0,012 s/op
+
+# Run progress: 13,33% complete, ETA 03:17:00
+# Fork: 4 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.625988S
+Measurement:Data preparation::Heap Memory - 116,0 MiB
+Measurement::Data size:    100000
+0,016 s/op
+# Warmup Iteration   2: 0,016 s/op
+# Warmup Iteration   3: 0,015 s/op
+# Warmup Iteration   4: 0,015 s/op
+# Warmup Iteration   5: 0,015 s/op
+Iteration   1: 0,015 s/op
+Iteration   2: 0,015 s/op
+Iteration   3: 0,015 s/op
+Iteration   4: 0,015 s/op
+Iteration   5: 0,015 s/op
+
+# Run progress: 14,07% complete, ETA 03:15:20
+# Fork: 5 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.626355S
+Measurement:Data preparation::Heap Memory - 116,0 MiB
+Measurement::Data size:    100000
+0,013 s/op
+# Warmup Iteration   2: 0,012 s/op
+# Warmup Iteration   3: 0,012 s/op
+# Warmup Iteration   4: 0,012 s/op
+# Warmup Iteration   5: 0,012 s/op
+Iteration   1: 0,012 s/op
+Iteration   2: 0,012 s/op
+Iteration   3: 0,012 s/op
+Iteration   4: 0,012 s/op
+Iteration   5: 0,012 s/op
+
+
+Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
+  0,013 ±(99.9%) 0,001 s/op [Average]
+  (min, avg, max) = (0,012, 0,013, 0,015), stdev = 0,002
+  CI (99.9%): [0,012, 0,015] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
+# VM options: -Xmx8G
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
+# Parameters: (dataSetSize = 100000, metadataSize = 16)
+
+# Run progress: 14,81% complete, ETA 03:13:40
+# Fork: 1 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.770526S
+Measurement:Data preparation::Heap Memory - 219,4 MiB
+Measurement::Data size:    100000
+0,020 s/op
+# Warmup Iteration   2: 0,019 s/op
+# Warmup Iteration   3: 0,019 s/op
+# Warmup Iteration   4: 0,019 s/op
+# Warmup Iteration   5: 0,019 s/op
+Iteration   1: 0,018 s/op
+Iteration   2: 0,018 s/op
+Iteration   3: 0,018 s/op
+Iteration   4: 0,018 s/op
+Iteration   5: 0,018 s/op
+
+# Run progress: 15,56% complete, ETA 03:12:02
+# Fork: 2 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.751097S
+Measurement:Data preparation::Heap Memory - 220,7 MiB
+Measurement::Data size:    100000
+0,018 s/op
+# Warmup Iteration   2: 0,017 s/op
+# Warmup Iteration   3: 0,017 s/op
+# Warmup Iteration   4: 0,017 s/op
+# Warmup Iteration   5: 0,017 s/op
+Iteration   1: 0,017 s/op
+Iteration   2: 0,017 s/op
+Iteration   3: 0,017 s/op
+Iteration   4: 0,017 s/op
+Iteration   5: 0,017 s/op
+
+# Run progress: 16,30% complete, ETA 03:10:22
+# Fork: 3 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.858003S
+Measurement:Data preparation::Heap Memory - 197,0 MiB
+Measurement::Data size:    100000
+0,017 s/op
+# Warmup Iteration   2: 0,017 s/op
+# Warmup Iteration   3: 0,017 s/op
+# Warmup Iteration   4: 0,017 s/op
+# Warmup Iteration   5: 0,018 s/op
+Iteration   1: 0,018 s/op
+Iteration   2: 0,021 s/op
+Iteration   3: 0,024 s/op
+Iteration   4: 0,022 s/op
+Iteration   5: 0,019 s/op
+
+# Run progress: 17,04% complete, ETA 03:08:48
+# Fork: 4 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.834574S
+Measurement:Data preparation::Heap Memory - 219,4 MiB
+Measurement::Data size:    100000
+0,024 s/op
+# Warmup Iteration   2: 0,023 s/op
+# Warmup Iteration   3: 0,023 s/op
+# Warmup Iteration   4: 0,030 s/op
+# Warmup Iteration   5: 0,035 s/op
+Iteration   1: 0,029 s/op
+Iteration   2: 0,025 s/op
+Iteration   3: 0,025 s/op
+Iteration   4: 0,027 s/op
+Iteration   5: 0,035 s/op
+
+# Run progress: 17,78% complete, ETA 03:07:09
+# Fork: 5 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.941652S
+Measurement:Data preparation::Heap Memory - 197,2 MiB
+Measurement::Data size:    100000
+0,029 s/op
+# Warmup Iteration   2: 0,029 s/op
+# Warmup Iteration   3: 0,029 s/op
+# Warmup Iteration   4: 0,031 s/op
+# Warmup Iteration   5: 0,030 s/op
+Iteration   1: 0,029 s/op
+Iteration   2: 0,032 s/op
+Iteration   3: 0,022 s/op
+Iteration   4: 0,028 s/op
+Iteration   5: 0,022 s/op
+
+
+Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
+  0,022 ±(99.9%) 0,004 s/op [Average]
+  (min, avg, max) = (0,017, 0,022, 0,035), stdev = 0,005
+  CI (99.9%): [0,018, 0,026] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
+# VM options: -Xmx8G
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
+# Parameters: (dataSetSize = 100000, metadataSize = 32)
+
+# Run progress: 18,52% complete, ETA 03:05:43
+# Fork: 1 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT1.444039S
+Measurement:Data preparation::Heap Memory - 378,0 MiB
+Measurement::Data size:    100000
+0,045 s/op
+# Warmup Iteration   2: 0,054 s/op
 # Warmup Iteration   3: 0,038 s/op
-# Warmup Iteration   4: 0,037 s/op
-# Warmup Iteration   5: 0,037 s/op
-Iteration   1: 0,037 s/op
-Iteration   2: 0,037 s/op
-Iteration   3: 0,038 s/op
+# Warmup Iteration   4: 0,039 s/op
+# Warmup Iteration   5: 0,035 s/op
+Iteration   1: 0,045 s/op
+Iteration   2: 0,038 s/op
+Iteration   3: 0,040 s/op
+Iteration   4: 0,040 s/op
+Iteration   5: 0,043 s/op
+
+# Run progress: 19,26% complete, ETA 03:04:07
+# Fork: 2 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT1.631424S
+Measurement:Data preparation::Heap Memory - 380,0 MiB
+Measurement::Data size:    100000
+0,049 s/op
+# Warmup Iteration   2: 0,046 s/op
+# Warmup Iteration   3: 0,052 s/op
+# Warmup Iteration   4: 0,049 s/op
+# Warmup Iteration   5: 0,051 s/op
+Iteration   1: 0,046 s/op
+Iteration   2: 0,050 s/op
+Iteration   3: 0,058 s/op
+Iteration   4: 0,048 s/op
+Iteration   5: 0,054 s/op
+
+# Run progress: 20,00% complete, ETA 03:02:31
+# Fork: 3 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT1.393133S
+Measurement:Data preparation::Heap Memory - 385,0 MiB
+Measurement::Data size:    100000
+0,038 s/op
+# Warmup Iteration   2: 0,038 s/op
+# Warmup Iteration   3: 0,039 s/op
+# Warmup Iteration   4: 0,035 s/op
+# Warmup Iteration   5: 0,035 s/op
+Iteration   1: 0,035 s/op
+Iteration   2: 0,035 s/op
+Iteration   3: 0,037 s/op
+Iteration   4: 0,037 s/op
+Iteration   5: 0,036 s/op
+
+# Run progress: 20,74% complete, ETA 03:00:53
+# Fork: 4 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT1.310009S
+Measurement:Data preparation::Heap Memory - 386,0 MiB
+Measurement::Data size:    100000
+0,038 s/op
+# Warmup Iteration   2: 0,039 s/op
+# Warmup Iteration   3: 0,036 s/op
+# Warmup Iteration   4: 0,035 s/op
+# Warmup Iteration   5: 0,035 s/op
+Iteration   1: 0,036 s/op
+Iteration   2: 0,036 s/op
+Iteration   3: 0,036 s/op
 Iteration   4: 0,037 s/op
 Iteration   5: 0,037 s/op
 
-# Run progress: 26,67% complete, ETA 02:48:33
-# Fork: 2 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,9 GiB
-0,031 s/op
-# Warmup Iteration   2: 0,030 s/op
-# Warmup Iteration   3: 0,029 s/op
-# Warmup Iteration   4: 0,029 s/op
-# Warmup Iteration   5: 0,029 s/op
-Iteration   1: 0,029 s/op
-Iteration   2: 0,029 s/op
-Iteration   3: 0,029 s/op
-Iteration   4: 0,029 s/op
-Iteration   5: 0,029 s/op
-
-# Run progress: 27,41% complete, ETA 02:47:08
-# Fork: 3 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 2,1 GiB
-0,030 s/op
-# Warmup Iteration   2: 0,029 s/op
-# Warmup Iteration   3: 0,030 s/op
-# Warmup Iteration   4: 0,029 s/op
-# Warmup Iteration   5: 0,029 s/op
-Iteration   1: 0,029 s/op
-Iteration   2: 0,029 s/op
-Iteration   3: 0,029 s/op
-Iteration   4: 0,029 s/op
-Iteration   5: 0,029 s/op
-
-# Run progress: 28,15% complete, ETA 02:45:41
-# Fork: 4 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 2,1 GiB
-0,032 s/op
-# Warmup Iteration   2: 0,030 s/op
-# Warmup Iteration   3: 0,029 s/op
-# Warmup Iteration   4: 0,029 s/op
-# Warmup Iteration   5: 0,029 s/op
-Iteration   1: 0,029 s/op
-Iteration   2: 0,029 s/op
-Iteration   3: 0,029 s/op
-Iteration   4: 0,029 s/op
-Iteration   5: 0,029 s/op
-
-# Run progress: 28,89% complete, ETA 02:44:13
+# Run progress: 21,48% complete, ETA 02:59:14
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,9 GiB
-0,031 s/op
-# Warmup Iteration   2: 0,031 s/op
-# Warmup Iteration   3: 0,031 s/op
-# Warmup Iteration   4: 0,030 s/op
-# Warmup Iteration   5: 0,030 s/op
-Iteration   1: 0,030 s/op
-Iteration   2: 0,030 s/op
-Iteration   3: 0,030 s/op
-Iteration   4: 0,030 s/op
-Iteration   5: 0,030 s/op
+Measurement:Data preparation::Time - PT1.486689S
+Measurement:Data preparation::Heap Memory - 380,0 MiB
+Measurement::Data size:    100000
+0,049 s/op
+# Warmup Iteration   2: 0,050 s/op
+# Warmup Iteration   3: 0,049 s/op
+# Warmup Iteration   4: 0,048 s/op
+# Warmup Iteration   5: 0,048 s/op
+Iteration   1: 0,048 s/op
+Iteration   2: 0,048 s/op
+Iteration   3: 0,051 s/op
+Iteration   4: 0,054 s/op
+Iteration   5: 0,062 s/op
 
 
 Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
-  0,031 ±(99.9%) 0,003 s/op [Average]
-  (min, avg, max) = (0,029, 0,031, 0,038), stdev = 0,003
-  CI (99.9%): [0,028, 0,033] (assumes normal distribution)
+  0,043 ±(99.9%) 0,006 s/op [Average]
+  (min, avg, max) = (0,035, 0,043, 0,062), stdev = 0,008
+  CI (99.9%): [0,037, 0,049] (assumes normal distribution)
 
 
-# JMH version: 1.21
+# JMH version: 1.23
+# VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
+# VM options: -Xmx8G
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
+# Parameters: (dataSetSize = 1000000, metadataSize = 8)
+
+# Run progress: 22,22% complete, ETA 02:57:37
+# Fork: 1 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT9.990613S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
+0,047 s/op
+# Warmup Iteration   2: 0,048 s/op
+# Warmup Iteration   3: 0,041 s/op
+# Warmup Iteration   4: 0,041 s/op
+# Warmup Iteration   5: 0,042 s/op
+Iteration   1: 0,035 s/op
+Iteration   2: 0,029 s/op
+Iteration   3: 0,029 s/op
+Iteration   4: 0,029 s/op
+Iteration   5: 0,030 s/op
+
+# Run progress: 22,96% complete, ETA 02:56:28
+# Fork: 2 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT6.317458S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
+0,029 s/op
+# Warmup Iteration   2: 0,027 s/op
+# Warmup Iteration   3: 0,026 s/op
+# Warmup Iteration   4: 0,025 s/op
+# Warmup Iteration   5: 0,025 s/op
+Iteration   1: 0,025 s/op
+Iteration   2: 0,025 s/op
+Iteration   3: 0,025 s/op
+Iteration   4: 0,025 s/op
+Iteration   5: 0,025 s/op
+
+# Run progress: 23,70% complete, ETA 02:55:04
+# Fork: 3 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT6.295466S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
+0,033 s/op
+# Warmup Iteration   2: 0,026 s/op
+# Warmup Iteration   3: 0,024 s/op
+# Warmup Iteration   4: 0,024 s/op
+# Warmup Iteration   5: 0,025 s/op
+Iteration   1: 0,024 s/op
+Iteration   2: 0,025 s/op
+Iteration   3: 0,038 s/op
+Iteration   4: 0,036 s/op
+Iteration   5: 0,038 s/op
+
+# Run progress: 24,44% complete, ETA 02:53:39
+# Fork: 4 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT9.987346S
+Measurement:Data preparation::Heap Memory - 1,1 GiB
+Measurement::Data size:    1000000
+0,048 s/op
+# Warmup Iteration   2: 0,046 s/op
+# Warmup Iteration   3: 0,027 s/op
+# Warmup Iteration   4: 0,025 s/op
+# Warmup Iteration   5: 0,035 s/op
+Iteration   1: 0,026 s/op
+Iteration   2: 0,025 s/op
+Iteration   3: 0,026 s/op
+Iteration   4: 0,025 s/op
+Iteration   5: 0,031 s/op
+
+# Run progress: 25,19% complete, ETA 02:52:24
+# Fork: 5 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT6.581871S
+Measurement:Data preparation::Heap Memory - 1,1 GiB
+Measurement::Data size:    1000000
+0,031 s/op
+# Warmup Iteration   2: 0,044 s/op
+# Warmup Iteration   3: 0,037 s/op
+# Warmup Iteration   4: 0,040 s/op
+# Warmup Iteration   5: 0,035 s/op
+Iteration   1: 0,026 s/op
+Iteration   2: 0,026 s/op
+Iteration   3: 0,026 s/op
+Iteration   4: 0,026 s/op
+Iteration   5: 0,026 s/op
+
+
+Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
+  0,028 ±(99.9%) 0,003 s/op [Average]
+  (min, avg, max) = (0,024, 0,028, 0,038), stdev = 0,004
+  CI (99.9%): [0,025, 0,031] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
+# VM options: -Xmx8G
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
+# Parameters: (dataSetSize = 1000000, metadataSize = 16)
+
+# Run progress: 25,93% complete, ETA 02:50:57
+# Fork: 1 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT10.147784S
+Measurement:Data preparation::Heap Memory - 1,9 GiB
+Measurement::Data size:    1000000
+0,050 s/op
+# Warmup Iteration   2: 0,055 s/op
+# Warmup Iteration   3: 0,062 s/op
+# Warmup Iteration   4: 0,047 s/op
+# Warmup Iteration   5: 0,048 s/op
+Iteration   1: 0,047 s/op
+Iteration   2: 0,046 s/op
+Iteration   3: 0,047 s/op
+Iteration   4: 0,046 s/op
+Iteration   5: 0,047 s/op
+
+# Run progress: 26,67% complete, ETA 02:49:38
+# Fork: 2 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT10.628707S
+Measurement:Data preparation::Heap Memory - 2,0 GiB
+Measurement::Data size:    1000000
+0,064 s/op
+# Warmup Iteration   2: 0,042 s/op
+# Warmup Iteration   3: 0,039 s/op
+# Warmup Iteration   4: 0,038 s/op
+# Warmup Iteration   5: 0,038 s/op
+Iteration   1: 0,044 s/op
+Iteration   2: 0,037 s/op
+Iteration   3: 0,037 s/op
+Iteration   4: 0,037 s/op
+Iteration   5: 0,037 s/op
+
+# Run progress: 27,41% complete, ETA 02:48:20
+# Fork: 3 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT8.900879S
+Measurement:Data preparation::Heap Memory - 2,0 GiB
+Measurement::Data size:    1000000
+0,039 s/op
+# Warmup Iteration   2: 0,042 s/op
+# Warmup Iteration   3: 0,038 s/op
+# Warmup Iteration   4: 0,038 s/op
+# Warmup Iteration   5: 0,038 s/op
+Iteration   1: 0,040 s/op
+Iteration   2: 0,038 s/op
+Iteration   3: 0,037 s/op
+Iteration   4: 0,037 s/op
+Iteration   5: 0,037 s/op
+
+# Run progress: 28,15% complete, ETA 02:46:55
+# Fork: 4 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT9.125232S
+Measurement:Data preparation::Heap Memory - 1,9 GiB
+Measurement::Data size:    1000000
+0,039 s/op
+# Warmup Iteration   2: 0,048 s/op
+# Warmup Iteration   3: 0,040 s/op
+# Warmup Iteration   4: 0,036 s/op
+# Warmup Iteration   5: 0,037 s/op
+Iteration   1: 0,036 s/op
+Iteration   2: 0,036 s/op
+Iteration   3: 0,036 s/op
+Iteration   4: 0,036 s/op
+Iteration   5: 0,036 s/op
+
+# Run progress: 28,89% complete, ETA 02:45:29
+# Fork: 5 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT10.503227S
+Measurement:Data preparation::Heap Memory - 2,0 GiB
+Measurement::Data size:    1000000
+0,049 s/op
+# Warmup Iteration   2: 0,052 s/op
+# Warmup Iteration   3: 0,049 s/op
+# Warmup Iteration   4: 0,048 s/op
+# Warmup Iteration   5: 0,047 s/op
+Iteration   1: 0,052 s/op
+Iteration   2: 0,056 s/op
+Iteration   3: 0,049 s/op
+Iteration   4: 0,050 s/op
+Iteration   5: 0,049 s/op
+
+
+Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
+  0,042 ±(99.9%) 0,005 s/op [Average]
+  (min, avg, max) = (0,036, 0,042, 0,056), stdev = 0,006
+  CI (99.9%): [0,037, 0,047] (assumes normal distribution)
+
+
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -802,94 +842,99 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources
 # Parameters: (dataSetSize = 1000000, metadataSize = 32)
 
-# Run progress: 29,63% complete, ETA 02:42:45
+# Run progress: 29,63% complete, ETA 02:44:05
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
-0,054 s/op
-# Warmup Iteration   2: 0,052 s/op
-# Warmup Iteration   3: 0,052 s/op
-# Warmup Iteration   4: 0,050 s/op
-# Warmup Iteration   5: 0,051 s/op
-Iteration   1: 0,050 s/op
-Iteration   2: 0,050 s/op
-Iteration   3: 0,052 s/op
-Iteration   4: 0,050 s/op
-Iteration   5: 0,050 s/op
+Measurement:Data preparation::Time - PT17.113601S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
+0,094 s/op
+# Warmup Iteration   2: 0,089 s/op
+# Warmup Iteration   3: 0,086 s/op
+# Warmup Iteration   4: 0,083 s/op
+# Warmup Iteration   5: 0,081 s/op
+Iteration   1: 0,082 s/op
+Iteration   2: 0,087 s/op
+Iteration   3: 0,080 s/op
+Iteration   4: 0,081 s/op
+Iteration   5: 0,080 s/op
 
-# Run progress: 30,37% complete, ETA 02:41:26
+# Run progress: 30,37% complete, ETA 02:42:55
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,6 GiB
-0,055 s/op
-# Warmup Iteration   2: 0,051 s/op
-# Warmup Iteration   3: 0,050 s/op
-# Warmup Iteration   4: 0,051 s/op
-# Warmup Iteration   5: 0,049 s/op
-Iteration   1: 0,049 s/op
-Iteration   2: 0,051 s/op
-Iteration   3: 0,049 s/op
-Iteration   4: 0,050 s/op
-Iteration   5: 0,051 s/op
+Measurement:Data preparation::Time - PT14.779758S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
+0,071 s/op
+# Warmup Iteration   2: 0,065 s/op
+# Warmup Iteration   3: 0,070 s/op
+# Warmup Iteration   4: 0,064 s/op
+# Warmup Iteration   5: 0,064 s/op
+Iteration   1: 0,063 s/op
+Iteration   2: 0,068 s/op
+Iteration   3: 0,064 s/op
+Iteration   4: 0,069 s/op
+Iteration   5: 0,091 s/op
 
-# Run progress: 31,11% complete, ETA 02:40:05
+# Run progress: 31,11% complete, ETA 02:41:39
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
-0,060 s/op
-# Warmup Iteration   2: 0,058 s/op
-# Warmup Iteration   3: 0,059 s/op
-# Warmup Iteration   4: 0,055 s/op
-# Warmup Iteration   5: 0,056 s/op
-Iteration   1: 0,055 s/op
-Iteration   2: 0,054 s/op
-Iteration   3: 0,057 s/op
-Iteration   4: 0,054 s/op
-Iteration   5: 0,055 s/op
+Measurement:Data preparation::Time - PT20.405334S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
+0,072 s/op
+# Warmup Iteration   2: 0,067 s/op
+# Warmup Iteration   3: 0,071 s/op
+# Warmup Iteration   4: 0,066 s/op
+# Warmup Iteration   5: 0,063 s/op
+Iteration   1: 0,074 s/op
+Iteration   2: 0,073 s/op
+Iteration   3: 0,066 s/op
+Iteration   4: 0,062 s/op
+Iteration   5: 0,062 s/op
 
-# Run progress: 31,85% complete, ETA 02:38:45
+# Run progress: 31,85% complete, ETA 02:40:33
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
-0,055 s/op
-# Warmup Iteration   2: 0,051 s/op
-# Warmup Iteration   3: 0,050 s/op
-# Warmup Iteration   4: 0,052 s/op
-# Warmup Iteration   5: 0,050 s/op
-Iteration   1: 0,049 s/op
-Iteration   2: 0,051 s/op
-Iteration   3: 0,049 s/op
-Iteration   4: 0,049 s/op
-Iteration   5: 0,051 s/op
+Measurement:Data preparation::Time - PT16.193617S
+Measurement:Data preparation::Heap Memory - 3,6 GiB
+Measurement::Data size:    1000000
+0,085 s/op
+# Warmup Iteration   2: 0,083 s/op
+# Warmup Iteration   3: 0,084 s/op
+# Warmup Iteration   4: 0,080 s/op
+# Warmup Iteration   5: 0,080 s/op
+Iteration   1: 0,085 s/op
+Iteration   2: 0,079 s/op
+Iteration   3: 0,080 s/op
+Iteration   4: 0,090 s/op
+Iteration   5: 0,079 s/op
 
-# Run progress: 32,59% complete, ETA 02:37:21
+# Run progress: 32,59% complete, ETA 02:39:17
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
-0,065 s/op
-# Warmup Iteration   2: 0,062 s/op
-# Warmup Iteration   3: 0,060 s/op
-# Warmup Iteration   4: 0,062 s/op
-# Warmup Iteration   5: 0,060 s/op
-Iteration   1: 0,060 s/op
-Iteration   2: 0,062 s/op
-Iteration   3: 0,060 s/op
-Iteration   4: 0,060 s/op
-Iteration   5: 0,061 s/op
+Measurement:Data preparation::Time - PT17.366555S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
+0,093 s/op
+# Warmup Iteration   2: 0,085 s/op
+# Warmup Iteration   3: 0,080 s/op
+# Warmup Iteration   4: 0,079 s/op
+# Warmup Iteration   5: 0,076 s/op
+Iteration   1: 0,077 s/op
+Iteration   2: 0,084 s/op
+Iteration   3: 0,084 s/op
+Iteration   4: 0,080 s/op
+Iteration   5: 0,078 s/op
 
 
 Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
-  0,053 ±(99.9%) 0,003 s/op [Average]
-  (min, avg, max) = (0,049, 0,053, 0,062), stdev = 0,004
-  CI (99.9%): [0,050, 0,056] (assumes normal distribution)
+  0,077 ±(99.9%) 0,006 s/op [Average]
+  (min, avg, max) = (0,062, 0,077, 0,091), stdev = 0,009
+  CI (99.9%): [0,070, 0,083] (assumes normal distribution)
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -901,11 +946,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.addRandomResources":
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 10000, metadataSize = 8)
 
-# Run progress: 33,33% complete, ETA 02:36:00
+# Run progress: 33,33% complete, ETA 02:37:59
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.147079S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -917,11 +963,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 34,07% complete, ETA 02:34:10
+# Run progress: 34,07% complete, ETA 02:36:07
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.13794S
+Measurement:Data preparation::Heap Memory - 8,0 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -933,11 +980,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 34,81% complete, ETA 02:32:20
+# Run progress: 34,81% complete, ETA 02:34:13
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.153285S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -949,11 +997,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 35,56% complete, ETA 02:30:30
+# Run progress: 35,56% complete, ETA 02:32:20
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.151299S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -965,11 +1014,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 36,30% complete, ETA 02:28:41
+# Run progress: 36,30% complete, ETA 02:30:27
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.137533S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -986,7 +1036,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
   ≈ 10⁻⁵ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -998,11 +1048,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 10000, metadataSize = 16)
 
-# Run progress: 37,04% complete, ETA 02:26:52
+# Run progress: 37,04% complete, ETA 02:28:35
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,2 MiB
+Measurement:Data preparation::Time - PT0.16527S
+Measurement:Data preparation::Heap Memory - 17,0 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1014,11 +1065,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 37,78% complete, ETA 02:25:03
+# Run progress: 37,78% complete, ETA 02:26:43
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,9 MiB
+Measurement:Data preparation::Time - PT0.156765S
+Measurement:Data preparation::Heap Memory - 17,3 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1030,11 +1082,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 38,52% complete, ETA 02:23:15
+# Run progress: 38,52% complete, ETA 02:24:54
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,9 MiB
+Measurement:Data preparation::Time - PT0.164839S
+Measurement:Data preparation::Heap Memory - 17,0 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1046,11 +1099,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 39,26% complete, ETA 02:21:27
+# Run progress: 39,26% complete, ETA 02:23:03
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,6 MiB
+Measurement:Data preparation::Time - PT0.195387S
+Measurement:Data preparation::Heap Memory - 17,3 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1062,11 +1116,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 40,00% complete, ETA 02:19:39
+# Run progress: 40,00% complete, ETA 02:21:12
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,8 MiB
+Measurement:Data preparation::Time - PT0.183541S
+Measurement:Data preparation::Heap Memory - 16,8 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1083,7 +1138,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
   ≈ 10⁻⁵ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1095,11 +1150,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 10000, metadataSize = 32)
 
-# Run progress: 40,74% complete, ETA 02:17:52
+# Run progress: 40,74% complete, ETA 02:19:22
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 34,7 MiB
+Measurement:Data preparation::Time - PT0.201659S
+Measurement:Data preparation::Heap Memory - 35,4 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1109,45 +1165,48 @@ Iteration   1: ≈ 10⁻⁵ s/op
 Iteration   2: ≈ 10⁻⁵ s/op
 Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
-Iteration   5: ≈ 10⁻⁵ s/op
+Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 41,48% complete, ETA 02:16:05
+# Run progress: 41,48% complete, ETA 02:17:36
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 34,1 MiB
+Measurement:Data preparation::Time - PT0.205462S
+Measurement:Data preparation::Heap Memory - 34,7 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁴ s/op
-# Warmup Iteration   2: ≈ 10⁻⁵ s/op
-# Warmup Iteration   3: ≈ 10⁻⁵ s/op
-# Warmup Iteration   4: ≈ 10⁻⁵ s/op
-# Warmup Iteration   5: ≈ 10⁻⁵ s/op
-Iteration   1: ≈ 10⁻⁵ s/op
-Iteration   2: ≈ 10⁻⁵ s/op
-Iteration   3: ≈ 10⁻⁵ s/op
-Iteration   4: ≈ 10⁻⁵ s/op
-Iteration   5: ≈ 10⁻⁵ s/op
+# Warmup Iteration   2: ≈ 10⁻⁴ s/op
+# Warmup Iteration   3: ≈ 10⁻⁴ s/op
+# Warmup Iteration   4: ≈ 10⁻⁴ s/op
+# Warmup Iteration   5: ≈ 10⁻⁴ s/op
+Iteration   1: ≈ 10⁻⁴ s/op
+Iteration   2: ≈ 10⁻⁴ s/op
+Iteration   3: ≈ 10⁻⁴ s/op
+Iteration   4: ≈ 10⁻⁴ s/op
+Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 42,22% complete, ETA 02:14:18
+# Run progress: 42,22% complete, ETA 02:15:47
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 32,1 MiB
+Measurement:Data preparation::Time - PT0.217288S
+Measurement:Data preparation::Heap Memory - 34,7 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁴ s/op
-# Warmup Iteration   2: ≈ 10⁻⁵ s/op
-# Warmup Iteration   3: ≈ 10⁻⁵ s/op
-# Warmup Iteration   4: ≈ 10⁻⁵ s/op
-# Warmup Iteration   5: ≈ 10⁻⁵ s/op
-Iteration   1: ≈ 10⁻⁵ s/op
-Iteration   2: ≈ 10⁻⁵ s/op
-Iteration   3: ≈ 10⁻⁵ s/op
-Iteration   4: ≈ 10⁻⁵ s/op
-Iteration   5: ≈ 10⁻⁵ s/op
+# Warmup Iteration   2: ≈ 10⁻⁴ s/op
+# Warmup Iteration   3: ≈ 10⁻⁴ s/op
+# Warmup Iteration   4: ≈ 10⁻⁴ s/op
+# Warmup Iteration   5: ≈ 10⁻⁴ s/op
+Iteration   1: ≈ 10⁻⁴ s/op
+Iteration   2: ≈ 10⁻⁴ s/op
+Iteration   3: ≈ 10⁻⁴ s/op
+Iteration   4: ≈ 10⁻⁴ s/op
+Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 42,96% complete, ETA 02:12:31
+# Run progress: 42,96% complete, ETA 02:13:57
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 32,7 MiB
+Measurement:Data preparation::Time - PT0.210323S
+Measurement:Data preparation::Heap Memory - 35,1 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1159,11 +1218,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 43,70% complete, ETA 02:10:45
+# Run progress: 43,70% complete, ETA 02:12:08
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 32,1 MiB
+Measurement:Data preparation::Time - PT0.2131S
+Measurement:Data preparation::Heap Memory - 33,0 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1177,10 +1237,10 @@ Iteration   5: ≈ 10⁻⁴ s/op
 
 
 Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey":
-  ≈ 10⁻⁵ s/op
+  ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1192,11 +1252,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 100000, metadataSize = 8)
 
-# Run progress: 44,44% complete, ETA 02:08:58
+# Run progress: 44,44% complete, ETA 02:10:21
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 117,4 MiB
+Measurement:Data preparation::Time - PT0.650057S
+Measurement:Data preparation::Heap Memory - 116,5 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1208,11 +1269,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 45,19% complete, ETA 02:07:13
+# Run progress: 45,19% complete, ETA 02:08:33
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 118,1 MiB
+Measurement:Data preparation::Time - PT0.710255S
+Measurement:Data preparation::Heap Memory - 123,1 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1224,11 +1286,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 45,93% complete, ETA 02:05:27
+# Run progress: 45,93% complete, ETA 02:06:45
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 120,2 MiB
+Measurement:Data preparation::Time - PT0.652626S
+Measurement:Data preparation::Heap Memory - 114,7 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1240,11 +1303,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 46,67% complete, ETA 02:03:42
+# Run progress: 46,67% complete, ETA 02:04:57
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 113,8 MiB
+Measurement:Data preparation::Time - PT0.661216S
+Measurement:Data preparation::Heap Memory - 115,8 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1256,11 +1320,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 47,41% complete, ETA 02:01:57
+# Run progress: 47,41% complete, ETA 02:03:10
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 115,8 MiB
+Measurement:Data preparation::Time - PT0.628214S
+Measurement:Data preparation::Heap Memory - 116,5 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1277,7 +1342,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1289,11 +1354,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 100000, metadataSize = 16)
 
-# Run progress: 48,15% complete, ETA 02:00:12
+# Run progress: 48,15% complete, ETA 02:01:23
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 203,8 MiB
+Measurement:Data preparation::Time - PT0.842925S
+Measurement:Data preparation::Heap Memory - 219,7 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1305,11 +1371,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 48,89% complete, ETA 01:58:28
+# Run progress: 48,89% complete, ETA 01:59:36
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 217,5 MiB
+Measurement:Data preparation::Time - PT0.817495S
+Measurement:Data preparation::Heap Memory - 219,3 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1321,11 +1388,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 49,63% complete, ETA 01:56:44
+# Run progress: 49,63% complete, ETA 01:57:49
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 216,5 MiB
+Measurement:Data preparation::Time - PT0.832903S
+Measurement:Data preparation::Heap Memory - 218,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1337,11 +1405,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 50,37% complete, ETA 01:54:59
+# Run progress: 50,37% complete, ETA 01:56:03
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 219,5 MiB
+Measurement:Data preparation::Time - PT0.813492S
+Measurement:Data preparation::Heap Memory - 220,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1353,11 +1422,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 51,11% complete, ETA 01:53:15
+# Run progress: 51,11% complete, ETA 01:54:17
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 218,1 MiB
+Measurement:Data preparation::Time - PT0.775437S
+Measurement:Data preparation::Heap Memory - 219,3 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1374,7 +1444,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1386,11 +1456,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 100000, metadataSize = 32)
 
-# Run progress: 51,85% complete, ETA 01:51:30
+# Run progress: 51,85% complete, ETA 01:52:30
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 379,1 MiB
+Measurement:Data preparation::Time - PT1.279151S
+Measurement:Data preparation::Heap Memory - 380,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1402,11 +1473,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 52,59% complete, ETA 01:49:46
+# Run progress: 52,59% complete, ETA 01:50:45
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 414,1 MiB
+Measurement:Data preparation::Time - PT1.277991S
+Measurement:Data preparation::Heap Memory - 381,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1418,11 +1490,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 53,33% complete, ETA 01:48:02
+# Run progress: 53,33% complete, ETA 01:48:59
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 374,1 MiB
+Measurement:Data preparation::Time - PT1.360019S
+Measurement:Data preparation::Heap Memory - 376,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1434,11 +1507,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 54,07% complete, ETA 01:46:19
+# Run progress: 54,07% complete, ETA 01:47:14
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 380,1 MiB
+Measurement:Data preparation::Time - PT1.193112S
+Measurement:Data preparation::Heap Memory - 379,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1450,11 +1524,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 54,81% complete, ETA 01:44:35
+# Run progress: 54,81% complete, ETA 01:45:28
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 378,1 MiB
+Measurement:Data preparation::Time - PT1.221795S
+Measurement:Data preparation::Heap Memory - 380,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1471,7 +1546,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1483,11 +1558,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 1000000, metadataSize = 8)
 
-# Run progress: 55,56% complete, ETA 01:42:51
+# Run progress: 55,56% complete, ETA 01:43:43
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,3 GiB
+Measurement:Data preparation::Time - PT5.185233S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1499,11 +1575,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 56,30% complete, ETA 01:41:11
+# Run progress: 56,30% complete, ETA 01:42:01
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,1 GiB
+Measurement:Data preparation::Time - PT5.209946S
+Measurement:Data preparation::Heap Memory - 1,1 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1515,11 +1592,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 57,04% complete, ETA 01:39:32
+# Run progress: 57,04% complete, ETA 01:40:19
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
+Measurement:Data preparation::Time - PT5.242691S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1531,11 +1609,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 57,78% complete, ETA 01:37:51
+# Run progress: 57,78% complete, ETA 01:38:37
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
+Measurement:Data preparation::Time - PT5.536347S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1547,11 +1626,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 58,52% complete, ETA 01:36:11
+# Run progress: 58,52% complete, ETA 01:36:55
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
+Measurement:Data preparation::Time - PT5.112844S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1568,7 +1648,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1580,11 +1660,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 1000000, metadataSize = 16)
 
-# Run progress: 59,26% complete, ETA 01:34:30
+# Run progress: 59,26% complete, ETA 01:35:12
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 2,0 GiB
+Measurement:Data preparation::Time - PT7.283772S
+Measurement:Data preparation::Heap Memory - 1,9 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1596,11 +1677,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 60,00% complete, ETA 01:32:51
+# Run progress: 60,00% complete, ETA 01:33:31
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 2,1 GiB
+Measurement:Data preparation::Time - PT7.528428S
+Measurement:Data preparation::Heap Memory - 2,0 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1612,11 +1694,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 60,74% complete, ETA 01:31:11
+# Run progress: 60,74% complete, ETA 01:31:51
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,9 GiB
+Measurement:Data preparation::Time - PT7.34928S
+Measurement:Data preparation::Heap Memory - 2,0 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1628,11 +1711,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 61,48% complete, ETA 01:29:32
+# Run progress: 61,48% complete, ETA 01:30:09
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 2,1 GiB
+Measurement:Data preparation::Time - PT7.443339S
+Measurement:Data preparation::Heap Memory - 2,1 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1644,11 +1728,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 62,22% complete, ETA 01:27:52
+# Run progress: 62,22% complete, ETA 01:28:28
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 2,1 GiB
+Measurement:Data preparation::Time - PT7.428488S
+Measurement:Data preparation::Heap Memory - 2,0 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1665,7 +1750,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1677,11 +1762,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 1000000, metadataSize = 32)
 
-# Run progress: 62,96% complete, ETA 01:26:12
+# Run progress: 62,96% complete, ETA 01:26:46
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
+Measurement:Data preparation::Time - PT12.85649S
+Measurement:Data preparation::Heap Memory - 3,6 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1693,11 +1779,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 63,70% complete, ETA 01:24:34
+# Run progress: 63,70% complete, ETA 01:25:08
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,6 GiB
+Measurement:Data preparation::Time - PT13.162088S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1709,11 +1796,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 64,44% complete, ETA 01:22:56
+# Run progress: 64,44% complete, ETA 01:23:29
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
+Measurement:Data preparation::Time - PT11.34812S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1725,11 +1813,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 65,19% complete, ETA 01:21:18
+# Run progress: 65,19% complete, ETA 01:21:50
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
+Measurement:Data preparation::Time - PT12.043384S
+Measurement:Data preparation::Heap Memory - 3,6 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1741,11 +1830,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 65,93% complete, ETA 01:19:40
+# Run progress: 65,93% complete, ETA 01:20:11
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
+Measurement:Data preparation::Time - PT12.860863S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -1762,7 +1852,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1774,11 +1864,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursO
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 10000, metadataSize = 8)
 
-# Run progress: 66,67% complete, ETA 01:18:01
+# Run progress: 66,67% complete, ETA 01:18:33
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.133087S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1790,11 +1881,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 67,41% complete, ETA 01:16:16
+# Run progress: 67,41% complete, ETA 01:16:46
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.135943S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1806,11 +1898,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 68,15% complete, ETA 01:14:31
+# Run progress: 68,15% complete, ETA 01:14:59
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.136584S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1822,27 +1915,29 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 68,89% complete, ETA 01:12:45
+# Run progress: 68,89% complete, ETA 01:13:13
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.142061S
+Measurement:Data preparation::Heap Memory - 8,0 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
 # Warmup Iteration   4: ≈ 10⁻⁵ s/op
-# Warmup Iteration   5: ≈ 10⁻⁴ s/op
+# Warmup Iteration   5: ≈ 10⁻⁵ s/op
 Iteration   1: ≈ 10⁻⁵ s/op
 Iteration   2: ≈ 10⁻⁵ s/op
 Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 69,63% complete, ETA 01:11:00
+# Run progress: 69,63% complete, ETA 01:11:27
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 7,4 MiB
+Measurement:Data preparation::Time - PT0.143318S
+Measurement:Data preparation::Heap Memory - 7,9 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1859,7 +1954,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
   ≈ 10⁻⁵ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1871,11 +1966,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 10000, metadataSize = 16)
 
-# Run progress: 70,37% complete, ETA 01:09:15
+# Run progress: 70,37% complete, ETA 01:09:40
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,6 MiB
+Measurement:Data preparation::Time - PT0.172021S
+Measurement:Data preparation::Heap Memory - 17,3 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1887,11 +1983,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 71,11% complete, ETA 01:07:29
+# Run progress: 71,11% complete, ETA 01:07:54
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,9 MiB
+Measurement:Data preparation::Time - PT0.16263S
+Measurement:Data preparation::Heap Memory - 17,6 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1903,11 +2000,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 71,85% complete, ETA 01:05:44
+# Run progress: 71,85% complete, ETA 01:06:08
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,3 MiB
+Measurement:Data preparation::Time - PT0.168048S
+Measurement:Data preparation::Heap Memory - 17,3 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1919,11 +2017,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 72,59% complete, ETA 01:03:59
+# Run progress: 72,59% complete, ETA 01:04:23
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,5 MiB
+Measurement:Data preparation::Time - PT0.165157S
+Measurement:Data preparation::Heap Memory - 17,5 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1935,11 +2034,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 73,33% complete, ETA 01:02:14
+# Run progress: 73,33% complete, ETA 01:02:37
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 16,6 MiB
+Measurement:Data preparation::Time - PT0.162441S
+Measurement:Data preparation::Heap Memory - 17,3 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁵ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1956,7 +2056,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
   ≈ 10⁻⁵ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -1968,11 +2068,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 10000, metadataSize = 32)
 
-# Run progress: 74,07% complete, ETA 01:00:30
+# Run progress: 74,07% complete, ETA 01:00:51
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 34,1 MiB
+Measurement:Data preparation::Time - PT0.199492S
+Measurement:Data preparation::Heap Memory - 34,8 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -1984,43 +2085,12 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
-# Run progress: 74,81% complete, ETA 00:58:45
+# Run progress: 74,81% complete, ETA 00:59:06
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 32,7 MiB
-≈ 10⁻⁴ s/op
-# Warmup Iteration   2: ≈ 10⁻⁵ s/op
-# Warmup Iteration   3: ≈ 10⁻⁴ s/op
-# Warmup Iteration   4: ≈ 10⁻⁵ s/op
-# Warmup Iteration   5: ≈ 10⁻⁴ s/op
-Iteration   1: ≈ 10⁻⁴ s/op
-Iteration   2: ≈ 10⁻⁴ s/op
-Iteration   3: ≈ 10⁻⁴ s/op
-Iteration   4: ≈ 10⁻⁴ s/op
-Iteration   5: ≈ 10⁻⁴ s/op
-
-# Run progress: 75,56% complete, ETA 00:57:00
-# Fork: 3 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 32,7 MiB
-≈ 10⁻⁴ s/op
-# Warmup Iteration   2: ≈ 10⁻⁵ s/op
-# Warmup Iteration   3: ≈ 10⁻⁵ s/op
-# Warmup Iteration   4: ≈ 10⁻⁵ s/op
-# Warmup Iteration   5: ≈ 10⁻⁵ s/op
-Iteration   1: ≈ 10⁻⁵ s/op
-Iteration   2: ≈ 10⁻⁵ s/op
-Iteration   3: ≈ 10⁻⁴ s/op
-Iteration   4: ≈ 10⁻⁵ s/op
-Iteration   5: ≈ 10⁻⁴ s/op
-
-# Run progress: 76,30% complete, ETA 00:55:16
-# Fork: 4 of 5
-# Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 34,1 MiB
+Measurement:Data preparation::Time - PT0.207618S
+Measurement:Data preparation::Heap Memory - 35,1 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2032,11 +2102,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 77,04% complete, ETA 00:53:31
-# Fork: 5 of 5
+# Run progress: 75,56% complete, ETA 00:57:20
+# Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 10000 data elements
-Initialized data of size: 34,1 MiB
+Measurement:Data preparation::Time - PT0.195604S
+Measurement:Data preparation::Heap Memory - 35,4 MiB
+Measurement::Data size:    10000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁵ s/op
 # Warmup Iteration   3: ≈ 10⁻⁵ s/op
@@ -2048,12 +2119,46 @@ Iteration   3: ≈ 10⁻⁵ s/op
 Iteration   4: ≈ 10⁻⁵ s/op
 Iteration   5: ≈ 10⁻⁵ s/op
 
+# Run progress: 76,30% complete, ETA 00:55:35
+# Fork: 4 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.196567S
+Measurement:Data preparation::Heap Memory - 35,1 MiB
+Measurement::Data size:    10000
+≈ 10⁻⁴ s/op
+# Warmup Iteration   2: ≈ 10⁻⁴ s/op
+# Warmup Iteration   3: ≈ 10⁻⁴ s/op
+# Warmup Iteration   4: ≈ 10⁻⁴ s/op
+# Warmup Iteration   5: ≈ 10⁻⁴ s/op
+Iteration   1: ≈ 10⁻⁴ s/op
+Iteration   2: ≈ 10⁻⁴ s/op
+Iteration   3: ≈ 10⁻⁴ s/op
+Iteration   4: ≈ 10⁻⁴ s/op
+Iteration   5: ≈ 10⁻⁴ s/op
+
+# Run progress: 77,04% complete, ETA 00:53:50
+# Fork: 5 of 5
+# Warmup Iteration   1: Initializing context
+Measurement:Data preparation::Time - PT0.193116S
+Measurement:Data preparation::Heap Memory - 35,1 MiB
+Measurement::Data size:    10000
+≈ 10⁻⁴ s/op
+# Warmup Iteration   2: ≈ 10⁻⁴ s/op
+# Warmup Iteration   3: ≈ 10⁻⁴ s/op
+# Warmup Iteration   4: ≈ 10⁻⁴ s/op
+# Warmup Iteration   5: ≈ 10⁻⁴ s/op
+Iteration   1: ≈ 10⁻⁴ s/op
+Iteration   2: ≈ 10⁻⁴ s/op
+Iteration   3: ≈ 10⁻⁴ s/op
+Iteration   4: ≈ 10⁻⁴ s/op
+Iteration   5: ≈ 10⁻⁴ s/op
+
 
 Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey":
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -2065,11 +2170,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 100000, metadataSize = 8)
 
-# Run progress: 77,78% complete, ETA 00:51:47
+# Run progress: 77,78% complete, ETA 00:52:05
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 113,1 MiB
+Measurement:Data preparation::Time - PT0.664149S
+Measurement:Data preparation::Heap Memory - 115,4 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2081,11 +2187,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 78,52% complete, ETA 00:50:03
+# Run progress: 78,52% complete, ETA 00:50:20
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 113,9 MiB
+Measurement:Data preparation::Time - PT0.647712S
+Measurement:Data preparation::Heap Memory - 114,8 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2097,11 +2204,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 79,26% complete, ETA 00:48:18
+# Run progress: 79,26% complete, ETA 00:48:35
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 118,3 MiB
+Measurement:Data preparation::Time - PT0.581426S
+Measurement:Data preparation::Heap Memory - 114,5 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2113,11 +2221,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 80,00% complete, ETA 00:46:34
+# Run progress: 80,00% complete, ETA 00:46:50
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 115,1 MiB
+Measurement:Data preparation::Time - PT0.608107S
+Measurement:Data preparation::Heap Memory - 118,4 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2129,11 +2238,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 80,74% complete, ETA 00:44:50
+# Run progress: 80,74% complete, ETA 00:45:05
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 114,2 MiB
+Measurement:Data preparation::Time - PT0.67286S
+Measurement:Data preparation::Heap Memory - 115,2 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2150,7 +2260,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -2162,11 +2272,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 100000, metadataSize = 16)
 
-# Run progress: 81,48% complete, ETA 00:43:06
+# Run progress: 81,48% complete, ETA 00:43:20
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 218,5 MiB
+Measurement:Data preparation::Time - PT0.848872S
+Measurement:Data preparation::Heap Memory - 218,3 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2178,11 +2289,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 82,22% complete, ETA 00:41:22
+# Run progress: 82,22% complete, ETA 00:41:36
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 216,5 MiB
+Measurement:Data preparation::Time - PT0.83681S
+Measurement:Data preparation::Heap Memory - 210,9 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2194,11 +2306,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 82,96% complete, ETA 00:39:38
+# Run progress: 82,96% complete, ETA 00:39:51
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 219,4 MiB
+Measurement:Data preparation::Time - PT0.836303S
+Measurement:Data preparation::Heap Memory - 210,5 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2210,11 +2323,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 83,70% complete, ETA 00:37:55
+# Run progress: 83,70% complete, ETA 00:38:07
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 219,8 MiB
+Measurement:Data preparation::Time - PT0.820668S
+Measurement:Data preparation::Heap Memory - 219,7 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2226,11 +2340,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 84,44% complete, ETA 00:36:11
+# Run progress: 84,44% complete, ETA 00:36:23
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 219,1 MiB
+Measurement:Data preparation::Time - PT0.82354S
+Measurement:Data preparation::Heap Memory - 218,4 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2247,7 +2362,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -2259,11 +2374,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 100000, metadataSize = 32)
 
-# Run progress: 85,19% complete, ETA 00:34:27
+# Run progress: 85,19% complete, ETA 00:34:38
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 412,1 MiB
+Measurement:Data preparation::Time - PT1.161211S
+Measurement:Data preparation::Heap Memory - 394,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2275,11 +2391,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 85,93% complete, ETA 00:32:43
+# Run progress: 85,93% complete, ETA 00:32:54
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 378,1 MiB
+Measurement:Data preparation::Time - PT1.274294S
+Measurement:Data preparation::Heap Memory - 378,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2291,11 +2408,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 86,67% complete, ETA 00:31:00
+# Run progress: 86,67% complete, ETA 00:31:10
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 386,1 MiB
+Measurement:Data preparation::Time - PT1.268849S
+Measurement:Data preparation::Heap Memory - 386,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2307,11 +2425,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 87,41% complete, ETA 00:29:16
+# Run progress: 87,41% complete, ETA 00:29:26
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 413,1 MiB
+Measurement:Data preparation::Time - PT1.234798S
+Measurement:Data preparation::Heap Memory - 377,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2323,11 +2442,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 88,15% complete, ETA 00:27:33
+# Run progress: 88,15% complete, ETA 00:27:42
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 100000 data elements
-Initialized data of size: 378,1 MiB
+Measurement:Data preparation::Time - PT1.230206S
+Measurement:Data preparation::Heap Memory - 378,0 MiB
+Measurement::Data size:    100000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2344,7 +2464,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -2356,11 +2476,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 1000000, metadataSize = 8)
 
-# Run progress: 88,89% complete, ETA 00:25:49
+# Run progress: 88,89% complete, ETA 00:25:58
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
+Measurement:Data preparation::Time - PT5.161985S
+Measurement:Data preparation::Heap Memory - 1,3 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2372,11 +2493,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 89,63% complete, ETA 00:24:06
+# Run progress: 89,63% complete, ETA 00:24:14
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
+Measurement:Data preparation::Time - PT5.492732S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2388,11 +2510,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 90,37% complete, ETA 00:22:23
+# Run progress: 90,37% complete, ETA 00:22:30
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
+Measurement:Data preparation::Time - PT5.321298S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2404,11 +2527,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 91,11% complete, ETA 00:20:40
+# Run progress: 91,11% complete, ETA 00:20:47
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,3 GiB
+Measurement:Data preparation::Time - PT5.255498S
+Measurement:Data preparation::Heap Memory - 1,3 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2420,11 +2544,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 91,85% complete, ETA 00:18:57
+# Run progress: 91,85% complete, ETA 00:19:03
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,2 GiB
+Measurement:Data preparation::Time - PT5.05873S
+Measurement:Data preparation::Heap Memory - 1,2 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2441,7 +2566,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -2453,11 +2578,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 1000000, metadataSize = 16)
 
-# Run progress: 92,59% complete, ETA 00:17:14
+# Run progress: 92,59% complete, ETA 00:17:19
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,9 GiB
+Measurement:Data preparation::Time - PT8.113948S
+Measurement:Data preparation::Heap Memory - 1,9 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2469,11 +2595,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 93,33% complete, ETA 00:15:31
+# Run progress: 93,33% complete, ETA 00:15:35
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,9 GiB
+Measurement:Data preparation::Time - PT8.398782S
+Measurement:Data preparation::Heap Memory - 1,9 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2485,11 +2612,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 94,07% complete, ETA 00:13:48
+# Run progress: 94,07% complete, ETA 00:13:52
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,9 GiB
+Measurement:Data preparation::Time - PT7.309089S
+Measurement:Data preparation::Heap Memory - 2,0 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2501,11 +2629,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 94,81% complete, ETA 00:12:05
+# Run progress: 94,81% complete, ETA 00:12:08
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,9 GiB
+Measurement:Data preparation::Time - PT8.157236S
+Measurement:Data preparation::Heap Memory - 1,9 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2517,11 +2646,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 95,56% complete, ETA 00:10:21
+# Run progress: 95,56% complete, ETA 00:10:24
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 1,9 GiB
+Measurement:Data preparation::Time - PT8.170603S
+Measurement:Data preparation::Heap Memory - 1,9 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2538,7 +2668,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
   ≈ 10⁻⁴ s/op
 
 
-# JMH version: 1.21
+# JMH version: 1.23
 # VM version: JDK 11.0.1, Java HotSpot(TM) 64-Bit Server VM, 11.0.1+13-LTS
 # VM invoker: /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/bin/java
 # VM options: -Xmx8G
@@ -2550,11 +2680,12 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
 # Benchmark: com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomMetadataKey
 # Parameters: (dataSetSize = 1000000, metadataSize = 32)
 
-# Run progress: 96,30% complete, ETA 00:08:38
+# Run progress: 96,30% complete, ETA 00:08:40
 # Fork: 1 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
+Measurement:Data preparation::Time - PT12.128904S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2566,11 +2697,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 97,04% complete, ETA 00:06:54
+# Run progress: 97,04% complete, ETA 00:06:56
 # Fork: 2 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,6 GiB
+Measurement:Data preparation::Time - PT11.858158S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2582,11 +2714,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 97,78% complete, ETA 00:05:11
+# Run progress: 97,78% complete, ETA 00:05:12
 # Fork: 3 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,7 GiB
+Measurement:Data preparation::Time - PT13.074684S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2598,11 +2731,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 98,52% complete, ETA 00:03:27
+# Run progress: 98,52% complete, ETA 00:03:28
 # Fork: 4 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,8 GiB
+Measurement:Data preparation::Time - PT12.941612S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2614,11 +2748,12 @@ Iteration   3: ≈ 10⁻⁴ s/op
 Iteration   4: ≈ 10⁻⁴ s/op
 Iteration   5: ≈ 10⁻⁴ s/op
 
-# Run progress: 99,26% complete, ETA 00:01:43
+# Run progress: 99,26% complete, ETA 00:01:44
 # Fork: 5 of 5
 # Warmup Iteration   1: Initializing context
-Initialized 1000000 data elements
-Initialized data of size: 3,6 GiB
+Measurement:Data preparation::Time - PT11.37787S
+Measurement:Data preparation::Heap Memory - 3,7 GiB
+Measurement::Data size:    1000000
 ≈ 10⁻⁴ s/op
 # Warmup Iteration   2: ≈ 10⁻⁴ s/op
 # Warmup Iteration   3: ≈ 10⁻⁴ s/op
@@ -2635,7 +2770,7 @@ Result "com.h8.nh.DataMatrixRepositoryPerformanceTest.resolveNeighboursOfRandomM
   ≈ 10⁻⁴ s/op
 
 
-# Run complete. Total time: 03:54:05
+# Run complete. Total time: 03:55:08
 
 REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
 why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
@@ -2644,18 +2779,18 @@ the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from th
 Do not assume the numbers tell you what you want them to tell.
 
 Benchmark                                                                         (dataSetSize)  (metadataSize)  Mode  Cnt   Score    Error  Units
-DataMatrixRepositoryPerformanceTest.addRandomResources                                    10000               8  avgt   25   0,007 ±  0,001   s/op
-DataMatrixRepositoryPerformanceTest.addRandomResources                                    10000              16  avgt   25   0,012 ±  0,001   s/op
-DataMatrixRepositoryPerformanceTest.addRandomResources                                    10000              32  avgt   25   0,021 ±  0,002   s/op
-DataMatrixRepositoryPerformanceTest.addRandomResources                                   100000               8  avgt   25   0,011 ±  0,001   s/op
-DataMatrixRepositoryPerformanceTest.addRandomResources                                   100000              16  avgt   25   0,017 ±  0,001   s/op
-DataMatrixRepositoryPerformanceTest.addRandomResources                                   100000              32  avgt   25   0,030 ±  0,001   s/op
-DataMatrixRepositoryPerformanceTest.addRandomResources                                  1000000               8  avgt   25   0,021 ±  0,001   s/op
-DataMatrixRepositoryPerformanceTest.addRandomResources                                  1000000              16  avgt   25   0,031 ±  0,003   s/op
-DataMatrixRepositoryPerformanceTest.addRandomResources                                  1000000              32  avgt   25   0,053 ±  0,003   s/op
+DataMatrixRepositoryPerformanceTest.addRandomResources                                    10000               8  avgt   25   0,008 ±  0,001   s/op
+DataMatrixRepositoryPerformanceTest.addRandomResources                                    10000              16  avgt   25   0,014 ±  0,002   s/op
+DataMatrixRepositoryPerformanceTest.addRandomResources                                    10000              32  avgt   25   0,024 ±  0,003   s/op
+DataMatrixRepositoryPerformanceTest.addRandomResources                                   100000               8  avgt   25   0,013 ±  0,001   s/op
+DataMatrixRepositoryPerformanceTest.addRandomResources                                   100000              16  avgt   25   0,022 ±  0,004   s/op
+DataMatrixRepositoryPerformanceTest.addRandomResources                                   100000              32  avgt   25   0,043 ±  0,006   s/op
+DataMatrixRepositoryPerformanceTest.addRandomResources                                  1000000               8  avgt   25   0,028 ±  0,003   s/op
+DataMatrixRepositoryPerformanceTest.addRandomResources                                  1000000              16  avgt   25   0,042 ±  0,005   s/op
+DataMatrixRepositoryPerformanceTest.addRandomResources                                  1000000              32  avgt   25   0,077 ±  0,006   s/op
 DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey          10000               8  avgt   25  ≈ 10⁻⁵            s/op
 DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey          10000              16  avgt   25  ≈ 10⁻⁵            s/op
-DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey          10000              32  avgt   25  ≈ 10⁻⁵            s/op
+DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey          10000              32  avgt   25  ≈ 10⁻⁴            s/op
 DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey         100000               8  avgt   25  ≈ 10⁻⁴            s/op
 DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey         100000              16  avgt   25  ≈ 10⁻⁴            s/op
 DataMatrixRepositoryPerformanceTest.resolveAndCrawlNeighboursOfRandomMetadataKey         100000              32  avgt   25  ≈ 10⁻⁴            s/op
