@@ -5,6 +5,9 @@ import com.h8.nh.nhoodengine.core.DataResourceKey;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.UUID;
 
 /**
  * This is a default implementation {@link DataMatrixRepository} interface based on {@link DataMatrixCell}.
@@ -41,6 +44,16 @@ public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
             throws DataMatrixRepositoryFailedException {
         validate(resource);
         cell.add(resource);
+    }
+
+    @Override
+    public DataResource<K, D> find(UUID uuid) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public DataResource<K, D> delete(UUID uuid) {
+        throw new NotImplementedException();
     }
 
     @Override

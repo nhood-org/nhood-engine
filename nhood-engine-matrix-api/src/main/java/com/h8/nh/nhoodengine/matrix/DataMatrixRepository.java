@@ -3,6 +3,8 @@ package com.h8.nh.nhoodengine.matrix;
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
 
+import java.util.UUID;
+
 /**
  * This interface is a main facade of nhood engine data matrix
  * management functionality.
@@ -28,6 +30,32 @@ public interface DataMatrixRepository<K extends DataResourceKey, D> {
      */
     void add(DataResource<K, D> resource)
             throws DataMatrixRepositoryFailedException;
+
+    /**
+     * Find and return data resource from data matrix.
+     *
+     * @param uuid resource identifier
+     *
+     * @throws DataDoesNotExistException
+     * when requested resource does not exist
+     * @throws DataMatrixRepositoryFailedException
+     * when resource could not be found because of an error
+     */
+    DataResource<K, D>  find(UUID uuid)
+            throws DataDoesNotExistException, DataMatrixRepositoryFailedException;
+
+    /**
+     * Find and delete data resource from data matrix.
+     *
+     * @param uuid resource identifier
+     *
+     * @throws DataDoesNotExistException
+     * when requested resource does not exist
+     * @throws DataMatrixRepositoryFailedException
+     * when resource could not be deleted because of an error
+     */
+    DataResource<K, D>  delete(UUID uuid)
+            throws DataDoesNotExistException, DataMatrixRepositoryFailedException;
 
     /**
      * Returns an iterator of data resources closes to the given metadata vector.
