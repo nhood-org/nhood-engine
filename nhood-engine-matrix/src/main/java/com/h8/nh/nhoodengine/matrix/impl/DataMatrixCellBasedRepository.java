@@ -5,9 +5,10 @@ import com.h8.nh.nhoodengine.core.DataResourceKey;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This is a default implementation {@link DataMatrixRepository} interface based on {@link DataMatrixCell}.
@@ -20,7 +21,8 @@ public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
 
     private final int metadataSize;
 
-    private final DataMatrixCell<DataResource<K, D>> cell;
+    private final DataMatrixCell<DataMatrixCellResource<K>> cell;
+    private final Map<UUID, DataResource<K, D>> data;
 
     public DataMatrixCellBasedRepository(
             final int metadataSize) {
@@ -32,6 +34,7 @@ public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
             final DataMatrixCellConfiguration configuration) {
         this.metadataSize = metadataSize;
         this.cell = DataMatrixCellFactory.root(metadataSize, configuration);
+        this.data = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -43,23 +46,25 @@ public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
     public void add(final DataResource<K, D> resource)
             throws DataMatrixRepositoryFailedException {
         validate(resource);
-        cell.add(resource);
+        data.put(resource.getUuid(), resource);
+        DataMatrixCellResource<K> r = DataMatrixCellResource.form(resource);
+        cell.add(r);
     }
 
     @Override
     public DataResource<K, D> find(UUID uuid) {
-        throw new NotImplementedException();
+        throw new IllegalStateException();
     }
 
     @Override
     public DataResource<K, D> delete(UUID uuid) {
-        throw new NotImplementedException();
+        throw new IllegalStateException();
     }
 
     @Override
     public DataMatrixResourceIterator<K, D> findNeighbours(
             final DataResourceKey metadata) {
-        return DataMatrixCellIterator.startWith(metadata.unified(), cell);
+        return DataMatrixCellIterator.startWith(metadata.unified(), cell, data);
     }
 
     private void validate(final DataResource<K, D> resource)

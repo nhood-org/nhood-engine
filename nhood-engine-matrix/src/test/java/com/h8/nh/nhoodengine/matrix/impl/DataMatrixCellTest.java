@@ -1,6 +1,5 @@
 package com.h8.nh.nhoodengine.matrix.impl;
 
-import com.h8.nh.nhoodengine.core.DataResource;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import static com.h8.nh.nhoodengine.matrix.utils.DataResourceUtils.resource;
+import static com.h8.nh.nhoodengine.matrix.utils.DataResourceUtils.matrixCellResource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -39,7 +38,7 @@ class DataMatrixCellTest {
         BigDecimal[] cellClosure = new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED};
 
         // when
-        DataMatrixCell<DataResource<?, ?>> cell =
+        DataMatrixCell<DataMatrixCellResource<?>> cell =
                 new DataMatrixCell<>(cellIndex, cellClosure, null, cellConfiguration);
 
         // then
@@ -63,8 +62,8 @@ class DataMatrixCellTest {
     @Test
     void shouldAcceptResourceWhenAddingToRelevantCell() {
         // given
-        DataResource<?, ?> r = resource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
-        DataMatrixCell<DataResource<?, ?>> cell = new DataMatrixCell<>(
+        DataMatrixCellResource<?> r = matrixCellResource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
+        DataMatrixCell<DataMatrixCellResource<?>> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -80,11 +79,11 @@ class DataMatrixCellTest {
     @Test
     void shouldAcceptResourceWhenAddingToSplitCell() {
         // given
-        DataResource<?, ?> r1 = resource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
-        DataResource<?, ?> r2 = resource(() -> new BigDecimal[]{ONE, ONE, ONE});
-        DataResource<?, ?> r3 = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
+        DataMatrixCellResource<?> r1 = matrixCellResource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
+        DataMatrixCellResource<?> r2 = matrixCellResource(() -> new BigDecimal[]{ONE, ONE, ONE});
+        DataMatrixCellResource<?> r3 = matrixCellResource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataResource<?, ?>> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataMatrixCellResource<?>> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -104,9 +103,9 @@ class DataMatrixCellTest {
     @Test
     void shouldNotAcceptResourceWhenAddingToIrrelevantCell() {
         // given
-        DataResource<?, ?> r = resource(() -> new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED});
+        DataMatrixCellResource<?> r = matrixCellResource(() -> new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED});
 
-        DataMatrixCell<DataResource<?, ?>> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataMatrixCellResource<?>> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -122,10 +121,10 @@ class DataMatrixCellTest {
     @Test
     void shouldSplitCellWhenLimitOfResourcesIsExceeded() {
         // given
-        DataResource<?, ?> r1 = resource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
-        DataResource<?, ?> r2 = resource(() -> new BigDecimal[]{TEN, TEN, TEN});
+        DataMatrixCellResource<?> r1 = matrixCellResource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
+        DataMatrixCellResource<?> r2 = matrixCellResource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataResource<?, ?>> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataMatrixCellResource<?>> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -140,12 +139,12 @@ class DataMatrixCellTest {
         int size = (int) Math.pow(2, cellConfiguration.getSplitIterations());
         assertThat(cell.getChildren()).hasSize(size);
 
-        DataMatrixCell<DataResource<?, ?>> r1Cell = cell.getChildren().iterator().next();
+        DataMatrixCell<DataMatrixCellResource<?>> r1Cell = cell.getChildren().iterator().next();
         assertThat(r1Cell.getResources()).hasSize(1);
         assertThat(r1Cell.getResources()).containsAnyOf(r1, r2);
         assertThat(r1Cell.getParent()).isEqualTo(cell);
 
-        DataMatrixCell<DataResource<?, ?>> r2Cell = cell.getChildren().iterator().next();
+        DataMatrixCell<DataMatrixCellResource<?>> r2Cell = cell.getChildren().iterator().next();
         assertThat(r2Cell.getResources()).hasSize(1);
         assertThat(r2Cell.getResources()).containsAnyOf(r1, r2);
         assertThat(r2Cell.getParent()).isEqualTo(cell);
@@ -154,9 +153,9 @@ class DataMatrixCellTest {
     @Test
     void shouldNotSplitCellWhenNumberOfResourcesIsBelowLimit() {
         // given
-        DataResource<?, ?> r = resource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
+        DataMatrixCellResource<?> r = matrixCellResource(() -> new BigDecimal[]{ZERO, ZERO, ZERO});
 
-        DataMatrixCell<DataResource<?, ?>> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataMatrixCellResource<?>> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -176,7 +175,7 @@ class DataMatrixCellTest {
             final BigDecimal[] point,
             final BigDecimal expectedDistance) {
         // given
-        DataMatrixCell<DataResource<?, ?>> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataMatrixCellResource<?>> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -217,7 +216,7 @@ class DataMatrixCellTest {
             final BigDecimal[] point,
             final boolean expectedResult) {
         // given
-        DataMatrixCell<DataResource<?, ?>> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataMatrixCellResource<?>> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,
@@ -254,7 +253,7 @@ class DataMatrixCellTest {
             final BigDecimal range,
             final boolean expectedResult) {
         // given
-        DataMatrixCell<DataResource<?, ?>> cell = new DataMatrixCell<>(
+        DataMatrixCell<DataMatrixCellResource<?>> cell = new DataMatrixCell<>(
                 new BigDecimal[]{ZERO, ZERO, ZERO},
                 new BigDecimal[]{HUNDRED, HUNDRED, HUNDRED},
                 null,

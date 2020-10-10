@@ -5,7 +5,11 @@ import com.h8.nh.nhoodengine.core.DataResourceKey;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.h8.nh.nhoodengine.matrix.utils.DataResourceUtils.resource;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,9 +33,12 @@ class DataMatrixCellIteratorTest {
         DataResource<DataResourceKey, Object> r =
                 resource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataResource<DataResourceKey, Object>> cell =
+        DataMatrixCell<DataMatrixCellResource<DataResourceKey>> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
-        cell.add(r);
+        Map<UUID, DataResource<DataResourceKey, Object>> data = new HashMap<>();
+
+        cell.add(DataMatrixCellResource.form(r));
+        data.put(r.getUuid(), r);
 
         assertThat(cell.hasChildren()).isFalse();
         assertThat(cell.hasResources()).isTrue();
@@ -39,13 +46,16 @@ class DataMatrixCellIteratorTest {
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
         DataMatrixCellIterator<DataResourceKey, Object> iterator =
-                DataMatrixCellIterator.startWith(entryPoint, cell);
+                DataMatrixCellIterator.startWith(entryPoint, cell, data);
 
         // then
         assertThat(iterator.hasNext()).isTrue();
         assertThat(iterator.hasNextWithinRange(ZERO)).isTrue();
 
-        Set<DataResource<DataResourceKey, Object>> resourceSet = iterator.next();
+        Set<DataMatrixCellResource<DataResourceKey>> resourceSet = iterator.next()
+                .stream()
+                .map(DataMatrixCellResource::form)
+                .collect(Collectors.toSet());
         assertThat(resourceSet).isEqualTo(cell.getResources());
 
         assertThat(iterator.hasNext()).isFalse();
@@ -60,10 +70,14 @@ class DataMatrixCellIteratorTest {
         DataResource<DataResourceKey, Object> r2 =
                 resource(() -> new BigDecimal[]{TEN, TEN, TEN});
 
-        DataMatrixCell<DataResource<DataResourceKey, Object>> cell =
+        DataMatrixCell<DataMatrixCellResource<DataResourceKey>> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
-        cell.add(r1);
-        cell.add(r2);
+        Map<UUID, DataResource<DataResourceKey, Object>> data = new HashMap<>();
+
+        cell.add(DataMatrixCellResource.form(r1));
+        data.put(r1.getUuid(), r1);
+        cell.add(DataMatrixCellResource.form(r2));
+        data.put(r2.getUuid(), r2);
 
         assertThat(cell.hasChildren()).isTrue();
         assertThat(cell.hasResources()).isFalse();
@@ -71,13 +85,16 @@ class DataMatrixCellIteratorTest {
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
         DataMatrixCellIterator<DataResourceKey, Object> iterator =
-                DataMatrixCellIterator.startWith(entryPoint, cell);
+                DataMatrixCellIterator.startWith(entryPoint, cell, data);
 
         // then
         assertThat(iterator.hasNext()).isTrue();
         assertThat(iterator.hasNextWithinRange(ZERO)).isTrue();
 
-        Set<DataResource<DataResourceKey, Object>> resourceSet = iterator.next();
+        Set<DataMatrixCellResource<DataResourceKey>> resourceSet = iterator.next()
+                .stream()
+                .map(DataMatrixCellResource::form)
+                .collect(Collectors.toSet());
         assertThat(resourceSet).isNotEqualTo(cell.getResources());
         assertThat(resourceSet).hasSize(1);
 
@@ -100,18 +117,25 @@ class DataMatrixCellIteratorTest {
         DataResource<DataResourceKey, Object> r5 =
                 resource(() -> new BigDecimal[]{HUNDRED.negate(), HUNDRED.negate(), HUNDRED.negate()});
 
-        DataMatrixCell<DataResource<DataResourceKey, Object>> cell =
+        DataMatrixCell<DataMatrixCellResource<DataResourceKey>> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
-        cell.add(r1);
-        cell.add(r2);
-        cell.add(r3);
-        cell.add(r4);
-        cell.add(r5);
+        Map<UUID, DataResource<DataResourceKey, Object>> data = new HashMap<>();
+
+        cell.add(DataMatrixCellResource.form(r1));
+        data.put(r1.getUuid(), r1);
+        cell.add(DataMatrixCellResource.form(r2));
+        data.put(r2.getUuid(), r2);
+        cell.add(DataMatrixCellResource.form(r3));
+        data.put(r3.getUuid(), r3);
+        cell.add(DataMatrixCellResource.form(r4));
+        data.put(r4.getUuid(), r4);
+        cell.add(DataMatrixCellResource.form(r5));
+        data.put(r5.getUuid(), r5);
 
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
         DataMatrixCellIterator<DataResourceKey, Object> iterator =
-                DataMatrixCellIterator.startWith(entryPoint, cell);
+                DataMatrixCellIterator.startWith(entryPoint, cell, data);
 
         // then
         assertThat(iterator.hasNext()).isTrue();

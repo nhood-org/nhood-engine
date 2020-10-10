@@ -1,22 +1,16 @@
 package com.h8.nh.nhoodengine.matrix.impl;
 
-import com.h8.nh.nhoodengine.core.DataResource;
-
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.DoubleSummaryStatistics;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
 import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCALE;
 
-final class DataMatrixCell<R extends DataResource<?, ?>> {
+final class DataMatrixCell<R extends DataMatrixCellResource<?>> {
 
     private final UUID uuid = UUID.randomUUID();
+
+    private final DataMatrixCellConfiguration configuration;
 
     private final BigDecimal[] index;
     private final BigDecimal[] closure;
@@ -24,9 +18,8 @@ final class DataMatrixCell<R extends DataResource<?, ?>> {
 
     private final DataMatrixCell<R> parent;
     private final Set<DataMatrixCell<R>> children;
-    private final HashSet<R> resources;
 
-    private final DataMatrixCellConfiguration configuration;
+    private final HashSet<R> resources;
 
     DataMatrixCell(
             final BigDecimal[] index,
@@ -49,7 +42,6 @@ final class DataMatrixCell<R extends DataResource<?, ?>> {
         this.children = new HashSet<>();
         this.resources = new HashSet<>();
         this.configuration = configuration;
-
     }
 
     BigDecimal[] getIndex() {
