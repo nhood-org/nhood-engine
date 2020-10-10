@@ -28,7 +28,12 @@ public final class DataMatrixCellResource<K extends DataResourceKey>
      */
     private final K key;
 
-    private DataMatrixCellResource(final UUID uuid, final K key) {
+    /**
+     * Default constructor.
+     * @param uuid A unique identifier
+     * @param key Data metadata key vector
+     */
+    public DataMatrixCellResource(final UUID uuid, final K key) {
         this.uuid = uuid;
         this.key = key;
     }

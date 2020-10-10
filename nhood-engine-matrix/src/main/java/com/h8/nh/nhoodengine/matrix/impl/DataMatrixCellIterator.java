@@ -5,43 +5,49 @@ import com.h8.nh.nhoodengine.core.DataResourceKey;
 import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 final class DataMatrixCellIterator<K extends DataResourceKey, D>
         implements DataMatrixResourceIterator<K, D> {
 
     private final BigDecimal[] entryPoint;
-    private final DataMatrixCell<DataResource<K, D>> cell;
-    private final Iterator<DataMatrixCell<DataResource<K, D>>> cellIterator;
+    private final DataMatrixCell<DataMatrixCellResource<K>> cell;
+    private final Iterator<DataMatrixCell<DataMatrixCellResource<K>>> cellIterator;
+    private final Map<UUID, D> data;
 
     private DataMatrixCellIterator<K, D> nestedCellIterator;
 
-    private DataMatrixCell<DataResource<K, D>> current;
-    private DataMatrixCell<DataResource<K, D>> next;
+    private DataMatrixCell<DataMatrixCellResource<K>> current;
+    private DataMatrixCell<DataMatrixCellResource<K>> next;
 
     private DataMatrixCellIterator(
             final BigDecimal[] entryPoint,
-            final DataMatrixCell<DataResource<K, D>> cell) {
+            final DataMatrixCell<DataMatrixCellResource<K>> cell,
+            final Map<UUID, D> data) {
         this.entryPoint = entryPoint;
         this.cell = cell;
         this.cellIterator = cell.getChildren()
                 .stream()
                 .sorted(Comparator.comparing(c -> c.distanceFrom(entryPoint)))
                 .iterator();
+        this.data = data;
         next = advance();
     }
 
     public static <K extends DataResourceKey, D> DataMatrixCellIterator<K, D> startWith(
             final BigDecimal[] entryPoint,
-            final DataMatrixCell<DataResource<K, D>> cell) {
-        return new DataMatrixCellIterator<>(entryPoint, cell);
+            final DataMatrixCell<DataMatrixCellResource<K>> cell,
+            final Map<UUID, D> data) {
+        return new DataMatrixCellIterator<>(entryPoint, cell, data);
     }
 
     public Set<DataResource<K, D>> next() {
         current = nextCell();
-        return current.getResources();
+        return current.getResources()
+                .stream()
+                .map(r -> new DataResource<>(r.getUuid(), r.getKey(), data.get(r.getUuid())))
+                .collect(Collectors.toSet());
     }
 
     public boolean hasNext() {
@@ -55,8 +61,8 @@ final class DataMatrixCellIterator<K extends DataResourceKey, D>
                 || parentOfNextWrapsAllPointsAroundTheEntryPointWithinRange(range));
     }
 
-    private DataMatrixCell<DataResource<K, D>> nextCell() {
-        DataMatrixCell<DataResource<K, D>> result = next;
+    private DataMatrixCell<DataMatrixCellResource<K>> nextCell() {
+        DataMatrixCell<DataMatrixCellResource<K>> result = next;
         do {
             next = advance();
         } while (next != null && !next.hasResources());
@@ -75,12 +81,12 @@ final class DataMatrixCellIterator<K extends DataResourceKey, D>
         return next.getParent() != null && next.getParent().wrapsKey(entryPoint, range);
     }
 
-    private DataMatrixCell<DataResource<K, D>> advance() {
+    private DataMatrixCell<DataMatrixCellResource<K>> advance() {
         if (itIsInitialAdviseOfResourceCell()) {
             return cell;
         }
         if (!nestedIteratorHasNext() && nestedIteratorCanBeInitializer()) {
-            nestedCellIterator = startWith(entryPoint, cellIterator.next());
+            nestedCellIterator = startWith(entryPoint, cellIterator.next(), data);
         }
         if (nestedIteratorHasNext()) {
             return nestedCellIterator.nextCell();
