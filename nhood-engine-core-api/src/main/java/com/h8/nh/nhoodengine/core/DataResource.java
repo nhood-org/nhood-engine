@@ -7,7 +7,8 @@ import java.util.UUID;
  * This class represents a basic data resource that is is being searched for
  * in the nhood engine.
  *
- * DataResource consists of two elements:
+ * DataResource consists of three elements:
+ * - uuid identifier
  * - a vector key that represents metadata of data resource
  * - a data itself
  *
@@ -18,7 +19,7 @@ public final class DataResource<K extends DataResourceKey, D>
         implements Comparable<DataResource<K, D>> {
 
     /**
-     * An internal unique identifier;
+     * A unique identifier
      */
     private final UUID uuid;
 
@@ -33,7 +34,7 @@ public final class DataResource<K extends DataResourceKey, D>
     private final D data;
 
     /**
-     * Default constructor
+     * Default constructor with auto-generated uuid
      * @param key metadata key value
      * @param data data resource value
      */
@@ -41,6 +42,26 @@ public final class DataResource<K extends DataResourceKey, D>
         this.uuid = UUID.randomUUID();
         this.key = key;
         this.data = data;
+    }
+
+    /**
+     * Default constructor
+     * @param uuid unique identifier
+     * @param key metadata key value
+     * @param data data resource value
+     */
+    public DataResource(final UUID uuid, final K key, final D data) {
+        this.uuid = uuid;
+        this.key = key;
+        this.data = data;
+    }
+
+    /**
+     * A unique identifier
+     * @return actual unique identifier value
+     */
+    public UUID getUuid() {
+        return uuid;
     }
 
     /**

@@ -17,6 +17,7 @@ import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_SCA
 final class DataMatrixCell<R extends DataResource<?, ?>> {
 
     private final UUID uuid = UUID.randomUUID();
+    private final DataMatrixCellConfiguration configuration;
 
     private final BigDecimal[] index;
     private final BigDecimal[] closure;
@@ -24,9 +25,8 @@ final class DataMatrixCell<R extends DataResource<?, ?>> {
 
     private final DataMatrixCell<R> parent;
     private final Set<DataMatrixCell<R>> children;
-    private final HashSet<R> resources;
 
-    private final DataMatrixCellConfiguration configuration;
+    private final HashSet<R> resources;
 
     DataMatrixCell(
             final BigDecimal[] index,
