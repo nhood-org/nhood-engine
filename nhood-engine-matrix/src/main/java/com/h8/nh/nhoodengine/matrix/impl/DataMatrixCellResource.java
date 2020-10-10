@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * This class represents a simple data resource that is stored within a matrix data cell.
  *
- * DataResourceKey consists of two elements:
+ * DataMatrixCellResource consists of two elements:
  * - uuid identifier
  * - a vector key that represents metadata of data resource
  *
