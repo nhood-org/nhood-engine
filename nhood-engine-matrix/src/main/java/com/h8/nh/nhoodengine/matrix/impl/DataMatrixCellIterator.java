@@ -14,7 +14,7 @@ final class DataMatrixCellIterator<K extends DataResourceKey, D>
     private final BigDecimal[] entryPoint;
     private final DataMatrixCell<DataMatrixCellResource<K>> cell;
     private final Iterator<DataMatrixCell<DataMatrixCellResource<K>>> cellIterator;
-    private final Map<UUID, D> data;
+    private final Map<UUID, DataResource<K, D>> data;
 
     private DataMatrixCellIterator<K, D> nestedCellIterator;
 
@@ -24,7 +24,7 @@ final class DataMatrixCellIterator<K extends DataResourceKey, D>
     private DataMatrixCellIterator(
             final BigDecimal[] entryPoint,
             final DataMatrixCell<DataMatrixCellResource<K>> cell,
-            final Map<UUID, D> data) {
+            final Map<UUID, DataResource<K, D>> data) {
         this.entryPoint = entryPoint;
         this.cell = cell;
         this.cellIterator = cell.getChildren()
@@ -38,7 +38,7 @@ final class DataMatrixCellIterator<K extends DataResourceKey, D>
     public static <K extends DataResourceKey, D> DataMatrixCellIterator<K, D> startWith(
             final BigDecimal[] entryPoint,
             final DataMatrixCell<DataMatrixCellResource<K>> cell,
-            final Map<UUID, D> data) {
+            final Map<UUID, DataResource<K, D>> data) {
         return new DataMatrixCellIterator<>(entryPoint, cell, data);
     }
 
@@ -46,7 +46,7 @@ final class DataMatrixCellIterator<K extends DataResourceKey, D>
         current = nextCell();
         return current.getResources()
                 .stream()
-                .map(r -> new DataResource<>(r.getUuid(), r.getKey(), data.get(r.getUuid())))
+                .map(r -> data.get(r.getUuid()))
                 .collect(Collectors.toSet());
     }
 

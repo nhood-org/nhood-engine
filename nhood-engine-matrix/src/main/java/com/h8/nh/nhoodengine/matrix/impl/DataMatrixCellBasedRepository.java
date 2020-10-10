@@ -22,7 +22,7 @@ public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
     private final int metadataSize;
 
     private final DataMatrixCell<DataMatrixCellResource<K>> cell;
-    private final Map<UUID, D> data;
+    private final Map<UUID, DataResource<K, D>> data;
 
     public DataMatrixCellBasedRepository(
             final int metadataSize) {
@@ -46,7 +46,7 @@ public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
     public void add(final DataResource<K, D> resource)
             throws DataMatrixRepositoryFailedException {
         validate(resource);
-        data.put(resource.getUuid(), resource.getData());
+        data.put(resource.getUuid(), resource);
         DataMatrixCellResource<K> r = DataMatrixCellResource.form(resource);
         cell.add(r);
     }

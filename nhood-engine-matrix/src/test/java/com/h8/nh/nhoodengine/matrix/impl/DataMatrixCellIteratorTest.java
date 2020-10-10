@@ -35,10 +35,10 @@ class DataMatrixCellIteratorTest {
 
         DataMatrixCell<DataMatrixCellResource<DataResourceKey>> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
-        Map<UUID, Object> data = new HashMap<>();
+        Map<UUID, DataResource<DataResourceKey, Object>> data = new HashMap<>();
 
         cell.add(DataMatrixCellResource.form(r));
-        data.put(r.getUuid(), r.getData());
+        data.put(r.getUuid(), r);
 
         assertThat(cell.hasChildren()).isFalse();
         assertThat(cell.hasResources()).isTrue();
@@ -72,12 +72,12 @@ class DataMatrixCellIteratorTest {
 
         DataMatrixCell<DataMatrixCellResource<DataResourceKey>> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
-        Map<UUID, Object> data = new HashMap<>();
+        Map<UUID, DataResource<DataResourceKey, Object>> data = new HashMap<>();
 
         cell.add(DataMatrixCellResource.form(r1));
-        data.put(r1.getUuid(), r1.getData());
+        data.put(r1.getUuid(), r1);
         cell.add(DataMatrixCellResource.form(r2));
-        data.put(r2.getUuid(), r2.getData());
+        data.put(r2.getUuid(), r2);
 
         assertThat(cell.hasChildren()).isTrue();
         assertThat(cell.hasResources()).isFalse();
@@ -119,18 +119,18 @@ class DataMatrixCellIteratorTest {
 
         DataMatrixCell<DataMatrixCellResource<DataResourceKey>> cell =
                 DataMatrixCellFactory.root(3, cellConfiguration);
-        Map<UUID, Object> data = new HashMap<>();
+        Map<UUID, DataResource<DataResourceKey, Object>> data = new HashMap<>();
 
         cell.add(DataMatrixCellResource.form(r1));
-        data.put(r1.getUuid(), r1.getData());
+        data.put(r1.getUuid(), r1);
         cell.add(DataMatrixCellResource.form(r2));
-        data.put(r2.getUuid(), r2.getData());
+        data.put(r2.getUuid(), r2);
         cell.add(DataMatrixCellResource.form(r3));
-        data.put(r3.getUuid(), r3.getData());
+        data.put(r3.getUuid(), r3);
         cell.add(DataMatrixCellResource.form(r4));
-        data.put(r4.getUuid(), r4.getData());
+        data.put(r4.getUuid(), r4);
         cell.add(DataMatrixCellResource.form(r5));
-        data.put(r5.getUuid(), r5.getData());
+        data.put(r5.getUuid(), r5);
 
         // when
         BigDecimal[] entryPoint = new BigDecimal[]{TEN, TEN, TEN};
