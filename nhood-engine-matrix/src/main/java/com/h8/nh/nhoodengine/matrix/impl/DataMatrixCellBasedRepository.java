@@ -2,6 +2,7 @@ package com.h8.nh.nhoodengine.matrix.impl;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
+import com.h8.nh.nhoodengine.matrix.DataDoesNotExistException;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
@@ -52,13 +53,29 @@ public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
     }
 
     @Override
-    public DataResource<K, D> find(UUID uuid) {
-        throw new IllegalStateException();
+    public DataResource<K, D> find(UUID uuid)
+            throws DataDoesNotExistException {
+        DataResource<K, D> resource = data.get(uuid);
+        if (resource == null) {
+            String message = String.format(
+                    "Could not find resource for given uuid: %s", uuid);
+            throw new DataDoesNotExistException(message);
+        }
+        return resource;
     }
 
     @Override
-    public DataResource<K, D> delete(UUID uuid) {
-        throw new IllegalStateException();
+    public DataResource<K, D> delete(UUID uuid)
+            throws DataDoesNotExistException {
+        DataResource<K, D> resource = data.remove(uuid);
+        if (resource == null) {
+            String message = String.format(
+                    "Could not find resource for given uuid: %s", uuid);
+            throw new DataDoesNotExistException(message);
+        }
+        DataMatrixCellResource<K> r = DataMatrixCellResource.form(resource);
+        cell.delete(r);
+        return resource;
     }
 
     @Override
