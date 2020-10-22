@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.h8.nh</groupId>
 		<artifactId>nhood-parent-bom</artifactId>
-		<version>0.2.6</version>
+		<version>0.2.7</version>
 	</parent>
 
 	<modules>
