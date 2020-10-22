@@ -6,9 +6,11 @@ import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
 import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class ResourcesAddWorker<K extends DataResourceKey, D> implements Runnable {
+public final class ResourcesAddWorker<K extends DataResourceKey, D> implements Runnable, AssertableWorker {
 
     private final DataMatrixRepository<K, D> repository;
 
@@ -16,30 +18,43 @@ public final class ResourcesAddWorker<K extends DataResourceKey, D> implements R
 
     private final AtomicInteger resourceCounter;
 
+    private final SynchronousQueue<UUID> added;
+
     private boolean hasErrors = false;
 
     private ResourcesAddWorker(
             final DataMatrixRepository<K, D> repository,
             final List<DataResource<K, D>> resources,
-            final AtomicInteger resourceCounter) {
+            final AtomicInteger resourceCounter,
+            final SynchronousQueue<UUID> added) {
         this.repository = repository;
         this.resources = resources;
         this.resourceCounter = resourceCounter;
+        this.added = added;
     }
 
     public static <K extends DataResourceKey, D> ResourcesAddWorker<K, D> of(
             final DataMatrixRepository<K, D> repository,
             final List<DataResource<K, D>> resources) {
-        return new ResourcesAddWorker<>(repository, resources, new AtomicInteger());
+        return new ResourcesAddWorker<>(repository, resources, new AtomicInteger(), null);
     }
 
     public static <K extends DataResourceKey, D> ResourcesAddWorker<K, D> of(
             final DataMatrixRepository<K, D> repository,
             final List<DataResource<K, D>> resources,
             final AtomicInteger resourceCounter) {
-        return new ResourcesAddWorker<>(repository, resources, resourceCounter);
+        return new ResourcesAddWorker<>(repository, resources, resourceCounter, null);
     }
 
+    public static <K extends DataResourceKey, D> ResourcesAddWorker<K, D> of(
+            final DataMatrixRepository<K, D> repository,
+            final List<DataResource<K, D>> resources,
+            final AtomicInteger resourceCounter,
+            final SynchronousQueue<UUID> added) {
+        return new ResourcesAddWorker<>(repository, resources, resourceCounter, added);
+    }
+
+    @Override
     public boolean hasErrors() {
         return hasErrors;
     }
@@ -55,10 +70,6 @@ public final class ResourcesAddWorker<K extends DataResourceKey, D> implements R
             System.err.println(Thread.currentThread().getName()
                     + " : Could not populate data matrix repository because of"
                     + " an exception: " + e.getClass().getSimpleName() + " : " + e.getMessage());
-
-            // Uncomment for troubleshooting purposes only
-            // e.printStackTrace(System.err);
-
             hasErrors = true;
         }
     }
@@ -66,9 +77,11 @@ public final class ResourcesAddWorker<K extends DataResourceKey, D> implements R
     private void populateResource(final DataResource<K, D> resource) {
         try {
             repository.add(resource);
-        } catch (DataMatrixRepositoryFailedException e) {
-            throw new RuntimeException(
-                    " Could not initialize data matrix repository because an exception", e);
+            if (added != null) {
+                added.put(resource.getUuid());
+            }
+        } catch (DataMatrixRepositoryFailedException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

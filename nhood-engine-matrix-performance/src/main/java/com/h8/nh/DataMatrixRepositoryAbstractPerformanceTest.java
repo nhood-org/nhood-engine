@@ -2,10 +2,7 @@ package com.h8.nh;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.matrix.DataMatrixRepository;
-import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryFailedException;
-import com.h8.nh.nhoodengine.matrix.DataMatrixRepositoryTestContext;
-import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
+import com.h8.nh.nhoodengine.matrix.*;
 import com.h8.nh.nhoodengine.utils.measurement.node.ExecutionTimeMeasurement;
 import com.h8.nh.nhoodengine.utils.measurement.node.HeapMemoryMeasurement;
 import com.h8.nh.nhoodengine.utils.measurement.MeasurementChain;
@@ -54,7 +51,9 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     @Param({"8", "16", "32"})
     private int metadataSize;
 
-    private SecureRandom random = new SecureRandom();
+    private final SecureRandom random = new SecureRandom();
+
+    private final List<DataResource<K, D>> generatedDataPool = new ArrayList<>();
 
     private DataMatrixRepositoryTestContext<K, D> ctx = null;
 
@@ -111,6 +110,24 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
 
     @Benchmark
     @BenchmarkMode(Mode.AverageTime)
+    public final void removeRandomResources()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException {
+        for (DataResource<K, D> r : generatedDataPool) {
+            dataMatrixRepository.remove(r.getUuid());
+        }
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.AverageTime)
+    public final void findRandomResources()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException {
+        for (DataResource<K, D> r : generatedDataPool) {
+            dataMatrixRepository.find(r.getUuid());
+        }
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.AverageTime)
     public final void resolveNeighboursOfRandomMetadataKey()
             throws DataMatrixRepositoryFailedException {
         int idx = random.nextInt(RESOURCE_RANDOM_METADATA_POOL_SIZE);
@@ -137,7 +154,9 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     private void generateInitialRepositoryData() {
         try {
             for (int i = 0; i < dataSetSize; i++) {
-                dataMatrixRepository.add(generateRandomData());
+                DataResource<K, D> r = generateRandomData();
+                dataMatrixRepository.add(r);
+                generatedDataPool.add(r);
             }
         } catch (DataMatrixRepositoryFailedException e) {
             throw new IllegalStateException("Could not initialize data", e);

@@ -36,4 +36,25 @@ public interface DataMatrixRepositoryRequirements {
 
     void shouldProperlyCalculateConditionalNextIndicator()
             throws DataMatrixRepositoryFailedException;
+
+    void shouldFindAndReturnAddedData()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException;
+
+    void shouldThrowAnExceptionWhenSearchedDataDoesNotExist()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException;
+
+    void shouldThrowAnExceptionWhenSearchedDataWasRemoved()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException;
+
+    void shouldRemoveAndReturnAddedData()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException;
+
+    void shouldThrowAnExceptionWhenRemovedDataDoesNotExist()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException;
+
+    void shouldThrowAnExceptionWhenRemovedDataWasRemoved()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException;
+
+    void shouldNotReturnRemovedDataAsNeighbour()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException;
 }

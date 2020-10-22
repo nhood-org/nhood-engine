@@ -11,6 +11,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.h8.nh.nhoodengine.core.DataResourceKey.UNIFIED_BIG_DECIMAL_ROUNDING_MODE;
@@ -299,6 +300,123 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
             assertThat(iterator.hasNextWithinRange(
                     DISTANCE_DIAGONAL_CUBE.multiply(BigDecimal.valueOf(20))))
                     .isEqualTo(shouldContainMore);
+        }
+    }
+
+    @Override
+    @Test
+    @SuppressWarnings("checkstyle:magicnumber")
+    public final void shouldFindAndReturnAddedData()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException {
+        // given
+        DataResource<K, D> resource = populateRepositoryWithResources().get(0);
+
+        // when
+        DataResource<K, D> resourceFound = dataMatrixRepository.find(resource.getUuid());
+
+        // then
+        assertThat(resourceFound).isEqualTo(resource);
+    }
+
+    @Override
+    @Test
+    public final void shouldThrowAnExceptionWhenSearchedDataDoesNotExist() {
+        // given
+        populateRepositoryWithResources();
+        UUID missingUUID = UUID.randomUUID();
+
+        // when / then
+        assertThatThrownBy(() -> dataMatrixRepository.find(missingUUID))
+                .isInstanceOf(DataDoesNotExistException.class)
+                .hasMessage("Could not find resource for given uuid: " + missingUUID.toString())
+                .hasNoCause();
+    }
+
+    @Override
+    @Test
+    @SuppressWarnings("checkstyle:magicnumber")
+    public final void shouldThrowAnExceptionWhenSearchedDataWasRemoved()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException {
+        // given
+        DataResource<K, D> resource = populateRepositoryWithResources().get(0);
+        UUID resourceUUID = resource.getUuid();
+
+        DataResource<K, D> removedResource = dataMatrixRepository.remove(resourceUUID);
+        assertThat(removedResource).isEqualTo(resource);
+
+        // when / then
+        assertThatThrownBy(() -> dataMatrixRepository.find(resourceUUID))
+                .isInstanceOf(DataDoesNotExistException.class)
+                .hasMessage("Could not find resource for given uuid: " + resourceUUID.toString())
+                .hasNoCause();
+    }
+
+    @Override
+    @Test
+    @SuppressWarnings("checkstyle:magicnumber")
+    public final void shouldRemoveAndReturnAddedData()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException {
+        // given
+        DataResource<K, D> resource = populateRepositoryWithResources().get(0);
+
+        // when
+        DataResource<K, D> removedResource = dataMatrixRepository.remove(resource.getUuid());
+
+        // then
+        assertThat(removedResource).isEqualTo(resource);
+    }
+
+    @Override
+    @Test
+    public final void shouldThrowAnExceptionWhenRemovedDataDoesNotExist() {
+        // given
+        populateRepositoryWithResources();
+        UUID missingUUID = UUID.randomUUID();
+
+        // when / then
+        assertThatThrownBy(() -> dataMatrixRepository.remove(missingUUID))
+                .isInstanceOf(DataDoesNotExistException.class)
+                .hasMessage("Could not find resource for given uuid: " + missingUUID.toString())
+                .hasNoCause();
+    }
+
+    @Override
+    @Test
+    @SuppressWarnings("checkstyle:magicnumber")
+    public final void shouldThrowAnExceptionWhenRemovedDataWasRemoved()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException {
+        // given
+        DataResource<K, D> resource = populateRepositoryWithResources().get(0);
+        UUID resourceUUID = resource.getUuid();
+
+        DataResource<K, D> removedResource = dataMatrixRepository.remove(resourceUUID);
+        assertThat(removedResource).isEqualTo(resource);
+
+        // when / then
+        assertThatThrownBy(() -> dataMatrixRepository.remove(resourceUUID))
+                .isInstanceOf(DataDoesNotExistException.class)
+                .hasMessage("Could not find resource for given uuid: " + resourceUUID.toString())
+                .hasNoCause();
+    }
+
+    @Override
+    @Test
+    @SuppressWarnings("checkstyle:magicnumber")
+    public final  void shouldNotReturnRemovedDataAsNeighbour()
+            throws DataMatrixRepositoryFailedException, DataDoesNotExistException {
+        // given
+        DataResource<K, D> resource = populateRepositoryWithResources().get(0);
+
+        DataResource<K, D> removedResource = dataMatrixRepository.remove(resource.getUuid());
+        assertThat(removedResource).isEqualTo(resource);
+
+        // when
+        DataMatrixResourceIterator<K, D> iterator =
+                dataMatrixRepository.findNeighbours(resource.getKey());
+
+        // then
+        while (iterator.hasNext()) {
+            assertThat(iterator.next()).doesNotContain(resource);
         }
     }
 

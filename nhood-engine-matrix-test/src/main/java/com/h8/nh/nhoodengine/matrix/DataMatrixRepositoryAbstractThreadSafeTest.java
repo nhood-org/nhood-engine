@@ -2,8 +2,7 @@ package com.h8.nh.nhoodengine.matrix;
 
 import com.h8.nh.nhoodengine.core.DataResource;
 import com.h8.nh.nhoodengine.core.DataResourceKey;
-import com.h8.nh.nhoodengine.matrix.workers.ResourcesAddWorker;
-import com.h8.nh.nhoodengine.matrix.workers.ResourcesResolveAllWorker;
+import com.h8.nh.nhoodengine.matrix.workers.*;
 import com.h8.nh.nhoodengine.utils.DataKeyGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +10,10 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -84,7 +85,7 @@ public abstract class DataMatrixRepositoryAbstractThreadSafeTest<K extends DataR
         shutdownExecutor(executor);
 
         // then
-        assertThatResourceAddWorkersHaveNoErrors(addResourceWorkers);
+        assertThatWorkersHaveNoErrors(addResourceWorkers);
 
         List<DataResource<K, D>> retrievedResources = resolveAllResources();
         assertThat(retrievedResources.size()).isEqualTo(resources.size());
@@ -109,14 +110,15 @@ public abstract class DataMatrixRepositoryAbstractThreadSafeTest<K extends DataR
                     ResourcesResolveAllWorker.of(dataMatrixRepository, key);
             resolveResourceWorkers.add(resolveAllWorker);
             executor.execute(resolveAllWorker);
+
             executor.execute(w);
         });
 
         shutdownExecutor(executor);
 
         // then
-        assertThatResourceAddWorkersHaveNoErrors(addResourceWorkers);
-        assertThatResourceResolveAllWorkersHaveNoErrors(resolveResourceWorkers);
+        assertThatWorkersHaveNoErrors(addResourceWorkers);
+        assertThatWorkersHaveNoErrors(resolveResourceWorkers);
 
         List<DataResource<K, D>> retrievedResources = resolveAllResources();
         assertThat(retrievedResources.size()).isEqualTo(resources.size());
@@ -143,14 +145,91 @@ public abstract class DataMatrixRepositoryAbstractThreadSafeTest<K extends DataR
                     ResourcesResolveAllWorker.of(dataMatrixRepository, key, resourceCounter.get());
             resolveResourceWorkers.add(resolveAllWorker);
             executor.execute(resolveAllWorker);
+
             executor.execute(w);
         });
 
         shutdownExecutor(executor);
 
         // then
-        assertThatResourceAddWorkersHaveNoErrors(addResourceWorkers);
-        assertThatResourceResolveAllWorkersHaveNoErrors(resolveResourceWorkers);
+        assertThatWorkersHaveNoErrors(addResourceWorkers);
+        assertThatWorkersHaveNoErrors(resolveResourceWorkers);
+    }
+
+    @Override
+    @Test
+    public final void shouldFindAllAlreadyAddedResources()
+            throws DataMatrixRepositoryFailedException, InterruptedException {
+        // given
+        List<DataResource<K, D>> resources = generateResources();
+
+        // when
+        SynchronousQueue<UUID> added = new SynchronousQueue<>();
+
+        List<ResourcesAddWorker<K, D>> addResourceWorkers = generateAddResourceWorkers(resources, added);
+        List<ResourcesFindWorker<K, D>> findResourceWorkers = new ArrayList<>();
+
+        ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+
+        addResourceWorkers.forEach(w -> {
+            ResourcesFindWorker<K, D> findWorker =
+                    ResourcesFindWorker.of(dataMatrixRepository, added);
+            findResourceWorkers.add(findWorker);
+            executor.execute(findWorker);
+
+            executor.execute(w);
+        });
+
+        shutdownExecutor(executor);
+
+        // then
+        assertThatWorkersHaveNoErrors(addResourceWorkers);
+        assertThatWorkersHaveNoErrors(findResourceWorkers);
+
+        List<DataResource<K, D>> retrievedResources = resolveAllResources();
+        assertThat(retrievedResources.size()).isEqualTo(resources.size());
+    }
+
+    @Override
+    @Test
+    public final void shouldNotFindAnyRemovedResources()
+            throws DataMatrixRepositoryFailedException, InterruptedException {
+        // given
+        List<DataResource<K, D>> resources = generateResources();
+
+        // when
+        SynchronousQueue<UUID> added = new SynchronousQueue<>();
+        SynchronousQueue<UUID> removed = new SynchronousQueue<>();
+
+        List<ResourcesAddWorker<K, D>> addResourceWorkers = generateAddResourceWorkers(resources, added);
+        List<ResourcesRemoveWorker<K, D>> removeResourceWorkers = new ArrayList<>();
+        List<ResourcesFindWorker<K, D>> findResourceWorkers = new ArrayList<>();
+
+        ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+
+        addResourceWorkers.forEach(w -> {
+            ResourcesFindWorker<K, D> findWorker =
+                    ResourcesFindWorker.notFoundExpected(dataMatrixRepository, removed);
+            findResourceWorkers.add(findWorker);
+            executor.execute(findWorker);
+
+            ResourcesRemoveWorker<K, D> removeWorker =
+                    ResourcesRemoveWorker.of(dataMatrixRepository, added, removed);
+            removeResourceWorkers.add(removeWorker);
+            executor.execute(removeWorker);
+
+            executor.execute(w);
+        });
+
+        shutdownExecutor(executor);
+
+        // then
+        assertThatWorkersHaveNoErrors(addResourceWorkers);
+        assertThatWorkersHaveNoErrors(removeResourceWorkers);
+        assertThatWorkersHaveNoErrors(findResourceWorkers);
+
+        List<DataResource<K, D>> retrievedResources = resolveAllResources();
+        assertThat(retrievedResources.size()).isEqualTo(0);
     }
 
     private List<DataResource<K, D>> generateResources() {
@@ -185,6 +264,17 @@ public abstract class DataMatrixRepositoryAbstractThreadSafeTest<K extends DataR
                 .collect(Collectors.toList());
     }
 
+    private List<ResourcesAddWorker<K, D>> generateAddResourceWorkers(
+            final List<DataResource<K, D>> resources,
+            final SynchronousQueue<UUID> added) {
+        AtomicInteger chunkCounter = new AtomicInteger();
+        return resources.stream()
+                .collect(groupingBy(x -> chunkCounter.getAndIncrement() / RESOURCE_CHUNK_SIZE)).values()
+                .stream()
+                .map(chunk -> ResourcesAddWorker.of(dataMatrixRepository, chunk, new AtomicInteger(), added))
+                .collect(Collectors.toList());
+    }
+
     private void shutdownExecutor(final ExecutorService executor)
             throws InterruptedException {
         executor.shutdown();
@@ -209,20 +299,11 @@ public abstract class DataMatrixRepositoryAbstractThreadSafeTest<K extends DataR
         return retrievedResources;
     }
 
-    private void assertThatResourceAddWorkersHaveNoErrors(
-            final List<ResourcesAddWorker<K, D>> workers) {
+    private void assertThatWorkersHaveNoErrors(
+            final List<? extends AssertableWorker> workers) {
         assertThat(
                 workers.stream()
-                        .map(ResourcesAddWorker::hasErrors)
-                        .collect(Collectors.toList()))
-                .containsOnly(false);
-    }
-
-    private void assertThatResourceResolveAllWorkersHaveNoErrors(
-            final List<ResourcesResolveAllWorker<K, D>> workers) {
-        assertThat(
-                workers.stream()
-                        .map(ResourcesResolveAllWorker::hasErrors)
+                        .map(AssertableWorker::hasErrors)
                         .collect(Collectors.toList()))
                 .containsOnly(false);
     }

@@ -124,8 +124,26 @@ final class DataMatrixCell<R extends DataMatrixCellResource<?>> {
                 findRelevantChild(resource).add(resource);
             } else {
                 resources.add(resource);
-                updateStatistics(resource);
+                addToStatistics(resource);
                 split();
+            }
+        }
+    }
+
+    public void remove(final R resource) {
+        if (!this.wrapsKey(resource.getKey().unified())) {
+            throw new IllegalStateException("Cell does not cover given key");
+        }
+        if (this.hasChildren()) {
+            findRelevantChild(resource).remove(resource);
+            return;
+        }
+        synchronized (this) {
+            if (this.hasChildren()) {
+                findRelevantChild(resource).remove(resource);
+            } else {
+                resources.remove(resource);
+                removeFromStatistics(resource);
             }
         }
     }
@@ -137,10 +155,17 @@ final class DataMatrixCell<R extends DataMatrixCellResource<?>> {
                 .orElseThrow(() -> new IllegalStateException("There is no cell covering given key"));
     }
 
-    private void updateStatistics(final R resource) {
+    private void addToStatistics(final R resource) {
         BigDecimal[] key = resource.getKey().unified();
         for (int i = 0; i < key.length; i++) {
             statistics[i].accept(key[i].doubleValue());
+        }
+    }
+
+    private void removeFromStatistics(final R resource) {
+        BigDecimal[] key = resource.getKey().unified();
+        for (int i = 0; i < key.length; i++) {
+            statistics[i].accept(-1.0 * key[i].doubleValue());
         }
     }
 
