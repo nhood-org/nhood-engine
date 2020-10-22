@@ -45,16 +45,16 @@ public interface DataMatrixRepository<K extends DataResourceKey, D> {
             throws DataDoesNotExistException, DataMatrixRepositoryFailedException;
 
     /**
-     * Find and delete data resource from data matrix.
+     * Find and remove data resource from data matrix.
      *
      * @param uuid resource identifier
      *
      * @throws DataDoesNotExistException
      * when requested resource does not exist
      * @throws DataMatrixRepositoryFailedException
-     * when resource could not be deleted because of an error
+     * when resource could not be removed because of an error
      */
-    DataResource<K, D>  delete(UUID uuid)
+    DataResource<K, D>  remove(UUID uuid)
             throws DataDoesNotExistException, DataMatrixRepositoryFailedException;
 
     /**

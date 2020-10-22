@@ -65,7 +65,7 @@ public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
     }
 
     @Override
-    public DataResource<K, D> delete(UUID uuid)
+    public DataResource<K, D> remove(UUID uuid)
             throws DataDoesNotExistException {
         DataResource<K, D> resource = data.remove(uuid);
         if (resource == null) {
@@ -74,7 +74,7 @@ public final class DataMatrixCellBasedRepository<K extends DataResourceKey, D>
             throw new DataDoesNotExistException(message);
         }
         DataMatrixCellResource<K> r = DataMatrixCellResource.form(resource);
-        cell.delete(r);
+        cell.remove(r);
         return resource;
     }
 

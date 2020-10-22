@@ -341,8 +341,8 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
         DataResource<K, D> resource = populateRepositoryWithResources().get(0);
         UUID resourceUUID = resource.getUuid();
 
-        DataResource<K, D> deletedResource = dataMatrixRepository.delete(resourceUUID);
-        assertThat(deletedResource).isEqualTo(resource);
+        DataResource<K, D> removedResource = dataMatrixRepository.remove(resourceUUID);
+        assertThat(removedResource).isEqualTo(resource);
 
         // when / then
         assertThatThrownBy(() -> dataMatrixRepository.find(resourceUUID))
@@ -360,10 +360,10 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
         DataResource<K, D> resource = populateRepositoryWithResources().get(0);
 
         // when
-        DataResource<K, D> deletedResource = dataMatrixRepository.delete(resource.getUuid());
+        DataResource<K, D> removedResource = dataMatrixRepository.remove(resource.getUuid());
 
         // then
-        assertThat(deletedResource).isEqualTo(resource);
+        assertThat(removedResource).isEqualTo(resource);
     }
 
     @Override
@@ -374,7 +374,7 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
         UUID missingUUID = UUID.randomUUID();
 
         // when / then
-        assertThatThrownBy(() -> dataMatrixRepository.delete(missingUUID))
+        assertThatThrownBy(() -> dataMatrixRepository.remove(missingUUID))
                 .isInstanceOf(DataDoesNotExistException.class)
                 .hasMessage("Could not find resource for given uuid: " + missingUUID.toString())
                 .hasNoCause();
@@ -389,11 +389,11 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
         DataResource<K, D> resource = populateRepositoryWithResources().get(0);
         UUID resourceUUID = resource.getUuid();
 
-        DataResource<K, D> deletedResource = dataMatrixRepository.delete(resourceUUID);
-        assertThat(deletedResource).isEqualTo(resource);
+        DataResource<K, D> removedResource = dataMatrixRepository.remove(resourceUUID);
+        assertThat(removedResource).isEqualTo(resource);
 
         // when / then
-        assertThatThrownBy(() -> dataMatrixRepository.delete(resourceUUID))
+        assertThatThrownBy(() -> dataMatrixRepository.remove(resourceUUID))
                 .isInstanceOf(DataDoesNotExistException.class)
                 .hasMessage("Could not find resource for given uuid: " + resourceUUID.toString())
                 .hasNoCause();
@@ -407,8 +407,8 @@ public abstract class DataMatrixRepositoryAbstractTest<K extends DataResourceKey
         // given
         DataResource<K, D> resource = populateRepositoryWithResources().get(0);
 
-        DataResource<K, D> deletedResource = dataMatrixRepository.delete(resource.getUuid());
-        assertThat(deletedResource).isEqualTo(resource);
+        DataResource<K, D> removedResource = dataMatrixRepository.remove(resource.getUuid());
+        assertThat(removedResource).isEqualTo(resource);
 
         // when
         DataMatrixResourceIterator<K, D> iterator =

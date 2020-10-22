@@ -130,17 +130,17 @@ final class DataMatrixCell<R extends DataMatrixCellResource<?>> {
         }
     }
 
-    public void delete(final R resource) {
+    public void remove(final R resource) {
         if (!this.wrapsKey(resource.getKey().unified())) {
             throw new IllegalStateException("Cell does not cover given key");
         }
         if (this.hasChildren()) {
-            findRelevantChild(resource).delete(resource);
+            findRelevantChild(resource).remove(resource);
             return;
         }
         synchronized (this) {
             if (this.hasChildren()) {
-                findRelevantChild(resource).delete(resource);
+                findRelevantChild(resource).remove(resource);
             } else {
                 resources.remove(resource);
                 removeFromStatistics(resource);

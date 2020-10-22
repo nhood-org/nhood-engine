@@ -13,4 +13,10 @@ public interface DataMatrixRepositoryThreadSafeRequirements {
 
     void shouldResolveAllAlreadyAddedResources()
             throws DataMatrixRepositoryFailedException, InterruptedException;
+
+    void shouldFindAllAlreadyAddedResources()
+            throws DataMatrixRepositoryFailedException, InterruptedException;
+
+    void shouldNotFindAnyRemovedResources()
+            throws DataMatrixRepositoryFailedException, InterruptedException;
 }

@@ -9,7 +9,7 @@ import com.h8.nh.nhoodengine.matrix.DataMatrixResourceIterator;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ResourcesResolveAllWorker<K extends DataResourceKey, D> implements Runnable {
+public final class ResourcesResolveAllWorker<K extends DataResourceKey, D> implements Runnable, AssertableWorker {
 
     private final DataMatrixRepository<K, D> repository;
 
@@ -41,6 +41,7 @@ public final class ResourcesResolveAllWorker<K extends DataResourceKey, D> imple
         return new ResourcesResolveAllWorker<>(repository, metadata, expectedSize);
     }
 
+    @Override
     public boolean hasErrors() {
         return hasErrors;
     }
@@ -56,10 +57,6 @@ public final class ResourcesResolveAllWorker<K extends DataResourceKey, D> imple
             System.err.println(Thread.currentThread().getName()
                     + " : Could not resolve data from matrix repository because of"
                     + " an exception: " + e.getClass().getSimpleName() + " : " + e.getMessage());
-
-            // Uncomment for troubleshooting purposes only
-            // e.printStackTrace(System.err);
-
             hasErrors = true;
         }
     }
