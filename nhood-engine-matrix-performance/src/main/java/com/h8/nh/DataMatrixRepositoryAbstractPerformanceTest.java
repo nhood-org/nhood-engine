@@ -51,13 +51,13 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     @Param({"8", "16", "32"})
     private int metadataSize;
 
-    private SecureRandom random = new SecureRandom();
+    private final SecureRandom random = new SecureRandom();
+
+    private final List<DataResource<K, D>> generatedDataPool = new ArrayList<>();
 
     private DataMatrixRepositoryTestContext<K, D> ctx = null;
 
     private DataMatrixRepository<K, D> dataMatrixRepository = null;
-
-    private List<DataResource<K, D>> generatedDataPool;
 
     private List<DataResource<K, D>> randomDataPool;
 
