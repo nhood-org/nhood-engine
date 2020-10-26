@@ -39,9 +39,9 @@ import java.util.List;
 @State(Scope.Benchmark)
 public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends DataResourceKey, D> {
 
-    private static final int RESOURCE_RANDOM_DATA_POOL_SIZE = 10000;
+    private static final int RESOURCE_DATA_POOL_SIZE = 5000;
 
-    private static final int RESOURCE_RANDOM_METADATA_POOL_SIZE = 100;
+    private static final int RESOURCE_METADATA_POOL_SIZE = RESOURCE_DATA_POOL_SIZE;
 
     private static final int RESOURCE_CRAWL_DEPTH = 1000;
 
@@ -53,8 +53,6 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
 
     private final SecureRandom random = new SecureRandom();
 
-    private final List<DataResource<K, D>> generatedDataPool = new ArrayList<>();
-
     private DataMatrixRepositoryTestContext<K, D> ctx = null;
 
     private DataMatrixRepository<K, D> dataMatrixRepository = null;
@@ -62,6 +60,10 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     private List<DataResource<K, D>> randomDataPool;
 
     private Integer[][] randomMetadataPool;
+
+    private final List<DataResource<K, D>> generatedDataChunk = new ArrayList<>();
+
+    private boolean revertRemovedDataChunk;
 
     /**
      * Creates a new instance of DataMatrixRepositoryTestContext which is ctx for the whole test suite.
@@ -80,9 +82,15 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     }
 
     @Setup(Level.Trial)
-    public final void prepare() {
+    public final void prepareTrial() {
         System.out.println(
                 "Initializing context");
+        System.out.println(
+                "Resource loop size:        " + RESOURCE_DATA_POOL_SIZE);
+        System.out.println(
+                "Metadata loop size:        " + RESOURCE_METADATA_POOL_SIZE);
+        System.out.println(
+                "Resource crawl depth:      " + RESOURCE_CRAWL_DEPTH);
 
         ctx = initializeContext();
         dataMatrixRepository = ctx.initializerRepository();
@@ -99,6 +107,17 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
         generateRandomMetadataPool();
     }
 
+    @Setup(Level.Invocation)
+    public final void prepareInvocation()
+            throws DataMatrixRepositoryFailedException {
+        if (revertRemovedDataChunk) {
+            for (DataResource<K, D> r : generatedDataChunk) {
+                dataMatrixRepository.add(r);
+            }
+        }
+        revertRemovedDataChunk = false;
+    }
+
     @Benchmark
     @BenchmarkMode(Mode.AverageTime)
     public final void addRandomResources()
@@ -112,16 +131,17 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     @BenchmarkMode(Mode.AverageTime)
     public final void removeRandomResources()
             throws DataMatrixRepositoryFailedException, DataDoesNotExistException {
-        for (DataResource<K, D> r : generatedDataPool) {
+        for (DataResource<K, D> r : generatedDataChunk) {
             dataMatrixRepository.remove(r.getUuid());
         }
+        revertRemovedDataChunk = true;
     }
 
     @Benchmark
     @BenchmarkMode(Mode.AverageTime)
     public final void findRandomResources()
             throws DataMatrixRepositoryFailedException, DataDoesNotExistException {
-        for (DataResource<K, D> r : generatedDataPool) {
+        for (DataResource<K, D> r : generatedDataChunk) {
             dataMatrixRepository.find(r.getUuid());
         }
     }
@@ -130,7 +150,7 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     @BenchmarkMode(Mode.AverageTime)
     public final void resolveNeighboursOfRandomMetadataKey()
             throws DataMatrixRepositoryFailedException {
-        int idx = random.nextInt(RESOURCE_RANDOM_METADATA_POOL_SIZE);
+        int idx = random.nextInt(RESOURCE_METADATA_POOL_SIZE);
         K metadata = ctx.dataKey(randomMetadataPool[idx]);
         DataMatrixResourceIterator<K, D> iterator = dataMatrixRepository.findNeighbours(metadata);
         assert iterator.hasNext();
@@ -140,7 +160,7 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
     @BenchmarkMode(Mode.AverageTime)
     public final void resolveAndCrawlNeighboursOfRandomMetadataKey()
             throws DataMatrixRepositoryFailedException {
-        int idx = random.nextInt(RESOURCE_RANDOM_METADATA_POOL_SIZE);
+        int idx = random.nextInt(RESOURCE_METADATA_POOL_SIZE);
         K metadata = ctx.dataKey(randomMetadataPool[idx]);
         DataMatrixResourceIterator<K, D> iterator = dataMatrixRepository.findNeighbours(metadata);
         for (int i = 0; i < RESOURCE_CRAWL_DEPTH; i++) {
@@ -156,7 +176,9 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
             for (int i = 0; i < dataSetSize; i++) {
                 DataResource<K, D> r = generateRandomData();
                 dataMatrixRepository.add(r);
-                generatedDataPool.add(r);
+                if (i < RESOURCE_DATA_POOL_SIZE) {
+                    generatedDataChunk.add(r);
+                }
             }
         } catch (DataMatrixRepositoryFailedException e) {
             throw new IllegalStateException("Could not initialize data", e);
@@ -165,14 +187,14 @@ public abstract class DataMatrixRepositoryAbstractPerformanceTest<K extends Data
 
     private void generateRandomDataPool() {
         randomDataPool = new ArrayList<>();
-        for (int i = 0; i < RESOURCE_RANDOM_DATA_POOL_SIZE; i++) {
+        for (int i = 0; i < RESOURCE_DATA_POOL_SIZE; i++) {
             randomDataPool.add(generateRandomData());
         }
     }
 
     private void generateRandomMetadataPool() {
-        randomMetadataPool = new Integer[RESOURCE_RANDOM_METADATA_POOL_SIZE][metadataSize];
-        for (int i = 0; i < RESOURCE_RANDOM_METADATA_POOL_SIZE; i++) {
+        randomMetadataPool = new Integer[RESOURCE_METADATA_POOL_SIZE][metadataSize];
+        for (int i = 0; i < RESOURCE_METADATA_POOL_SIZE; i++) {
             randomMetadataPool[i] = generateRandomMetadata();
         }
     }
