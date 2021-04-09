@@ -28,9 +28,9 @@ jobs:
         paths:
           - "$HOME/.m2"
 
-  build-jdk11:
+  build-jdk16:
     docker:
-    - image: circleci/openjdk:11-jdk
+    - image: cimg/openjdk:16.0.0
     <<: *defaults-env
     steps:
     - checkout
@@ -62,7 +62,7 @@ workflows:
   build-deploy:
     jobs:
     - build
-    - build-jdk11
+    - build-jdk16
     - deploy:
         requires:
         - build
