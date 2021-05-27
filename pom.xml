@@ -34,7 +34,7 @@
 
 		<!--Test-->
 		<junit.jupiter.version>5.7.1</junit.jupiter.version>
-		<jmh.version>1.30</jmh.version>
+		<jmh.version>1.32</jmh.version>
 	</properties>
 
 	<scm>
