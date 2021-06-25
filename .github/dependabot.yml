@@ -1,0 +1,16 @@
+version: 2
+registries:
+  maven-repository-maven-pkg-github-com-nhood-org-repository:
+    type: maven-repository
+    url: https://maven.pkg.github.com/nhood-org/repository
+    username: krzysztofreczek
+    password: "${{secrets.MAVEN_REPOSITORY_MAVEN_PKG_GITHUB_COM_NHOOD_ORG_REPOSITORY_PASSWORD}}"
+
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  registries:
+  - maven-repository-maven-pkg-github-com-nhood-org-repository
